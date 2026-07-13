@@ -1485,6 +1485,16 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
 .subtask-done-check{display:flex;align-items:center;gap:9px;margin:0 0 12px;color:var(--ink);font-weight:700;cursor:pointer;}
 .subtask-done-check input{width:18px;height:18px;accent-color:var(--ok);}
 .sub-parent-note{margin:-2px 0 12px;}
+.sub-parent-open{
+  display:inline-flex;align-items:center;gap:2px;max-width:100%;
+  border:0;background:transparent;color:inherit;padding:0;margin:0;
+  font:inherit;font-weight:800;text-decoration:underline;text-underline-offset:3px;
+  cursor:pointer;text-align:left;vertical-align:baseline;
+}
+.sub-parent-open:hover{color:var(--blue)}
+.sub-parent-open:disabled{cursor:default;text-decoration:none;opacity:.82}
+.sub-parent-open span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
 .sb-parent-field{display:none!important;}
 .board-sub-item{cursor:pointer;}
 .board-sub-item input[type="checkbox"],.board-sub-item button{cursor:pointer;}
@@ -2004,7 +2014,7 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
     <form id="subtaskBoardForm">
       <div class="f-group"><label>Tên việc con *</label><input id="sbTitle" required></div>
       <div class="f-group"><label>Mô tả</label><textarea id="sbDesc" placeholder="Mục tiêu, tiêu chuẩn làm tốt hoặc ghi chú riêng của việc con…"></textarea></div>
-      <div class="from-link sub-parent-note">↳ Đây là việc con của: <b id="sbParentLabel"></b><br><span class="hint">Trạng thái 1% thuộc công việc lớn hoặc một việc 1% độc lập, không gắn riêng cho việc con.</span></div>
+      <div class="from-link sub-parent-note">↳ Đây là việc con của: <button type="button" class="sub-parent-open" id="sbParentOpen"><span id="sbParentLabel"></span><span aria-hidden="true"> ↗</span></button></div>
       <label class="subtask-done-check"><input type="checkbox" id="sbDone"> <span>Đã hoàn thành việc con</span></label>
       <div class="board-meta-grid compact-meta-grid subtask-meta-grid">
         <div class="f-group"><label>Ngày</label><input type="date" id="sbDate"></div>
@@ -3840,8 +3850,12 @@ function showTimerSystemNotification(){
       requireInteraction: true
     });
     timerSystemNotification.onclick = () => {
-      try{ window.focus(); }catch(e){}
-      showTimerFinishBanner();
+      if(timerPiPWindow && !timerPiPWindow.closed){
+        try{ timerPiPWindow.focus(); }catch(e){}
+      }else{
+        try{ window.focus(); }catch(e){}
+        showTimerFinishBanner();
+      }
       timerSystemNotification?.close();
     };
   }catch(e){}
@@ -3965,7 +3979,15 @@ function timerPiPStyles(){
       font-variant-numeric:tabular-nums;white-space:nowrap;
     }
     .pip-count.over{color:#FFD08A}
+    .pip-alert{
+      min-width:82px;padding:0 3px;text-align:center;
+      font-size:14px;font-weight:850;line-height:1;
+      color:#FFD08A;white-space:nowrap;
+    }
     .pip-actions{display:flex;align-items:center;gap:4px}
+    .pip-finish-actions button.primary{
+      background:#78D08B;color:#082016;border-color:#78D08B;
+    }
     button{
       width:29px;height:29px;padding:0;
       display:grid;place-items:center;
@@ -3986,15 +4008,22 @@ function buildTimerPiPDocument(pipWindow){
   doc.head.innerHTML = `<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(timerState.title || 'Focus Timer')}</title><style id="timerPiPStyle">${timerPiPStyles()}</style>`;
   doc.body.innerHTML = `<div class="pip-card" id="pipCard" title="${esc(timerState.title || 'Focus Timer')}">
     <div class="pip-count" id="pipTimerCount">00:00</div>
-    <div class="pip-actions">
+    <div class="pip-alert" id="pipTimerAlert" hidden>⏰ Hết giờ</div>
+    <div class="pip-actions" id="pipRunningActions">
       <button type="button" id="pipPause" title="Tạm dừng / tiếp tục" aria-label="Tạm dừng hoặc tiếp tục">⏸</button>
       <button type="button" id="pipStop" title="Dừng" aria-label="Dừng">■</button>
       <button type="button" class="primary" id="pipExpand" title="Mở lại ứng dụng" aria-label="Mở lại ứng dụng">⤢</button>
+    </div>
+    <div class="pip-actions pip-finish-actions" id="pipFinishActions" hidden>
+      <button type="button" class="primary" id="pipDone" title="Đánh dấu đã xong" aria-label="Đánh dấu đã xong">✓</button>
+      <button type="button" id="pipDismiss" title="Đóng thông báo" aria-label="Đóng thông báo">×</button>
     </div>
   </div>`;
   doc.getElementById('pipPause').addEventListener('click', () => document.getElementById('timerPause').click());
   doc.getElementById('pipStop').addEventListener('click', () => document.getElementById('timerStop').click());
   doc.getElementById('pipExpand').addEventListener('click', () => closeTimerPiP({restore:true}));
+  doc.getElementById('pipDone').addEventListener('click', () => document.getElementById('timerDone').click());
+  doc.getElementById('pipDismiss').addEventListener('click', () => closeTimer());
 }
 function updateTimerPiPTheme(){
   if(!timerPiPWindow || timerPiPWindow.closed) return;
@@ -4006,12 +4035,26 @@ function updateTimerPiPUI(){
   const doc = timerPiPWindow.document;
   const card = doc.getElementById('pipCard');
   const count = doc.getElementById('pipTimerCount');
+  const alert = doc.getElementById('pipTimerAlert');
+  const runningActions = doc.getElementById('pipRunningActions');
+  const finishActions = doc.getElementById('pipFinishActions');
   const pause = doc.getElementById('pipPause');
+  const finishedNaturally = timerState.finished && timerState.finishReason === 'done';
+
   if(card) card.title = `${timerState.title || 'Focus Timer'} · ${timerModeText()}`;
+
   if(count){
+    count.hidden = finishedNaturally;
     count.textContent = timerDisplayText();
     count.classList.toggle('over', timerState.finished || (!timerState.countUp && timerRemaining() <= 30));
   }
+  if(alert){
+    alert.hidden = !finishedNaturally;
+    alert.textContent = '⏰ Hết giờ';
+  }
+  if(runningActions) runningActions.hidden = finishedNaturally;
+  if(finishActions) finishActions.hidden = !finishedNaturally;
+
   if(pause){
     const paused = !!timerState.paused;
     pause.textContent = paused ? '▶' : '⏸';
@@ -4052,8 +4095,10 @@ async function openGlobalTimerPiP(){
       timerPiPWindow = null;
       timerPinned = false;
       timerPinMode = null;
-      // Closing the floating window manually returns the active timer to the app.
-      if(timerState.actId && screen) screen.classList.add('open');
+      // Closing the floating window manually returns only an active timer to the app.
+      // A finished timer keeps the small in-app banner instead of opening the full-screen timer.
+      if(timerState.actId && !timerState.finished && screen) screen.classList.add('open');
+      if(timerState.finished && timerState.finishReason === 'done') showTimerFinishBanner();
       syncTimerToolButtons();
     }, {once:true});
     syncTimerToolButtons();
@@ -4193,12 +4238,16 @@ function finishTimer({manual=false}={}){
   document.title = manual ? originalDocTitle : `Hết giờ · ${timerState.title || '1% Garden'}`;
 
   if(!manual && !timerState.countUp){
-    // Natural timeout: remain unobtrusive and notify globally.
-    closeTimerPiP({restore:false});
+    // Natural timeout: keep the always-on-top PiP window and transform it into
+    // a compact global notification that remains visible over other tabs/apps.
     screen.classList.remove('open','pinned');
     playTimerBell();
     showTimerFinishBanner();
     showTimerSystemNotification();
+    updateTimerPiPUI();
+    if(timerPiPWindow && !timerPiPWindow.closed){
+      try{ timerPiPWindow.focus(); }catch(e){}
+    }
   }else{
     // Manual stop keeps the existing confirmation screen.
     closeTimerPiP({restore:true});
@@ -5118,6 +5167,8 @@ function openDraftSubtaskBoard(sub){
   document.getElementById('sbDone').checked = !!sub.completed;
   const parentTitle = document.getElementById('cTitle').value.trim() || 'Công việc cha chưa lưu';
   document.getElementById('sbParentLabel').textContent = parentTitle;
+  const parentOpen = document.getElementById('sbParentOpen');
+  if(parentOpen){ parentOpen.disabled = true; delete parentOpen.dataset.parentId; parentOpen.title = 'Công việc lớn chưa được lưu'; }
   document.getElementById('sbDate').value = sub.date || document.getElementById('cDate').value || viewDate;
   document.getElementById('sbStartTime').value = sub.startTime || '';
   document.getElementById('sbParent').value = parentTitle;
@@ -5132,6 +5183,8 @@ function openSubtaskBoard(act, sub){
   document.getElementById('sbDesc').value = sub.description || '';
   document.getElementById('sbDone').checked = !!sub.completed;
   document.getElementById('sbParentLabel').textContent = act.title || '';
+  const parentOpen = document.getElementById('sbParentOpen');
+  if(parentOpen){ parentOpen.disabled = false; parentOpen.dataset.parentId = act.id; parentOpen.title = 'Mở công việc lớn'; }
   document.getElementById('sbDate').value = sub.date || act.date || viewDate;
   document.getElementById('sbStartTime').value = sub.startTime || '';
   document.getElementById('sbParent').value = act.title || '';
@@ -5139,6 +5192,17 @@ function openSubtaskBoard(act, sub){
   document.getElementById('subtaskBoardModal').classList.add('open');
   autoGrowModal('subtaskBoardModal');
 }
+document.getElementById('sbParentOpen').addEventListener('click', () => {
+  const btn = document.getElementById('sbParentOpen');
+  const parentId = btn?.dataset.parentId;
+  if(!parentId || btn.disabled) return;
+  const parent = state.activities.find(a => a.id === parentId);
+  if(!parent){ toast('Không tìm thấy công việc lớn.'); return; }
+  document.getElementById('subtaskBoardModal').classList.remove('open');
+  subBoardRef = null;
+  openActivityBoard(parent);
+});
+
 document.getElementById('subtaskBoardForm').addEventListener('submit', e => {
   e.preventDefault();
   if(!subBoardRef) return;
