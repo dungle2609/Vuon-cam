@@ -216,7 +216,7 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .spread{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 
-/* ============ TODAY ============ */
+/* ============ DAILY PLAN ============ */
 .hero{
   background:
     radial-gradient(circle at 76% 34%, rgba(252,211,77,.22), transparent 32%),
@@ -725,13 +725,69 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 .sort-select-wrap{margin-left:auto;display:flex;align-items:center;gap:6px}
 .sort-lbl{font-size:12px;color:var(--muted);font-weight:600;white-space:nowrap}
 .sort-select{width:auto;font-size:12.5px;font-weight:600;padding:6px 10px;border-radius:8px;color:var(--blue);background:var(--blue-soft);border:1px solid transparent}
-@media (max-width:520px){.sort-select-wrap{margin-left:0;width:100%}.sort-select{flex:1}}
+@media (max-width:520px){
+  .sort-select-wrap{margin-left:0;width:100%}.sort-select{flex:1}
+  .plan-activity-head{display:block}
+  .plan-head-block{width:100%}
+  .plan-day-nav{display:grid;grid-template-columns:34px minmax(0,1fr) 34px auto;gap:6px}
+  .plan-date-picker{min-width:0;width:100%}
+  .plan-today-btn{padding:0 9px}
+  .activity-tools{width:100%;margin-top:12px}
+}
 .day-picker{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
 .day-picker .filter-row{margin-bottom:0}
 .day-input{
   border:1px solid var(--line);background:var(--surface);color:var(--ink);
   border-radius:99px;padding:4px 12px;font-size:12.5px;font-family:inherit;
 }
+.plan-activity-head{align-items:flex-start}
+.plan-head-block{display:flex;flex-direction:column;gap:9px;min-width:0}
+.plan-head-block h2{margin:0}
+.plan-day-nav{
+  display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+}
+.plan-day-arrow{
+  width:34px;height:34px;display:grid;place-items:center;
+  border:1px solid var(--line);background:var(--surface-2);color:var(--ink);
+  border-radius:10px;font-size:22px;font-weight:700;line-height:1;
+  transition:background .15s,color .15s,border-color .15s,transform .1s;
+}
+.plan-day-arrow:hover{background:var(--blue-soft);color:var(--blue);border-color:transparent}
+.plan-day-arrow:active{transform:scale(.96)}
+.plan-date-picker{
+  position:relative;display:flex;align-items:center;gap:8px;
+  min-width:190px;height:36px;margin:0;padding:0 11px;
+  border:1px solid var(--line);border-radius:11px;
+  background:var(--surface-2);cursor:pointer;overflow:hidden;
+}
+.plan-date-picker:hover{border-color:color-mix(in srgb,var(--blue) 45%,var(--line));background:var(--surface)}
+.plan-date-main{
+  flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  font-family:var(--font-display);font-size:12.5px;font-weight:800;color:var(--ink);
+}
+.plan-date-icon{font-size:13px;flex:0 0 auto}
+.plan-date-picker input{
+  position:absolute;width:1px;height:1px;opacity:0;
+  pointer-events:none;padding:0;border:0;
+}
+.plan-date-picker:focus-visible{
+  outline:2px solid var(--cyan);outline-offset:2px;
+}
+.plan-date-picker:active{transform:scale(.985)}
+.plan-today-btn{
+  height:34px;padding:0 11px;border:1px solid var(--line);
+  border-radius:10px;background:transparent;color:var(--blue);
+  font-size:12px;font-weight:800;
+}
+.plan-today-btn:hover{background:var(--blue-soft);border-color:transparent}
+.plan-today-btn.is-today{display:none}
+[data-theme="dark"] .plan-day-arrow,
+[data-theme="dark"] .plan-date-picker{
+  background:#2E2318;border-color:#755532;color:#FFF3E0;
+}
+[data-theme="dark"] .plan-date-picker:hover{background:#352414;border-color:#78D08B}
+[data-theme="dark"] .plan-today-btn{border-color:#755532;color:#8BE39D}
+
 .f-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
 @media (max-width:760px){.f-row3{grid-template-columns:1fr}}
 .two-col{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
@@ -1528,7 +1584,7 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
   <!-- ============ NAV ============ -->
   <nav class="sidebar">
     <div class="logo"><span class="pct">1%</span><span class="os">GARDEN</span></div>
-    <button class="nav-btn active" data-nav="today"><span class="ico">☀️</span><span class="lbl-l">Hôm nay</span><span class="lbl-s">Hôm nay</span></button>
+    <button class="nav-btn active" data-nav="today"><span class="ico">📋</span><span class="lbl-l">Kế hoạch</span><span class="lbl-s">Kế hoạch</span></button>
     <button class="nav-btn" data-nav="calendar"><span class="ico">📅</span><span class="lbl-l">Lịch</span><span class="lbl-s">Lịch</span></button>
     <button class="nav-btn" data-nav="mistakes"><span class="ico">🧹</span><span class="lbl-l">Dọn vườn</span><span class="lbl-s">Dọn vườn</span></button>
     <button class="nav-btn" data-nav="weekly"><span class="ico">🍊</span><span class="lbl-l">Vườn cam</span><span class="lbl-s">Vườn</span></button>
@@ -1541,7 +1597,7 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
 
   <main class="main">
 
-    <!-- ============ TODAY ============ -->
+    <!-- ============ DAILY PLAN ============ -->
     <section data-view="today" class="active">
       <div class="card hero">
         <div class="hero-top">
@@ -1671,17 +1727,21 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
       </div>
 
       <div class="card activity-panel">
-        <div class="activity-head">
-          <div>
-            <h2 id="actsHeading">Hoạt động hôm nay</h2>
-
+        <div class="activity-head plan-activity-head">
+          <div class="plan-head-block">
+            <h2 id="actsHeading">Công việc trong ngày</h2>
+            <div class="plan-day-nav" aria-label="Điều hướng ngày">
+              <button type="button" class="plan-day-arrow" id="dayPrevBtn" aria-label="Ngày trước" title="Ngày trước">‹</button>
+              <div class="plan-date-picker" id="planDatePickerTrigger" role="button" tabindex="0" aria-label="Chọn một ngày khác" title="Chọn một ngày khác">
+                <span class="plan-date-main" id="planDateLabel">Hôm nay</span>
+                <span class="plan-date-icon" aria-hidden="true">📅</span>
+                <input type="date" id="dayPick" aria-label="Chọn ngày" tabindex="-1">
+              </div>
+              <button type="button" class="plan-day-arrow" id="dayNextBtn" aria-label="Ngày sau" title="Ngày sau">›</button>
+              <button type="button" class="plan-today-btn" id="dayTodayBtn">Hôm nay</button>
+            </div>
           </div>
           <div class="activity-tools">
-            <div class="filter-row day-picker quick-date-hidden" style="margin:0">
-              <button id="dayTodayBtn" class="on">Hôm nay</button>
-              <button id="dayTomorrowBtn">Ngày mai</button>
-            </div>
-            <input type="date" id="dayPick" class="day-input quick-date-hidden" aria-label="Chọn ngày">
             <div class="sort-select-wrap">
               <label for="sortSelect" class="sort-lbl">Sắp xếp:</label>
               <select id="sortSelect" class="sort-select">
@@ -2509,6 +2569,19 @@ const fmtShortDate = (str) => {
   const [y,m,d] = parts;
   return `${String(d).padStart(2,'0')}/${String(m).padStart(2,'0')}`;
 };
+function planDateLabel(date){
+  const today = todayStr();
+  const tomorrow = addDays(today, 1);
+  const yesterday = addDays(today, -1);
+  const [y,m,d] = date.split('-').map(Number);
+  const weekdays = ['Chủ nhật','Thứ hai','Thứ ba','Thứ tư','Thứ năm','Thứ sáu','Thứ bảy'];
+  const weekday = weekdays[new Date(y, m-1, d).getDay()];
+  const short = `${String(d).padStart(2,'0')}/${String(m).padStart(2,'0')}`;
+  if(date === today) return `Hôm nay · ${short}`;
+  if(date === tomorrow) return `Ngày mai · ${short}`;
+  if(date === yesterday) return `Hôm qua · ${short}`;
+  return `${weekday} · ${short}${y !== Number(today.slice(0,4)) ? `/${y}` : ''}`;
+}
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function quoteMarkup(quote){
@@ -3434,13 +3507,14 @@ function renderToday(){
   const today = todayStr();
   document.getElementById('todayDate').textContent = fmtDate(t);
 
-  // day picker state
-  document.getElementById('dayTodayBtn').classList.toggle('on', t === today);
-  document.getElementById('dayTomorrowBtn').classList.toggle('on', t === addDays(today,1));
+  // Compact day navigator for the Plan tab.
+  const todayBtn = document.getElementById('dayTodayBtn');
+  todayBtn.classList.toggle('is-today', t === today);
   document.getElementById('dayPick').value = t;
+  document.getElementById('planDateLabel').textContent = planDateLabel(t);
   if(document.getElementById('qDate')) setQuickDate(t);
   const dayLabel = t === today ? 'hôm nay' : (t === addDays(today,1) ? 'ngày mai' : `ngày ${t.split('-').reverse().join('/')}`);
-  document.getElementById('actsHeading').textContent = `Hoạt động ${dayLabel}`;
+  document.getElementById('actsHeading').textContent = 'Công việc trong ngày';
   if(document.getElementById('quickAddTitle')) document.getElementById('quickAddTitle').textContent = `＋ Thêm nhanh công việc ${dayLabel}`;
 
   // stats: gồm việc lớn của ngày và các việc con khác ngày với việc cha nhưng có deadline đúng ngày đang xem
@@ -4367,10 +4441,34 @@ document.addEventListener('input', e => {
   if(e.target.matches('.modal textarea')) growTextarea(e.target);
 });
 
-// ---------- Day picker ----------
-function setViewDate(d){ viewDate = d; renderToday(); }
+// ---------- Plan day navigation ----------
+function setViewDate(d){
+  if(!d) return;
+  viewDate = d;
+  renderToday();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+document.getElementById('dayPrevBtn').addEventListener('click', () => setViewDate(addDays(viewDate,-1)));
+document.getElementById('dayNextBtn').addEventListener('click', () => setViewDate(addDays(viewDate,1)));
 document.getElementById('dayTodayBtn').addEventListener('click', () => setViewDate(todayStr()));
-document.getElementById('dayTomorrowBtn').addEventListener('click', () => setViewDate(addDays(todayStr(),1)));
+function openPlanDatePicker(){
+  const input = document.getElementById('dayPick');
+  if(!input) return;
+  input.value = viewDate;
+  try{
+    if(typeof input.showPicker === 'function') input.showPicker();
+    else { input.focus({preventScroll:true}); input.click(); }
+  }catch(e){
+    try{ input.focus({preventScroll:true}); input.click(); }catch(_){}
+  }
+}
+document.getElementById('planDatePickerTrigger').addEventListener('click', openPlanDatePicker);
+document.getElementById('planDatePickerTrigger').addEventListener('keydown', e => {
+  if(e.key === 'Enter' || e.key === ' '){
+    e.preventDefault();
+    openPlanDatePicker();
+  }
+});
 document.getElementById('dayPick').addEventListener('change', e => {
   if(e.target.value) setViewDate(e.target.value);
 });
