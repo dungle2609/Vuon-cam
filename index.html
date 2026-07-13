@@ -178,6 +178,12 @@ section[data-view].active{display:block;animation:fadein .25s ease}
   font-size:13.5px;font-style:italic;
   background:var(--surface-2);border-radius:0 10px 10px 0;
 }
+.quote .quote-english{display:block;color:var(--ink);font-style:italic;font-weight:600;line-height:1.55}
+.quote .quote-latin{display:block;margin-top:4px;color:var(--cyan);font-family:Georgia,'Times New Roman',serif;font-size:12.5px;font-style:normal}
+.quote .quote-source{display:block;margin-top:3px;color:var(--muted);font-size:11.5px;font-style:normal}
+.celebrate-quote .quote-english{display:block}
+.celebrate-quote .quote-latin{display:block;margin-top:8px;color:var(--cyan);font-family:Georgia,'Times New Roman',serif;font-size:13.5px;font-style:italic}
+
 .empty{
   text-align:center;color:var(--muted);
   padding:34px 18px;font-size:14px;
@@ -605,6 +611,32 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 .act-card.completed h3{text-decoration:line-through;color:var(--muted)}
 .act-card.completed .act-time{color:var(--muted)}
 
+/* Cross-date subtasks shown as standalone cards on their own deadline date */
+.day-subtask-card{
+  border-left:4px solid var(--cyan);
+  background:linear-gradient(135deg,var(--surface) 0%,color-mix(in srgb,var(--cyan-soft) 38%,var(--surface)) 100%);
+}
+.day-subtask-card .act-row{align-items:center}
+.day-subtask-main{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:2px}
+.day-subtask-title{font-size:14px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.35}
+.day-subtask-parent{font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.35}
+.day-subtask-badge{
+  display:inline-flex;align-items:center;margin-right:6px;padding:2px 7px;border-radius:99px;
+  background:var(--cyan-soft);color:color-mix(in srgb,var(--cyan) 82%,var(--ink));font-size:10.5px;font-weight:800;vertical-align:1px;
+}
+.day-subtask-card.completed .day-subtask-title{text-decoration:line-through;color:var(--muted)}
+.day-subtask-card .act-check{accent-color:var(--cyan)}
+[data-theme="dark"] .day-subtask-card{
+  background:linear-gradient(135deg,#2B2116 0%,#332512 100%);
+  border-left-color:var(--cyan);
+}
+[data-theme="dark"] .day-subtask-badge{background:#4A3515;color:#FFD58A}
+@media (max-width:520px){
+  .day-subtask-card .act-row{padding:10px 11px;gap:8px}
+  .day-subtask-parent{font-size:10.8px}
+  .day-subtask-badge{padding:2px 6px;font-size:10px}
+}
+
 /* subtasks */
 .subs{margin-top:12px;border-top:1px dashed var(--line);padding-top:10px}
 .subs-h{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
@@ -664,6 +696,23 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 .from-link{margin-top:8px;font-size:12.5px;color:#B5730B;background:#FDF7EC;border:1px solid #F0DDB8;border-radius:8px;padding:7px 10px}
 [data-theme="dark"] .from-link{background:#2E2513;border-color:#4A3A17;color:#F0C674}
 .from-link .from-open{text-decoration:underline;cursor:pointer;font-weight:600}
+.linked-weed-card{
+  margin:0 0 14px;padding:14px;border-radius:14px;
+  background:linear-gradient(135deg,var(--warn-soft),var(--surface));
+  border:1px solid color-mix(in srgb,var(--warn) 30%,var(--line));
+}
+.linked-weed-card[hidden]{display:none!important}
+.linked-weed-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.linked-weed-title{font-family:var(--font-display);font-size:13.5px;font-weight:800;color:var(--warn)}
+.linked-weed-source{font-size:12px;color:var(--muted);margin-bottom:8px}
+.linked-weed-problem{font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.5}
+.linked-weed-detail{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.5}
+.linked-weed-detail b{color:var(--ink)}
+.linked-weed-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}
+.mist-card.linked-focus{animation:linkedWeedPulse 1.25s ease 2;box-shadow:0 0 0 4px color-mix(in srgb,var(--warn) 24%,transparent),var(--shadow)}
+@keyframes linkedWeedPulse{50%{transform:translateY(-2px);border-color:var(--warn)}}
+[data-theme="dark"] .linked-weed-card{background:linear-gradient(135deg,#3A2A12,#2A1A10);border-color:#9C6A23}
+
 .sub-desc b{color:var(--ink)}
 .sub-details{display:none;padding:6px 0 8px 26px}
 .sub-row.open + .sub-details{display:block}
@@ -834,6 +883,178 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 @keyframes fall{to{transform:translateY(360px) rotate(720deg);opacity:0}}
 @keyframes celebrateBounce{0%{transform:scale(.6);opacity:.3}55%{transform:scale(1.14)}100%{transform:scale(1);opacity:1}}
 @media (max-width:760px){.report-grid,.goal-row{grid-template-columns:1fr}.onepct-task{align-items:flex-start}.onepct-task .ot-status{margin-left:auto}}
+
+
+/* ============ CALENDAR / HISTORY ============ */
+.calendar-toolbar{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  padding:15px 16px;
+}
+.calendar-nav{display:flex;align-items:center;gap:8px;min-width:0}
+.calendar-nav .cal-arrow{
+  width:38px;height:38px;border-radius:11px;border:1px solid var(--line);
+  background:var(--surface-2);color:var(--ink);font-size:18px;font-weight:800;
+  display:grid;place-items:center;
+}
+.calendar-nav .cal-arrow:hover{background:var(--blue-soft);color:var(--blue)}
+.calendar-period-label{
+  min-width:180px;text-align:center;font-family:var(--font-display);
+  font-weight:800;font-size:15px;color:var(--ink);
+}
+.calendar-mode-tabs{
+  display:flex;gap:4px;padding:4px;border:1px solid var(--line);
+  background:var(--surface-2);border-radius:12px;
+}
+.calendar-mode-tabs button{
+  border:0;background:transparent;color:var(--muted);border-radius:9px;
+  padding:7px 12px;font-size:12.5px;font-weight:800;
+}
+.calendar-mode-tabs button.on{background:var(--surface);color:var(--blue);box-shadow:var(--shadow)}
+.calendar-overview{
+  background:linear-gradient(135deg,var(--blue-soft),var(--surface));
+  border-color:color-mix(in srgb,var(--blue) 24%,var(--line));
+}
+.calendar-overview-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.calendar-overview-title{font-family:var(--font-display);font-size:16px;font-weight:800}
+.calendar-overview-copy{font-size:12.5px;color:var(--muted);margin-top:3px}
+.calendar-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+.calendar-metric{
+  padding:12px;border:1px solid var(--line);border-radius:13px;
+  background:color-mix(in srgb,var(--surface) 86%,transparent);
+}
+.calendar-metric .cm-v{font-family:var(--font-display);font-size:21px;font-weight:800;color:var(--blue);line-height:1.1}
+.calendar-metric .cm-v.warn{color:var(--warn)}
+.calendar-metric .cm-l{font-size:11.5px;color:var(--muted);margin-top:3px}
+.calendar-progress{height:8px;border-radius:99px;background:var(--surface-2);overflow:hidden;border:1px solid var(--line);margin-top:13px}
+.calendar-progress i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--blue),var(--cyan))}
+.calendar-grid-card{padding:16px;overflow:hidden}
+.calendar-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;scrollbar-width:thin}
+.calendar-week-grid{display:grid;grid-template-columns:repeat(7,minmax(102px,1fr));gap:8px;min-width:760px}
+.cal-day.sunday{border-color:color-mix(in srgb,var(--cyan) 38%,var(--line));background:color-mix(in srgb,var(--cyan-soft) 45%,var(--surface-2))}
+.cal-day.sunday .cal-day-dow{color:var(--cyan)}
+
+.cal-day{
+  min-height:142px;border:1px solid var(--line);border-radius:14px;background:var(--surface-2);
+  color:var(--ink);padding:10px;text-align:left;display:flex;flex-direction:column;gap:6px;
+  transition:transform .15s,border-color .15s,background .15s,box-shadow .15s;
+}
+.cal-day:hover{transform:translateY(-1px);border-color:var(--blue);background:var(--surface);box-shadow:var(--shadow)}
+.cal-day.selected{border-color:var(--blue);background:var(--blue-soft);box-shadow:0 0 0 2px color-mix(in srgb,var(--blue) 12%,transparent)}
+.cal-day.today{box-shadow:inset 0 0 0 2px var(--cyan)}
+.cal-day.future{opacity:.72}
+.cal-day.past.has-open{border-color:color-mix(in srgb,var(--warn) 50%,var(--line))}
+.cal-day-top{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.cal-day-dow{font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:800}
+.cal-day-num{font-family:var(--font-display);font-size:22px;font-weight:800;line-height:1}
+.cal-day.today .cal-day-num{color:var(--cyan)}
+.cal-day-count{font-size:12px;font-weight:700;color:var(--ink);margin-top:auto}
+.cal-day-sub{font-size:10.8px;color:var(--muted);line-height:1.35}
+.cal-mini-track{height:5px;background:var(--line);border-radius:99px;overflow:hidden}
+.cal-mini-track i{display:block;height:100%;background:var(--blue);border-radius:99px}
+.cal-flags{display:flex;gap:4px;flex-wrap:wrap;min-height:19px}
+.cal-flag{font-size:9.5px;font-weight:800;padding:2px 6px;border-radius:99px;background:var(--surface);color:var(--muted);border:1px solid var(--line)}
+.cal-flag.warn{background:var(--warn-soft);color:var(--warn);border-color:transparent}
+.cal-flag.ok{background:var(--ok-soft);color:var(--ok);border-color:transparent}
+
+.calendar-month{min-width:720px}
+.calendar-month-head,.calendar-month-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.calendar-month-head div{font-size:10.5px;font-weight:800;color:var(--muted);text-align:center;padding:4px}
+.cal-month-day{
+  min-height:96px;border:1px solid var(--line);border-radius:11px;background:var(--surface-2);
+  color:var(--ink);padding:8px;text-align:left;position:relative;
+}
+.cal-month-day:hover{border-color:var(--blue);background:var(--surface)}
+.cal-month-day.outside{opacity:.35}
+.cal-month-day.future{opacity:.62}
+.cal-month-day.selected{border-color:var(--blue);background:var(--blue-soft);box-shadow:0 0 0 2px color-mix(in srgb,var(--blue) 12%,transparent)}
+.cal-month-day.today .cmd-num{background:var(--cyan);color:#fff}
+.cmd-num{
+  width:27px;height:27px;border-radius:9px;display:grid;place-items:center;
+  font-family:var(--font-display);font-size:12px;font-weight:800;
+}
+.cmd-info{font-size:10.5px;color:var(--muted);margin-top:8px;line-height:1.35}
+.cmd-dots{display:flex;gap:3px;position:absolute;left:8px;bottom:8px}
+.cmd-dot{width:7px;height:7px;border-radius:50%;background:var(--line)}
+.cmd-dot.done{background:var(--ok)}.cmd-dot.open{background:var(--warn)}.cmd-dot.review{background:var(--cyan)}
+
+.calendar-year-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.cal-year-card{
+  border:1px solid var(--line);background:var(--surface-2);border-radius:14px;
+  padding:14px;text-align:left;color:var(--ink);
+}
+.cal-year-card:hover{border-color:var(--blue);background:var(--surface);transform:translateY(-1px)}
+.cyc-name{font-family:var(--font-display);font-size:14px;font-weight:800}
+.cyc-main{display:flex;align-items:end;justify-content:space-between;gap:8px;margin-top:10px}
+.cyc-num{font-family:var(--font-display);font-size:24px;font-weight:800;color:var(--blue);line-height:1}
+.cyc-sub{font-size:10.5px;color:var(--muted);text-align:right}
+.cyc-track{height:6px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:10px}
+.cyc-track i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:99px}
+
+.calendar-day-panel{padding:18px}
+.calendar-day-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.calendar-day-title{font-family:var(--font-display);font-size:17px;font-weight:800}
+.calendar-day-context{font-size:12.5px;color:var(--muted);margin-top:3px}
+.calendar-day-actions{display:flex;gap:7px;flex-wrap:wrap}
+.calendar-day-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:14px 0}
+.cal-day-stat{border:1px solid var(--line);background:var(--surface-2);border-radius:12px;padding:11px}
+.cal-day-stat b{display:block;font-family:var(--font-display);font-size:18px;color:var(--blue)}
+.cal-day-stat span{font-size:10.8px;color:var(--muted)}
+.calendar-task-columns{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.calendar-task-col{min-width:0}
+.calendar-task-col-head{display:flex;align-items:center;justify-content:space-between;gap:8px;border-bottom:2px solid var(--line);padding:0 2px 7px;margin-bottom:8px;font-size:12.5px;font-weight:800}
+.calendar-task-row{
+  width:100%;border:1px solid var(--line);background:var(--surface);border-radius:11px;
+  padding:10px 11px;margin-bottom:7px;color:var(--ink);text-align:left;
+  display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:9px;align-items:center;
+}
+.calendar-task-row:hover{border-color:var(--blue);background:var(--blue-soft)}
+.calendar-task-row.done{opacity:.64}
+.calendar-task-row.done .ctr-title{text-decoration:line-through}
+.ctr-check{
+  width:19px;height:19px;border-radius:6px;border:2px solid var(--line);display:grid;place-items:center;
+  font-size:11px;font-weight:900;color:#fff;background:var(--surface-2);
+}
+.calendar-task-row.done .ctr-check{background:var(--ok);border-color:var(--ok)}
+.ctr-body{min-width:0}
+.ctr-title{font-size:12.8px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ctr-meta{font-size:10.7px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ctr-time{font-size:11.5px;font-weight:800;color:var(--blue);white-space:nowrap}
+.calendar-empty-day{padding:20px 12px;text-align:center;border:1px dashed var(--line);border-radius:12px;color:var(--muted);font-size:12.5px}
+.calendar-history-note{
+  margin-top:12px;padding:10px 12px;border-radius:11px;background:var(--warn-soft);
+  color:var(--warn);font-size:12px;border:1px solid color-mix(in srgb,var(--warn) 28%,transparent);
+}
+[data-theme="dark"] .calendar-mode-tabs button.on,
+[data-theme="dark"] .calendar-metric,
+[data-theme="dark"] .cal-flag,
+[data-theme="dark"] .calendar-task-row{background:#2E2318;border-color:#755532}
+[data-theme="dark"] .cal-day,
+[data-theme="dark"] .cal-month-day,
+[data-theme="dark"] .cal-year-card,
+[data-theme="dark"] .cal-day-stat{background:#2B2116;border-color:#62472B}
+[data-theme="dark"] .cal-day.selected,
+[data-theme="dark"] .cal-month-day.selected{background:#173223;border-color:#78D08B}
+[data-theme="dark"] .calendar-task-row:hover{background:#173223;border-color:#78D08B}
+@media (max-width:760px){
+  .calendar-toolbar{align-items:stretch}
+  .calendar-nav{width:100%;justify-content:space-between}
+  .calendar-period-label{min-width:0;flex:1}
+  .calendar-mode-tabs{width:100%}
+  .calendar-mode-tabs button{flex:1}
+  .calendar-metrics,.calendar-day-stats{grid-template-columns:1fr 1fr}
+  .calendar-year-grid{grid-template-columns:1fr 1fr}
+  .calendar-task-columns{grid-template-columns:1fr}
+  .calendar-day-actions{width:100%}
+  .calendar-day-actions .btn{flex:1;justify-content:center}
+  .calendar-week-grid{min-width:0;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .calendar-week-grid .cal-day{min-height:132px}
+  .calendar-week-grid .cal-day.sunday{grid-column:1/-1}
+}
+@media (max-width:430px){
+  .calendar-year-grid{grid-template-columns:1fr}
+  .calendar-metric .cm-v{font-size:19px}
+}
+
 
 /* ============ WEEKLY ============ */
 .week-block{margin-bottom:14px}
@@ -1172,7 +1393,7 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
   <nav class="sidebar">
     <div class="logo"><span class="pct">1%</span><span class="os">GARDEN</span></div>
     <button class="nav-btn active" data-nav="today"><span class="ico">☀️</span><span class="lbl-l">Hôm nay</span><span class="lbl-s">Hôm nay</span></button>
-    <button class="nav-btn" data-nav="tomorrow"><span class="ico">🌅</span><span class="lbl-l">Ngày mai</span><span class="lbl-s">Ngày mai</span></button>
+    <button class="nav-btn" data-nav="calendar"><span class="ico">📅</span><span class="lbl-l">Lịch</span><span class="lbl-s">Lịch</span></button>
     <button class="nav-btn" data-nav="mistakes"><span class="ico">🧹</span><span class="lbl-l">Dọn vườn</span><span class="lbl-s">Dọn vườn</span></button>
     <button class="nav-btn" data-nav="weekly"><span class="ico">🍊</span><span class="lbl-l">Vườn cam</span><span class="lbl-s">Vườn</span></button>
     <button class="nav-btn" data-nav="data"><span class="ico">💾</span><span class="lbl-l">Dữ liệu</span><span class="lbl-s">Dữ liệu</span></button>
@@ -1340,6 +1561,36 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
       </div>
 
       <p class="quote" id="footerQuote" style="margin-top:20px"></p>
+    </section>
+
+
+    <!-- ============ CALENDAR / HISTORY ============ -->
+    <section data-view="calendar">
+      <div class="page-head spread">
+        <div>
+          <div class="eyebrow">Lịch sử &amp; kế hoạch</div>
+          <h1>Lịch công việc</h1>
+          <p class="sub">Ưu tiên xem lại những ngày đã qua, mở lại công việc để chỉnh sửa; kế hoạch tương lai được giữ gọn và vừa đủ.</p>
+        </div>
+        <button class="btn btn-soft" id="calendarTodayBtn">Về hôm nay</button>
+      </div>
+
+      <div class="card calendar-toolbar">
+        <div class="calendar-nav">
+          <button type="button" class="cal-arrow" id="calendarPrev" aria-label="Khoảng thời gian trước">‹</button>
+          <div class="calendar-period-label" id="calendarPeriodLabel"></div>
+          <button type="button" class="cal-arrow" id="calendarNext" aria-label="Khoảng thời gian sau">›</button>
+        </div>
+        <div class="calendar-mode-tabs" id="calendarModeTabs">
+          <button type="button" data-cal-mode="week" class="on">Tuần</button>
+          <button type="button" data-cal-mode="month">Tháng</button>
+          <button type="button" data-cal-mode="year">Năm</button>
+        </div>
+      </div>
+
+      <div id="calendarSummary"></div>
+      <div class="card calendar-grid-card" id="calendarGrid"></div>
+      <div class="card calendar-day-panel" id="calendarDayPanel"></div>
     </section>
 
     <!-- ============ ADD ACTIVITY ============ -->
@@ -1555,6 +1806,7 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
     <form id="boardForm">
       <div class="f-group"><label>Tên công việc *</label><input id="bTitle" required></div>
       <div class="f-group"><label>Mô tả</label><textarea id="bDesc"></textarea></div>
+      <div id="bLinkedWeed" class="linked-weed-card" hidden></div>
       <input type="checkbox" id="bTag1pct" hidden>
       <div class="deadline-lock" id="bDeadlineLock">Việc chăm cây 1% có ngày hẹn cố định, không thể đổi deadline hoặc xoá</div>
       <div class="board-meta-grid compact-meta-grid activity-board-meta-grid">
@@ -1792,108 +2044,108 @@ const FOCUS_SUGGEST = {
   'Khác':'Chọn một hành vi nhỏ, một tình huống cụ thể, và một bằng chứng quan sát được.'
 };
 
-// 100 quote từ người nổi tiếng — xoay vòng theo ngày
+// 100 Latin reflections about time, life and the wider view — English translation shown first
 const DAILY_QUOTES = [
-  {q:"The journey of a thousand miles begins with one step.", a:"Lao Tzu"},
-  {q:"Nature does not hurry, yet everything is accomplished.", a:"Lao Tzu"},
-  {q:"It does not matter how slowly you go as long as you do not stop.", a:"Confucius"},
-  {q:"The man who moves a mountain begins by carrying away small stones.", a:"Confucius"},
-  {q:"We are what we repeatedly do. Excellence, then, is not an act, but a habit.", a:"Aristotle"},
-  {q:"Patience is bitter, but its fruit is sweet.", a:"Aristotle"},
-  {q:"Well begun is half done.", a:"Aristotle"},
-  {q:"No great thing is created suddenly.", a:"Epictetus"},
-  {q:"First say to yourself what you would be; and then do what you have to do.", a:"Epictetus"},
-  {q:"The impediment to action advances action. What stands in the way becomes the way.", a:"Marcus Aurelius"},
-  {q:"You have power over your mind, not outside events.", a:"Marcus Aurelius"},
-  {q:"Waste no more time arguing what a good man should be. Be one.", a:"Marcus Aurelius"},
-  {q:"Luck is what happens when preparation meets opportunity.", a:"Seneca"},
-  {q:"We suffer more often in imagination than in reality.", a:"Seneca"},
-  {q:"He who is brave is free.", a:"Seneca"},
-  {q:"Lost time is never found again.", a:"Benjamin Franklin"},
-  {q:"Energy and persistence conquer all things.", a:"Benjamin Franklin"},
-  {q:"Little strokes fell great oaks.", a:"Benjamin Franklin"},
-  {q:"By failing to prepare, you are preparing to fail.", a:"Benjamin Franklin"},
-  {q:"Genius is one percent inspiration and ninety-nine percent perspiration.", a:"Thomas Edison"},
-  {q:"I have not failed. I have just found 10,000 ways that will not work.", a:"Thomas Edison"},
-  {q:"Many of life\u2019s failures are people who did not realize how close they were to success.", a:"Thomas Edison"},
-  {q:"I am still learning.", a:"Michelangelo"},
-  {q:"Great things are done by a series of small things brought together.", a:"Vincent van Gogh"},
-  {q:"What would life be if we had no courage to attempt anything?", a:"Vincent van Gogh"},
-  {q:"Learning never exhausts the mind.", a:"Leonardo da Vinci"},
-  {q:"Knowing is not enough; we must apply. Willing is not enough; we must do.", a:"Johann Wolfgang von Goethe"},
-  {q:"Whatever you can do, or dream you can, begin it.", a:"Johann Wolfgang von Goethe"},
-  {q:"Give me six hours to chop down a tree and I will spend the first four sharpening the axe.", a:"Abraham Lincoln"},
-  {q:"I walk slowly, but I never walk backward.", a:"Abraham Lincoln"},
-  {q:"Success is not final, failure is not fatal: it is the courage to continue that counts.", a:"Winston Churchill"},
-  {q:"Never, never, never give up.", a:"Winston Churchill"},
-  {q:"Continuous effort, not strength or intelligence, is the key to unlocking our potential.", a:"Winston Churchill"},
-  {q:"Do what you can, with what you have, where you are.", a:"Theodore Roosevelt"},
-  {q:"Believe you can and you are halfway there.", a:"Theodore Roosevelt"},
-  {q:"It always seems impossible until it is done.", a:"Nelson Mandela"},
-  {q:"The greatest glory in living lies not in never falling, but in rising every time we fall.", a:"Nelson Mandela"},
-  {q:"The future depends on what you do today.", a:"Mahatma Gandhi"},
-  {q:"Be the change that you wish to see in the world.", a:"Mahatma Gandhi"},
-  {q:"Strength does not come from physical capacity. It comes from an indomitable will.", a:"Mahatma Gandhi"},
-  {q:"If you cannot fly, then run; if you cannot run, then walk; if you cannot walk, then crawl.", a:"Martin Luther King Jr."},
-  {q:"Not all of us can do great things. But we can do small things with great love.", a:"Mother Teresa"},
-  {q:"Be faithful in small things because it is in them that your strength lies.", a:"Mother Teresa"},
-  {q:"Do the best you can until you know better. Then when you know better, do better.", a:"Maya Angelou"},
-  {q:"Nothing will work unless you do.", a:"Maya Angelou"},
-  {q:"What you get by achieving your goals is not as important as what you become.", a:"Zig Ziglar"},
-  {q:"You do not have to be great to start, but you have to start to be great.", a:"Zig Ziglar"},
-  {q:"Motivation gets you going and habit gets you there.", a:"Zig Ziglar"},
-  {q:"Discipline is the bridge between goals and accomplishment.", a:"Jim Rohn"},
-  {q:"Success is nothing more than a few simple disciplines, practiced every day.", a:"Jim Rohn"},
-  {q:"Do not wish it were easier. Wish you were better.", a:"Jim Rohn"},
-  {q:"Either you run the day or the day runs you.", a:"Jim Rohn"},
-  {q:"You will never change your life until you change something you do daily.", a:"John C. Maxwell"},
-  {q:"Small disciplines repeated with consistency every day lead to great achievements.", a:"John C. Maxwell"},
-  {q:"The secret of getting ahead is getting started.", a:"Mark Twain"},
-  {q:"Continuous improvement is better than delayed perfection.", a:"Mark Twain"},
-  {q:"The way to get started is to quit talking and begin doing.", a:"Walt Disney"},
-  {q:"Action is the foundational key to all success.", a:"Pablo Picasso"},
-  {q:"The most effective way to do it, is to do it.", a:"Amelia Earhart"},
-  {q:"You miss 100 percent of the shots you do not take.", a:"Wayne Gretzky"},
-  {q:"A goal without a plan is just a wish.", a:"Antoine de Saint-Exup\u00e9ry"},
-  {q:"What gets measured gets improved.", a:"Peter Drucker"},
-  {q:"The best way to predict the future is to create it.", a:"Peter Drucker"},
-  {q:"There is nothing so useless as doing efficiently what should not be done at all.", a:"Peter Drucker"},
-  {q:"The main thing is to keep the main thing the main thing.", a:"Stephen Covey"},
-  {q:"Begin with the end in mind.", a:"Stephen Covey"},
-  {q:"Do not prioritize your schedule; schedule your priorities.", a:"Stephen Covey"},
-  {q:"If you do not prioritize your life, someone else will.", a:"Greg McKeown"},
-  {q:"Focus is about saying no.", a:"Steve Jobs"},
-  {q:"Stay hungry. Stay foolish.", a:"Steve Jobs"},
-  {q:"Someone is sitting in the shade today because someone planted a tree a long time ago.", a:"Warren Buffett"},
-  {q:"The chains of habit are too light to be felt until they are too heavy to be broken.", a:"Warren Buffett"},
-  {q:"The difference between successful people and really successful people is that really successful people say no to almost everything.", a:"Warren Buffett"},
-  {q:"Compound interest is the eighth wonder of the world.", a:"Albert Einstein"},
-  {q:"It is not that I am so smart. It is just that I stay with problems longer.", a:"Albert Einstein"},
-  {q:"Whether you think you can, or you think you cannot, you are right.", a:"Henry Ford"},
-  {q:"Nothing is particularly hard if you divide it into small jobs.", a:"Henry Ford"},
-  {q:"Obstacles are those frightful things you see when you take your eyes off your goal.", a:"Henry Ford"},
-  {q:"I fear not the man who has practiced 10,000 kicks once, but the man who has practiced one kick 10,000 times.", a:"Bruce Lee"},
-  {q:"Absorb what is useful, discard what is not, add what is uniquely your own.", a:"Bruce Lee"},
-  {q:"Do not count the days; make the days count.", a:"Muhammad Ali"},
-  {q:"I hated every minute of training, but I said, do not quit.", a:"Muhammad Ali"},
-  {q:"Success is no accident. It is hard work, perseverance, learning, sacrifice, and love of what you do.", a:"Pel\u00e9"},
-  {q:"Great things come from hard work and perseverance. No excuses.", a:"Kobe Bryant"},
-  {q:"I have failed over and over and over again in my life. And that is why I succeed.", a:"Michael Jordan"},
-  {q:"Some people want it to happen, some wish it would happen, others make it happen.", a:"Michael Jordan"},
-  {q:"Perfection is not attainable, but if we chase perfection we can catch excellence.", a:"Vince Lombardi"},
-  {q:"Winners never quit and quitters never win.", a:"Vince Lombardi"},
-  {q:"Do not let what you cannot do interfere with what you can do.", a:"John Wooden"},
-  {q:"Success is peace of mind, knowing you made the effort to become your best.", a:"John Wooden"},
-  {q:"Grit is passion and perseverance for very long-term goals.", a:"Angela Duckworth"},
-  {q:"Effort counts twice.", a:"Angela Duckworth"},
-  {q:"Becoming is better than being.", a:"Carol Dweck"},
-  {q:"Habits are the compound interest of self-improvement.", a:"James Clear"},
-  {q:"Every action you take is a vote for the type of person you wish to become.", a:"James Clear"},
-  {q:"You do not rise to the level of your goals. You fall to the level of your systems.", a:"James Clear"},
-  {q:"Small habits do not add up. They compound.", a:"James Clear"},
-  {q:"We do not learn from experience. We learn from reflecting on experience.", a:"John Dewey"},
-  {q:"Between stimulus and response there is a space. In that space is our power to choose.", a:"Viktor Frankl"},
-  {q:"Fall seven times and stand up eight.", a:"Japanese Proverb"}
+  {"latin": "Tempus fugit.", "q": "Time flies.", "a": "Virgil"},
+  {"latin": "Carpe diem.", "q": "Seize the day.", "a": "Horace"},
+  {"latin": "Memento mori.", "q": "Remember that you must die.", "a": "Traditional Latin maxim"},
+  {"latin": "Dum spiro, spero.", "q": "While I breathe, I hope.", "a": "Cicero"},
+  {"latin": "Ars longa, vita brevis.", "q": "Art is long; life is short.", "a": "Latin rendering of Hippocrates"},
+  {"latin": "Fugit irreparabile tempus.", "q": "Irretrievable time flies.", "a": "Virgil"},
+  {"latin": "Dum loquimur, fugerit invida aetas.", "q": "While we speak, envious time will already have fled.", "a": "Horace"},
+  {"latin": "Cotidie morimur.", "q": "We die every day.", "a": "Seneca"},
+  {"latin": "Hora fugit.", "q": "The hour flies.", "a": "Traditional Latin maxim"},
+  {"latin": "Aetas volat.", "q": "Age flies.", "a": "Traditional Latin maxim"},
+  {"latin": "Omnia tempus habent.", "q": "Everything has its time.", "a": "Vulgate, Ecclesiastes"},
+  {"latin": "Tempora mutantur, nos et mutamur in illis.", "q": "Times change, and we change with them.", "a": "Traditional Latin maxim"},
+  {"latin": "Dies diem docet.", "q": "One day teaches another.", "a": "Latin proverb"},
+  {"latin": "Historia magistra vitae est.", "q": "History is the teacher of life.", "a": "Cicero"},
+  {"latin": "Sic transit gloria mundi.", "q": "Thus passes the glory of the world.", "a": "Traditional Latin maxim"},
+  {"latin": "Pulvis et umbra sumus.", "q": "We are dust and shadow.", "a": "Horace"},
+  {"latin": "Vanitas vanitatum, omnia vanitas.", "q": "Vanity of vanities; all is vanity.", "a": "Vulgate, Ecclesiastes"},
+  {"latin": "Nihil sub sole novum.", "q": "There is nothing new under the sun.", "a": "Vulgate, Ecclesiastes"},
+  {"latin": "Omnia mutantur, nihil interit.", "q": "Everything changes; nothing perishes.", "a": "Ovid"},
+  {"latin": "Omnia orta cadunt.", "q": "All things that rise must fall.", "a": "Sallust"},
+  {"latin": "Cuncta fluunt.", "q": "Everything flows.", "a": "Traditional Latin maxim"},
+  {"latin": "Homo bulla est.", "q": "Man is a bubble.", "a": "Varro"},
+  {"latin": "Mors certa, hora incerta.", "q": "Death is certain; its hour is uncertain.", "a": "Latin proverb"},
+  {"latin": "Mors ultima linea rerum est.", "q": "Death is the final boundary of all things.", "a": "Horace"},
+  {"latin": "Non omnis moriar.", "q": "I shall not wholly die.", "a": "Horace"},
+  {"latin": "Exegi monumentum aere perennius.", "q": "I have raised a monument more lasting than bronze.", "a": "Horace"},
+  {"latin": "Respice finem.", "q": "Consider the end.", "a": "Latin proverb"},
+  {"latin": "Finis coronat opus.", "q": "The end crowns the work.", "a": "Latin proverb"},
+  {"latin": "Finis origine pendet.", "q": "The end depends on the beginning.", "a": "Latin proverb"},
+  {"latin": "Quidquid agis, prudenter agas et respice finem.", "q": "Whatever you do, do wisely and consider the end.", "a": "Latin proverb"},
+  {"latin": "Principiis obsta.", "q": "Resist a problem at its beginning.", "a": "Ovid"},
+  {"latin": "Gutta cavat lapidem.", "q": "A drop hollows the stone.", "a": "Ovid"},
+  {"latin": "Festina lente.", "q": "Make haste slowly.", "a": "Ancient Roman maxim"},
+  {"latin": "Age quod agis.", "q": "Do what you are doing.", "a": "Traditional Latin maxim"},
+  {"latin": "Dimidium facti qui coepit habet.", "q": "He who has begun has half the deed done.", "a": "Horace"},
+  {"latin": "Omne initium difficile est.", "q": "Every beginning is difficult.", "a": "Latin proverb"},
+  {"latin": "Labor omnia vincit.", "q": "Work conquers all.", "a": "Virgil"},
+  {"latin": "Audentes fortuna iuvat.", "q": "Fortune favors the bold.", "a": "Virgil"},
+  {"latin": "Fortes fortuna adiuvat.", "q": "Fortune helps the brave.", "a": "Terence"},
+  {"latin": "Nil desperandum.", "q": "Never despair.", "a": "Horace"},
+  {"latin": "Possunt quia posse videntur.", "q": "They can because they think they can.", "a": "Virgil"},
+  {"latin": "Vincit qui se vincit.", "q": "He conquers who conquers himself.", "a": "Traditional Latin maxim"},
+  {"latin": "Qui audet adipiscitur.", "q": "He who dares, wins.", "a": "Traditional Latin maxim"},
+  {"latin": "Aut viam inveniam aut faciam.", "q": "I will find a way or make one.", "a": "Attributed to Hannibal"},
+  {"latin": "Per aspera ad astra.", "q": "Through hardships to the stars.", "a": "Traditional Latin maxim"},
+  {"latin": "Non est ad astra mollis e terris via.", "q": "There is no easy path from earth to the stars.", "a": "Seneca"},
+  {"latin": "Ad maiora.", "q": "Toward greater things.", "a": "Traditional Latin maxim"},
+  {"latin": "Excelsior.", "q": "Ever higher.", "a": "Latin motto"},
+  {"latin": "Nulla tenaci invia est via.", "q": "No road is impassable to the persistent.", "a": "Latin proverb"},
+  {"latin": "Alis volat propriis.", "q": "She flies with her own wings.", "a": "Latin motto"},
+  {"latin": "Faber est suae quisque fortunae.", "q": "Each person is the maker of their own fortune.", "a": "Appius Claudius Caecus"},
+  {"latin": "Ducunt volentem fata, nolentem trahunt.", "q": "Fate leads the willing and drags the unwilling.", "a": "Cleanthes, quoted by Seneca"},
+  {"latin": "Fata viam invenient.", "q": "The fates will find a way.", "a": "Virgil"},
+  {"latin": "Astra inclinant, sed non obligant.", "q": "The stars incline us; they do not bind us.", "a": "Medieval Latin maxim"},
+  {"latin": "Fortuna caeca est.", "q": "Fortune is blind.", "a": "Traditional Latin maxim"},
+  {"latin": "Fortuna vitrea est; tum cum splendet frangitur.", "q": "Fortune is glass; when it shines, it breaks.", "a": "Publilius Syrus"},
+  {"latin": "Spes ultima dea.", "q": "Hope is the last goddess.", "a": "Latin proverb"},
+  {"latin": "Dum vita est, spes est.", "q": "While there is life, there is hope.", "a": "Latin proverb"},
+  {"latin": "Vivere est cogitare.", "q": "To live is to think.", "a": "Cicero"},
+  {"latin": "Cogito, ergo sum.", "q": "I think, therefore I am.", "a": "René Descartes"},
+  {"latin": "Nosce te ipsum.", "q": "Know yourself.", "a": "Greek maxim in Latin form"},
+  {"latin": "Esse quam videri.", "q": "To be rather than to seem.", "a": "Cicero"},
+  {"latin": "Sapere aude.", "q": "Dare to be wise.", "a": "Horace"},
+  {"latin": "Mens agitat molem.", "q": "Mind moves matter.", "a": "Virgil"},
+  {"latin": "Mens sana in corpore sano.", "q": "A sound mind in a sound body.", "a": "Juvenal"},
+  {"latin": "Non scholae sed vitae discimus.", "q": "We learn not for school but for life.", "a": "Seneca"},
+  {"latin": "Docendo discimus.", "q": "By teaching, we learn.", "a": "Seneca"},
+  {"latin": "Experientia docet.", "q": "Experience teaches.", "a": "Latin proverb"},
+  {"latin": "Usus magister est optimus.", "q": "Practice is the best teacher.", "a": "Latin proverb"},
+  {"latin": "Repetitio est mater studiorum.", "q": "Repetition is the mother of learning.", "a": "Latin proverb"},
+  {"latin": "Vita sine litteris mors est.", "q": "Life without learning is death.", "a": "Adapted from Seneca"},
+  {"latin": "Nulla dies sine linea.", "q": "No day without a line.", "a": "Pliny the Elder"},
+  {"latin": "Scientia potentia est.", "q": "Knowledge is power.", "a": "Francis Bacon"},
+  {"latin": "Veritas vos liberabit.", "q": "The truth will set you free.", "a": "Vulgate, John"},
+  {"latin": "Veritas temporis filia.", "q": "Truth is the daughter of time.", "a": "Latin proverb"},
+  {"latin": "In vino veritas.", "q": "In wine, there is truth.", "a": "Pliny the Elder"},
+  {"latin": "Sine ira et studio.", "q": "Without anger and without bias.", "a": "Tacitus"},
+  {"latin": "Audi alteram partem.", "q": "Hear the other side.", "a": "Latin legal maxim"},
+  {"latin": "Errare humanum est.", "q": "To err is human.", "a": "Traditional Latin maxim"},
+  {"latin": "Homo sum: humani nihil a me alienum puto.", "q": "I am human; nothing human is alien to me.", "a": "Terence"},
+  {"latin": "Amicus certus in re incerta cernitur.", "q": "A true friend is known in uncertain times.", "a": "Ennius, quoted by Cicero"},
+  {"latin": "Concordia res parvae crescunt.", "q": "Through harmony, small things grow.", "a": "Sallust"},
+  {"latin": "Ubi concordia, ibi victoria.", "q": "Where there is unity, there is victory.", "a": "Latin proverb"},
+  {"latin": "Pax optima rerum.", "q": "Peace is the best of things.", "a": "Silius Italicus"},
+  {"latin": "Amor vincit omnia.", "q": "Love conquers all.", "a": "Virgil"},
+  {"latin": "Omnia vincit amor; et nos cedamus amori.", "q": "Love conquers all; let us yield to love.", "a": "Virgil"},
+  {"latin": "Cor ad cor loquitur.", "q": "Heart speaks to heart.", "a": "Traditional Latin phrase"},
+  {"latin": "Dum vivimus, vivamus.", "q": "While we live, let us live.", "a": "Latin proverb"},
+  {"latin": "Vivere militare est.", "q": "To live is to fight.", "a": "Seneca"},
+  {"latin": "Vivamus, mea Lesbia, atque amemus.", "q": "Let us live, my Lesbia, and let us love.", "a": "Catullus"},
+  {"latin": "Navigare necesse est, vivere non est necesse.", "q": "To sail is necessary; to live is not necessary.", "a": "Attributed to Pompey"},
+  {"latin": "Facta, non verba.", "q": "Deeds, not words.", "a": "Traditional Latin maxim"},
+  {"latin": "Acta non verba.", "q": "Actions, not words.", "a": "Latin motto"},
+  {"latin": "Dictum factum.", "q": "Said and done.", "a": "Terence"},
+  {"latin": "Verba volant, scripta manent.", "q": "Spoken words fly away; written words remain.", "a": "Latin proverb"},
+  {"latin": "Res, non verba.", "q": "Things, not words.", "a": "Traditional Latin maxim"},
+  {"latin": "Multum in parvo.", "q": "Much in little.", "a": "Traditional Latin phrase"},
+  {"latin": "Non multa, sed multum.", "q": "Not many things, but much.", "a": "Traditional Latin maxim"},
+  {"latin": "Omnia mea mecum porto.", "q": "All that is mine I carry with me.", "a": "Cicero, recounting Bias"},
+  {"latin": "Vita mutatur, non tollitur.", "q": "Life is changed, not taken away.", "a": "Latin Christian liturgy"}
 ];
 
 const CELEBRATION_QUOTES = DAILY_QUOTES;
@@ -1973,9 +2225,19 @@ const fmtShortDate = (str) => {
 };
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function quoteMarkup(quote){
+  if(!quote) return '';
+  return `<span class="quote-english">“${esc(quote.q)}”</span><span class="quote-latin">${esc(quote.latin || '')}</span><span class="quote-source">— ${esc(quote.a || 'Latin wisdom')}</span>`;
+}
 
 // Ngày đang xem trên dashboard (mặc định hôm nay, không lưu vào state)
 let viewDate = todayStr();
+
+// Trạng thái riêng của tab Lịch. Không ghi vào state đồng bộ để tránh làm phình dữ liệu.
+let calendarMode = localStorage.getItem('opos_calendar_mode') || 'week';
+if(!['week','month','year'].includes(calendarMode)) calendarMode = 'week';
+let calendarSelectedDate = todayStr();
+let calendarAnchorDate = todayStr();
 
 // Các hoạt động đang mở chi tiết trong checklist (giữ qua các lần render)
 const openActs = new Set();
@@ -2150,6 +2412,55 @@ function effectiveDuration(a){
   return (a.subs || []).reduce((s,x) => s + (Number(x.durationMinutes) || 0), 0);
 }
 
+// Việc con có deadline khác ngày việc cha được hiển thị như một thẻ độc lập trong ngày đó.
+// Không nhân bản dữ liệu: thẻ ngày chỉ là một view tham chiếu tới subtask gốc trong activity cha.
+function crossDateSubtasksForDate(date){
+  const rows = [];
+  (state?.activities || []).forEach(parent => {
+    (parent.subs || []).forEach(sub => {
+      const subDate = sub.date || parent.date;
+      if(subDate === date && parent.date !== date) rows.push({parent, sub});
+    });
+  });
+  return rows;
+}
+function makeDaySubtaskItem(parent, sub){
+  return {
+    __daySubtask:true,
+    parent,
+    sub,
+    parentId:parent.id,
+    subId:sub.id,
+    id:`sub:${parent.id}:${sub.id}`,
+    date:sub.date || parent.date,
+    title:sub.title || '',
+    description:sub.description || '',
+    location:parent.location || 'company',
+    category:parent.category || 'Công việc',
+    startTime:sub.startTime || null,
+    durationMinutes:Number(sub.durationMinutes) || null,
+    completed:!!sub.completed,
+    status:sub.status || (sub.completed ? 'done' : 'todo'),
+    reviewId:sub.reviewId || null,
+    order:(Number(parent.order) || 1e9) + 0.001,
+    tag1pct:false
+  };
+}
+function dayDisplayItems(date){
+  const parents = (state?.activities || []).filter(a => a.date === date);
+  const detachedSubs = crossDateSubtasksForDate(date).map(({parent,sub}) => makeDaySubtaskItem(parent,sub));
+  return [...parents, ...detachedSubs];
+}
+function dayItemDuration(item, date){
+  if(item?.__daySubtask) return Number(item.sub?.durationMinutes) || 0;
+  const own = Number(item?.durationMinutes) || 0;
+  if(own > 0) return own;
+  return (item?.subs || []).reduce((sum,sub) => {
+    const subDate = sub.date || item.date;
+    return sum + (subDate === date ? (Number(sub.durationMinutes) || 0) : 0);
+  }, 0);
+}
+
 // Chế độ sắp xếp danh sách (không đồng bộ, lưu localStorage riêng)
 let sortMode = localStorage.getItem('opos_sortmode') || 'time';
 
@@ -2228,12 +2539,23 @@ function toast(msg){
 
 // ---------- Navigation ----------
 function go(view){
+  // Tương thích các link cũ từng mở tab Ngày mai: chuyển sang Lịch và chọn ngày mai.
+  if(view === 'tomorrow'){
+    calendarSelectedDate = addDays(todayStr(), 1);
+    calendarAnchorDate = calendarSelectedDate;
+    view = 'calendar';
+  }
   if(view === 'today') viewDate = todayStr();
-  if(view === 'tomorrow') viewDate = addDays(todayStr(), 1);
-  const sectionView = view === 'tomorrow' ? 'today' : view;
-  document.querySelectorAll('section[data-view]').forEach(s => s.classList.toggle('active', s.dataset.view === sectionView));
+  document.querySelectorAll('section[data-view]').forEach(s => s.classList.toggle('active', s.dataset.view === view));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.nav === view));
-  if(sectionView === 'add' && document.getElementById('fDate')) document.getElementById('fDate').value = viewDate;
+  if(view === 'add' && document.getElementById('fDate')) document.getElementById('fDate').value = viewDate;
+  renderAll();
+  window.scrollTo({top:0});
+}
+function openDayView(date){
+  viewDate = date || todayStr();
+  document.querySelectorAll('section[data-view]').forEach(s => s.classList.toggle('active', s.dataset.view === 'today'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.nav === 'today'));
   renderAll();
   window.scrollTo({top:0});
 }
@@ -2276,9 +2598,9 @@ function minutesLeftToday(){
 function renderTimeBudget(){
   const t = viewDate;
   const today = todayStr();
-  const acts = state.activities.filter(a => a.date === t);
-  const withDur = acts.filter(a => effectiveDuration(a) > 0);
-  const planned = withDur.reduce((s,a) => s + effectiveDuration(a), 0);
+  const items = dayDisplayItems(t);
+  const withDur = items.filter(item => dayItemDuration(item, t) > 0);
+  const planned = withDur.reduce((sum,item) => sum + dayItemDuration(item, t), 0);
 
   document.getElementById('tbPlanned').textContent = fmtMinsShort(planned);
   document.getElementById('tbRing').style.strokeDashoffset = 414.7 * (1 - Math.min(planned/1440, 1));
@@ -2303,7 +2625,7 @@ function renderTimeBudget(){
     // hôm nay: tính theo thời gian thực còn lại đến 23:59,
     // trừ đi các block CHƯA hoàn thành (block đã done không chiếm thời gian nữa)
     const real = minutesLeftToday();
-    const todo = withDur.filter(a => !isCompleted(a)).reduce((s,a) => s + effectiveDuration(a), 0);
+    const todo = withDur.filter(item => !isCompleted(item)).reduce((sum,item) => sum + dayItemDuration(item, t), 0);
     const free = real - todo;
     if(free < 0){
       tbLeft.textContent = `Thiếu ${fmtMins(-free)}`;
@@ -2328,9 +2650,246 @@ setInterval(() => {
   if(sec && sec.classList.contains('active') && viewDate === todayStr()) renderTimeBudget();
 }, 60000);
 
+// ---------- Calendar / history ----------
+const CAL_MONTHS = ['Tháng 1','Tháng 2','Tháng 3','Tháng 4','Tháng 5','Tháng 6','Tháng 7','Tháng 8','Tháng 9','Tháng 10','Tháng 11','Tháng 12'];
+const CAL_DOW = ['T2','T3','T4','T5','T6','T7','CN'];
+
+function localDateObj(str){
+  const [y,m,d] = String(str || todayStr()).split('-').map(Number);
+  return new Date(y, (m||1)-1, d||1);
+}
+function dateStrFromObj(dt){
+  return `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
+}
+function startOfCalendarWeek(str){
+  const d = localDateObj(str);
+  const diff = (d.getDay()+6)%7; // Monday = 0
+  d.setDate(d.getDate()-diff);
+  return dateStrFromObj(d);
+}
+function endOfCalendarWeek(str){ return addDays(startOfCalendarWeek(str),6); }
+function firstOfMonth(str){ const d=localDateObj(str); d.setDate(1); return dateStrFromObj(d); }
+function lastOfMonth(str){ const d=localDateObj(str); d.setMonth(d.getMonth()+1,0); return dateStrFromObj(d); }
+function firstOfYear(str){ return `${String(str).slice(0,4)}-01-01`; }
+function lastOfYear(str){ return `${String(str).slice(0,4)}-12-31`; }
+function calendarDateLabel(str){
+  const d=localDateObj(str);
+  return `${CAL_DOW[(d.getDay()+6)%7]}, ${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+}
+function calendarRange(){
+  if(calendarMode==='week') return {start:startOfCalendarWeek(calendarAnchorDate),end:endOfCalendarWeek(calendarAnchorDate)};
+  if(calendarMode==='month') return {start:firstOfMonth(calendarAnchorDate),end:lastOfMonth(calendarAnchorDate)};
+  return {start:firstOfYear(calendarAnchorDate),end:lastOfYear(calendarAnchorDate)};
+}
+function calendarPeriodTitle(){
+  const a=localDateObj(calendarAnchorDate);
+  if(calendarMode==='week'){
+    const s=startOfCalendarWeek(calendarAnchorDate),e=endOfCalendarWeek(calendarAnchorDate);
+    return `${fmtShortDate(s)} – ${fmtShortDate(e)} · ${a.getFullYear()}`;
+  }
+  if(calendarMode==='month') return `${CAL_MONTHS[a.getMonth()]} · ${a.getFullYear()}`;
+  return `Năm ${a.getFullYear()}`;
+}
+function calendarDayStats(date){
+  const acts=dayDisplayItems(date);
+  const done=acts.filter(isCompleted).length;
+  const reviews=acts.filter(a=>a.reviewId && state.reviews.some(r=>r.id===a.reviewId)).length;
+  const onePct=acts.filter(a=>a.tag1pct).length;
+  const mins=acts.reduce((sum,item)=>sum+dayItemDuration(item,date),0);
+  const open=acts.length-done;
+  return {date,acts,total:acts.length,done,reviews,onePct,mins,open,pct:acts.length?Math.round(done/acts.length*100):0};
+}
+function calendarPeriodStats(start,end){
+  const dates=[];
+  for(let d=start; d<=end; d=addDays(d,1)) dates.push(d);
+  const acts=dates.flatMap(dayDisplayItems);
+  const done=acts.filter(isCompleted).length;
+  const reviewed=acts.filter(a=>a.reviewId && state.reviews.some(r=>r.id===a.reviewId)).length;
+  const mins=acts.reduce((sum,item)=>sum+dayItemDuration(item,item.date),0);
+  const yesterday=addDays(todayStr(),-1);
+  const unfinishedPast=acts.filter(a=>a.date<=yesterday&&!isCompleted(a)).length;
+  return {acts,total:acts.length,done,reviewed,mins,unfinishedPast,pct:acts.length?Math.round(done/acts.length*100):0};
+}
+function calendarRelation(date){
+  const t=todayStr();
+  return date<t?'past':date>t?'future':'today';
+}
+function calendarShift(dir){
+  const d=localDateObj(calendarAnchorDate);
+  if(calendarMode==='week') d.setDate(d.getDate()+dir*7);
+  else if(calendarMode==='month') d.setMonth(d.getMonth()+dir);
+  else d.setFullYear(d.getFullYear()+dir);
+  calendarAnchorDate=dateStrFromObj(d);
+  if(calendarMode==='week'){
+    const start=startOfCalendarWeek(calendarAnchorDate);
+    const end=endOfCalendarWeek(calendarAnchorDate);
+    if(calendarSelectedDate<start||calendarSelectedDate>end) calendarSelectedDate=start;
+  }else if(calendarMode==='month'){
+    if(calendarSelectedDate.slice(0,7)!==calendarAnchorDate.slice(0,7)) calendarSelectedDate=firstOfMonth(calendarAnchorDate);
+  }else if(calendarSelectedDate.slice(0,4)!==calendarAnchorDate.slice(0,4)){
+    calendarSelectedDate=firstOfYear(calendarAnchorDate);
+  }
+  renderCalendar();
+}
+function calendarSelectDate(date){
+  calendarSelectedDate=date;
+  calendarAnchorDate=date;
+  renderCalendar();
+}
+function calendarWeekHtml(){
+  const start=startOfCalendarWeek(calendarAnchorDate);
+  let html='<div class="calendar-scroll"><div class="calendar-week-grid">';
+  for(let i=0;i<7;i++){
+    const date=addDays(start,i),d=localDateObj(date),st=calendarDayStats(date),rel=calendarRelation(date);
+    const selected=date===calendarSelectedDate?' selected':'';
+    const today=date===todayStr()?' today':'';
+    const sunday=i===6?' sunday':'';
+    const hasOpen=rel==='past'&&st.open?' has-open':'';
+    html+=`<button type="button" class="cal-day ${rel}${selected}${today}${sunday}${hasOpen}" data-cal-date="${date}">
+      <div class="cal-day-top"><span class="cal-day-dow">${CAL_DOW[i]}</span>${date===todayStr()?'<span class="cal-flag ok">Hôm nay</span>':''}</div>
+      <div class="cal-day-num">${d.getDate()}</div>
+      <div class="cal-day-count">${st.total?`${st.done}/${st.total} việc`:'Không có việc'}</div>
+      <div class="cal-mini-track"><i style="width:${st.pct}%"></i></div>
+      <div class="cal-day-sub">${st.mins?fmtMinsShort(st.mins)+' đã lên block':'Chưa đặt block thời gian'}</div>
+      <div class="cal-flags">${st.open&&rel==='past'?`<span class="cal-flag warn">${st.open} chưa xong</span>`:''}${st.reviews?`<span class="cal-flag">${st.reviews} review</span>`:''}${st.onePct?`<span class="cal-flag ok">🌱 ${st.onePct}</span>`:''}</div>
+    </button>`;
+  }
+  return html+'</div></div>';
+}
+function calendarMonthHtml(){
+  const monthStart=firstOfMonth(calendarAnchorDate);
+  const gridStart=startOfCalendarWeek(monthStart);
+  const currentMonth=monthStart.slice(0,7);
+  let html='<div class="calendar-scroll"><div class="calendar-month"><div class="calendar-month-head">'+CAL_DOW.map(x=>`<div>${x}</div>`).join('')+'</div><div class="calendar-month-grid">';
+  for(let i=0;i<42;i++){
+    const date=addDays(gridStart,i),d=localDateObj(date),st=calendarDayStats(date),rel=calendarRelation(date);
+    const outside=date.slice(0,7)!==currentMonth?' outside':'';
+    const selected=date===calendarSelectedDate?' selected':'';
+    const today=date===todayStr()?' today':'';
+    html+=`<button type="button" class="cal-month-day ${rel}${outside}${selected}${today}" data-cal-date="${date}">
+      <span class="cmd-num">${d.getDate()}</span>
+      <div class="cmd-info">${st.total?`${st.done}/${st.total} hoàn thành`:'—'}${st.mins?`<br>${fmtMinsShort(st.mins)}`:''}</div>
+      <div class="cmd-dots">${st.done?'<i class="cmd-dot done"></i>':''}${st.open?'<i class="cmd-dot open"></i>':''}${st.reviews?'<i class="cmd-dot review"></i>':''}</div>
+    </button>`;
+  }
+  return html+'</div></div></div>';
+}
+function calendarYearHtml(){
+  const year=Number(calendarAnchorDate.slice(0,4));
+  let html='<div class="calendar-year-grid">';
+  for(let m=1;m<=12;m++){
+    const start=`${year}-${String(m).padStart(2,'0')}-01`,end=lastOfMonth(start),st=calendarPeriodStats(start,end);
+    html+=`<button type="button" class="cal-year-card" data-cal-month="${start}">
+      <div class="cyc-name">${CAL_MONTHS[m-1]}</div>
+      <div class="cyc-main"><div class="cyc-num">${st.total}</div><div class="cyc-sub">${st.done} hoàn thành<br>${st.reviewed} review</div></div>
+      <div class="cyc-track"><i style="width:${st.pct}%"></i></div>
+      ${st.unfinishedPast?`<div class="cal-day-sub" style="color:var(--warn);margin-top:7px">${st.unfinishedPast} việc quá khứ chưa xong</div>`:''}
+    </button>`;
+  }
+  return html+'</div>';
+}
+function calendarTaskRows(list, date=calendarSelectedDate){
+  if(!list.length) return '<div class="calendar-empty-day">Không có công việc trong cột này.</div>';
+  return [...list].sort((a,b)=>(a.startTime||'99:99').localeCompare(b.startTime||'99:99')).map(a=>{
+    const done=isCompleted(a),rv=a.reviewId&&state.reviews.some(r=>r.id===a.reviewId),dur=dayItemDuration(a,date);
+    if(a.__daySubtask){
+      return `<button type="button" class="calendar-task-row ${done?'done':''}" data-calendar-sub-parent="${a.parentId}" data-calendar-sub="${a.subId}">
+        <span class="ctr-check">${done?'✓':''}</span>
+        <span class="ctr-body"><span class="ctr-title">↳ ${esc(a.title)}</span><span class="ctr-meta">Việc con của “${esc(a.parent.title)}” · deadline việc lớn ${fmtShortDate(a.parent.date)}${rv?' · Đã review':''}${dur?' · '+fmtMinsShort(dur):''}</span></span>
+        <span class="ctr-time">${a.startTime?esc(a.startTime):'Mở ›'}</span>
+      </button>`;
+    }
+    return `<button type="button" class="calendar-task-row ${done?'done':''}" data-calendar-act="${a.id}">
+      <span class="ctr-check">${done?'✓':''}</span>
+      <span class="ctr-body"><span class="ctr-title">${a.tag1pct?'🌱 ':''}${esc(a.title)}</span><span class="ctr-meta">${esc(a.category||'Công việc')}${rv?' · Đã review':''}${dur?' · '+fmtMinsShort(dur):''}</span></span>
+      <span class="ctr-time">${a.startTime?esc(a.startTime):'Mở ›'}</span>
+    </button>`;
+  }).join('');
+}
+function renderCalendarDayPanel(){
+  const el=document.getElementById('calendarDayPanel'); if(!el) return;
+  const date=calendarSelectedDate,st=calendarDayStats(date),rel=calendarRelation(date);
+  const home=st.acts.filter(a=>(a.location||'company')==='home');
+  const company=st.acts.filter(a=>(a.location||'company')==='company');
+  const reviewedDone=st.acts.filter(a=>isCompleted(a)&&a.reviewId&&state.reviews.some(r=>r.id===a.reviewId)).length;
+  const context=rel==='past'
+    ? 'Ngày đã qua · nhấn vào một công việc để xem lại, chỉnh sửa hoặc bổ sung review.'
+    :rel==='future'
+      ? 'Ngày tương lai · chỉ hiển thị kế hoạch gọn; bạn vẫn có thể thêm hoặc điều chỉnh công việc.'
+      :'Hôm nay · mở dashboard ngày để thực hiện, chạy timer và review.';
+  el.innerHTML=`<div class="calendar-day-head">
+      <div><div class="calendar-day-title">${calendarDateLabel(date)}</div><div class="calendar-day-context">${context}</div></div>
+      <div class="calendar-day-actions"><button class="btn btn-ghost btn-sm" id="calendarAddTask">＋ Thêm công việc</button><button class="btn btn-primary btn-sm" id="calendarOpenDay">${rel==='past'?'Mở lại ngày này':'Mở ngày này'} →</button></div>
+    </div>
+    <div class="calendar-day-stats">
+      <div class="cal-day-stat"><b>${st.total}</b><span>Tổng công việc</span></div>
+      <div class="cal-day-stat"><b>${st.done}/${st.total||0}</b><span>Đã hoàn thành</span></div>
+      <div class="cal-day-stat"><b>${reviewedDone}/${st.done}</b><span>Review sau khi xong</span></div>
+      <div class="cal-day-stat"><b>${fmtMinsShort(st.mins)}</b><span>Thời gian đã lên block</span></div>
+    </div>
+    <div class="calendar-task-columns">
+      <div class="calendar-task-col"><div class="calendar-task-col-head"><span>${esc(getColumnSetting('home').icon)} ${esc(getColumnSetting('home').label)}</span><span>${home.length} việc</span></div>${calendarTaskRows(home,date)}</div>
+      <div class="calendar-task-col"><div class="calendar-task-col-head"><span>${esc(getColumnSetting('company').icon)} ${esc(getColumnSetting('company').label)}</span><span>${company.length} việc</span></div>${calendarTaskRows(company,date)}</div>
+    </div>
+    ${rel==='past'&&st.open?`<div class="calendar-history-note">⚠️ Có ${st.open} công việc của ngày này chưa hoàn thành. Đây là dữ liệu lịch sử; bạn có thể mở từng việc để đóng, đổi ngày hoặc bổ sung review.</div>`:''}`;
+  document.getElementById('calendarOpenDay')?.addEventListener('click',()=>openDayView(date));
+  document.getElementById('calendarAddTask')?.addEventListener('click',()=>{
+    openCreateActivity('company');
+    document.getElementById('cDate').value=date;
+    document.getElementById('cSubDate').value=date;
+    document.getElementById('createActivitySub').textContent=`Tạo công việc cho ${calendarDateLabel(date)}.`;
+  });
+  el.querySelectorAll('[data-calendar-act]').forEach(btn=>btn.addEventListener('click',()=>{
+    const act=state.activities.find(a=>a.id===btn.dataset.calendarAct);
+    if(act) openActivityBoard(act);
+  }));
+  el.querySelectorAll('[data-calendar-sub-parent]').forEach(btn=>btn.addEventListener('click',()=>{
+    const act=state.activities.find(a=>a.id===btn.dataset.calendarSubParent);
+    const sub=act&&(act.subs||[]).find(s=>s.id===btn.dataset.calendarSub);
+    if(act&&sub) openSubtaskBoard(act,sub);
+  }));
+}
+function renderCalendar(){
+  const label=document.getElementById('calendarPeriodLabel');
+  const grid=document.getElementById('calendarGrid');
+  const summary=document.getElementById('calendarSummary');
+  if(!label||!grid||!summary) return;
+  label.textContent=calendarPeriodTitle();
+  document.querySelectorAll('#calendarModeTabs [data-cal-mode]').forEach(b=>b.classList.toggle('on',b.dataset.calMode===calendarMode));
+  const range=calendarRange(),st=calendarPeriodStats(range.start,range.end);
+  const periodText=calendarMode==='week'?'tuần':calendarMode==='month'?'tháng':'năm';
+  summary.innerHTML=`<div class="card calendar-overview">
+    <div class="calendar-overview-head"><div><div class="calendar-overview-title">Bức tranh ${periodText}</div><div class="calendar-overview-copy">Theo dõi khối lượng, mức hoàn thành và những việc quá khứ còn bỏ ngỏ.</div></div>${st.unfinishedPast?`<span class="chip" style="background:var(--warn-soft);color:var(--warn);border-color:transparent">⚠ ${st.unfinishedPast} việc cũ chưa xong</span>`:'<span class="chip" style="background:var(--ok-soft);color:var(--ok);border-color:transparent">✓ Không có việc cũ tồn đọng</span>'}</div>
+    <div class="calendar-metrics">
+      <div class="calendar-metric"><div class="cm-v">${st.total}</div><div class="cm-l">Công việc trong ${periodText}</div></div>
+      <div class="calendar-metric"><div class="cm-v">${st.pct}%</div><div class="cm-l">Tỉ lệ hoàn thành</div></div>
+      <div class="calendar-metric"><div class="cm-v">${st.reviewed}</div><div class="cm-l">Công việc đã review</div></div>
+      <div class="calendar-metric"><div class="cm-v ${st.unfinishedPast?'warn':''}">${st.unfinishedPast}</div><div class="cm-l">Việc quá khứ chưa xong</div></div>
+    </div>
+    <div class="calendar-progress"><i style="width:${st.pct}%"></i></div>
+  </div>`;
+  grid.innerHTML=calendarMode==='week'?calendarWeekHtml():calendarMode==='month'?calendarMonthHtml():calendarYearHtml();
+  grid.querySelectorAll('[data-cal-date]').forEach(b=>b.addEventListener('click',()=>calendarSelectDate(b.dataset.calDate)));
+  grid.querySelectorAll('[data-cal-month]').forEach(b=>b.addEventListener('click',()=>{
+    calendarMode='month';localStorage.setItem('opos_calendar_mode',calendarMode);
+    calendarAnchorDate=b.dataset.calMonth;calendarSelectedDate=b.dataset.calMonth;renderCalendar();
+  }));
+  renderCalendarDayPanel();
+}
+document.getElementById('calendarPrev')?.addEventListener('click',()=>calendarShift(-1));
+document.getElementById('calendarNext')?.addEventListener('click',()=>calendarShift(1));
+document.getElementById('calendarTodayBtn')?.addEventListener('click',()=>{
+  calendarSelectedDate=todayStr();calendarAnchorDate=todayStr();renderCalendar();
+});
+document.getElementById('calendarModeTabs')?.addEventListener('click',e=>{
+  const b=e.target.closest('[data-cal-mode]');if(!b)return;
+  calendarMode=b.dataset.calMode;localStorage.setItem('opos_calendar_mode',calendarMode);
+  calendarAnchorDate=calendarSelectedDate;renderCalendar();
+});
+
 // ---------- Renders ----------
 function renderAll(){
-  renderToday(); renderActions(); renderMistakes(); renderReport(); renderDataSummary();
+  renderToday(); renderCalendar(); renderActions(); renderMistakes(); renderReport(); renderDataSummary();
 }
 
 
@@ -2402,7 +2961,7 @@ function showCelebration(date, st){
   const msg = document.getElementById('celebrateMsg');
   const box = document.getElementById('celebrateBox');
   const quote = randomCelebrationQuote();
-  msg.innerHTML = `<span class="celebrate-quote">“${esc(quote.q)}”<small>— ${esc(quote.a)}</small></span>`;
+  msg.innerHTML = `<span class="celebrate-quote"><span class="quote-english">“${esc(quote.q)}”</span><span class="quote-latin">${esc(quote.latin || '')}</span><small>— ${esc(quote.a)}</small></span>`;
   box.querySelectorAll('.confetti').forEach(x => x.remove());
   const colors = ['#2F8F5B','#F59E0B','#FCD34D','#8B5A32','#78D08B'];
   for(let i=0;i<26;i++){
@@ -2535,7 +3094,10 @@ function renderTreeProgress(){
 
 function renderToday(){
   const t = viewDate;
-  ensureRecurringTasksForDate(t);
+  const todaySection = document.querySelector('section[data-view="today"]');
+  // Chỉ sinh việc lặp khi người dùng thực sự mở dashboard ngày.
+  // Tab Lịch chỉ đọc dữ liệu lịch sử, không tự tạo thêm việc ở quá khứ/tương lai.
+  if(todaySection && todaySection.classList.contains('active')) ensureRecurringTasksForDate(t);
   const today = todayStr();
   document.getElementById('todayDate').textContent = fmtDate(t);
 
@@ -2548,11 +3110,12 @@ function renderToday(){
   document.getElementById('actsHeading').textContent = `Hoạt động ${dayLabel}`;
   if(document.getElementById('quickAddTitle')) document.getElementById('quickAddTitle').textContent = `＋ Thêm nhanh công việc ${dayLabel}`;
 
-  // stats
+  // stats: gồm việc lớn của ngày và các việc con khác ngày với việc cha nhưng có deadline đúng ngày đang xem
   const acts = state.activities.filter(a => a.date === t);
-  const completedActs = acts.filter(isCompleted);
+  const dayItems = dayDisplayItems(t);
+  const completedActs = dayItems.filter(isCompleted);
   const done = completedActs.length;
-  const planned = acts.length;
+  const planned = dayItems.length;
   const reviewedDone = completedActs.filter(a => a.reviewId && state.reviews.find(r => r.id === a.reviewId)).length;
   const careActionsDone = acts.filter(a => a.tag1pct && isOnePctCompletedForDate(a, t)).length;
   const streak = currentOnePctStreak();
@@ -2568,7 +3131,7 @@ function renderToday(){
   if(streakCap) streakCap.textContent = `🍊 +1% streak ${streak} ngày`;
   const qt = dailyQuote(t);
   const footerQuote = document.getElementById('footerQuote');
-  if(footerQuote) footerQuote.textContent = `“${qt.q}” — ${qt.a}`;
+  if(footerQuote) footerQuote.innerHTML = quoteMarkup(qt);
   renderTreeProgress();
 
   // sort UI (dropdown)
@@ -2617,16 +3180,16 @@ function renderToday(){
 
   renderColumnHeaders();
 
-  // chia 2 cột theo địa điểm
+  // chia 2 cột theo địa điểm. Việc con kế thừa cột của công việc cha.
   [['home','colListHome','colCountHome','colTimeHome'],
    ['company','colListCompany','colCountCompany','colTimeCompany']].forEach(([loc, listId, countId, timeId]) => {
-    const colActs = sorter(acts.filter(a => (a.location||'company') === loc));
-    const colTime = colActs.reduce((s,a) => s + effectiveDuration(a), 0);
-    document.getElementById(countId).textContent = `${colActs.length} việc`;
+    const colItems = sorter(dayItems.filter(item => (item.location||'company') === loc));
+    const colTime = colItems.reduce((sum,item) => sum + dayItemDuration(item,t), 0);
+    document.getElementById(countId).textContent = `${colItems.length} việc`;
     document.getElementById(timeId).textContent = fmtMinsShort(colTime);
     const el = document.getElementById(listId);
-    const taskHtml = colActs.length
-      ? colActs.map(renderActCard).join('')
+    const taskHtml = colItems.length
+      ? colItems.map(item => item.__daySubtask ? renderDaySubtaskCard(item.parent,item.sub) : renderActCard(item)).join('')
       : `<div class="empty" style="padding:20px 12px">Chưa có việc trong cột ${esc(getColumnSetting(loc).label)}.</div>`;
     el.innerHTML = taskHtml + renderColumnAddForm(loc);
   });
@@ -2655,6 +3218,26 @@ function renderColumnAddForm(loc){
       <span class="add-title">Thêm công việc</span>
     </span>
   </button>`;
+}
+
+// Render việc con có deadline khác ngày việc cha như một thẻ độc lập trong ngày.
+// Click thẻ sẽ mở đúng Board việc con; dữ liệu vẫn nằm trong activity cha.
+function renderDaySubtaskCard(parent, sub){
+  const done = !!sub.completed;
+  const dur = Number(sub.durationMinutes) || 0;
+  const parentDate = parent.date ? fmtShortDate(parent.date) : '—';
+  return `<div class="act-card day-subtask-card ${done?'completed':''}" data-day-sub-parent="${parent.id}" data-day-sub-id="${sub.id}">
+    <div class="act-row">
+      <input type="checkbox" class="act-check" data-day-sub-complete ${done?'checked':''} aria-label="Đánh dấu hoàn thành việc con">
+      <span class="act-time ${sub.startTime?'':'unset'}">${sub.startTime ? esc(sub.startTime) : ''}</span>
+      <div class="day-subtask-main">
+        <div class="day-subtask-title"><span class="day-subtask-badge">VIỆC CON</span>${esc(sub.title)}</div>
+        <div class="day-subtask-parent">↳ Thuộc: ${esc(parent.title)} · deadline việc lớn ${parentDate}</div>
+      </div>
+      ${dur ? `<span class="act-dur">${fmtMinsShort(dur)}</span>` : ''}
+      <button class="act-play" data-day-sub-play title="Bắt đầu tập trung việc con">▶</button>
+    </div>
+  </div>`;
 }
 
 // Render một thẻ hoạt động (dùng cho cả 2 cột)
@@ -2799,7 +3382,7 @@ function renderMistakes(){
     .filter(m => mistakeFilter === 'Tất cả' || m.category === mistakeFilter)
     .sort((a,b)=> b.date.localeCompare(a.date));
   document.getElementById('mistakeList').innerHTML = list.length ? list.map(m => `
-    <div class="mist-card">
+    <div class="mist-card" data-mistake-id="${m.id}">
       <div class="row" style="gap:8px;margin-bottom:6px">
         <span class="chip chip-cat">${esc(m.category)}</span>
         <span class="chip">${m.date.split('-').reverse().join('/')}</span>
@@ -2834,7 +3417,7 @@ document.getElementById('mistakeList').addEventListener('click', e => {
   if(openBtn){
     const rv = state.reviews.find(r => r.id === openBtn.dataset.mOpenSource);
     const act = rv && state.activities.find(a => a.id === rv.activityId);
-    if(act){ viewDate = act.date; go(act.date === addDays(todayStr(),1) ? 'tomorrow' : 'today'); setTimeout(() => openActivityBoard(act), 80); }
+    if(act){ openDayView(act.date); setTimeout(() => openActivityBoard(act), 80); }
     else toast('Không tìm thấy công việc gốc. Có thể công việc đã bị xoá.');
   }
 });
@@ -3316,15 +3899,7 @@ document.getElementById('createActivityForm').addEventListener('submit', e => {
   createDraftMeta = null;
   save();
   closeModals();
-  viewDate = date;
-  const today = todayStr();
-  if(date === today || date === addDays(today,1)){
-    go(date === addDays(today,1) ? 'tomorrow' : 'today');
-  }else{
-    document.querySelectorAll('section[data-view]').forEach(s => s.classList.toggle('active', s.dataset.view === 'today'));
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.nav === 'today'));
-    renderAll();
-  }
+  openDayView(date);
   const locLabel = getColumnSetting(loc).label;
   toast(meta?.type === 'mistakeOnePct' ? 'Đã tạo việc 1% để nhổ cỏ. Deadline đã được khóa.' : (repeatDaily ? `Đã tạo công việc lặp hằng ngày trong cột ${locLabel}.` : `Đã tạo công việc trong cột ${locLabel}.`));
   setTimeout(() => {
@@ -3380,6 +3955,24 @@ document.getElementById('todayActivities').addEventListener('click', e => {
     openCreateActivity(addCard.dataset.colAddCard || 'company');
     return;
   }
+
+  // Việc con có deadline khác ngày việc cha: thẻ độc lập nhưng vẫn mở/sửa đúng subtask gốc.
+  const daySubCard = e.target.closest('[data-day-sub-parent][data-day-sub-id]');
+  if(daySubCard){
+    const parent = state.activities.find(a => a.id === daySubCard.dataset.daySubParent);
+    const sub = parent && (parent.subs||[]).find(s => s.id === daySubCard.dataset.daySubId);
+    if(!parent || !sub) return;
+    const check = e.target.closest('[data-day-sub-complete]');
+    if(check){
+      markCompleted(sub, check.checked);
+      save(); renderAll();
+      return;
+    }
+    if(e.target.closest('[data-day-sub-play]')){ startTimer(parent,sub); return; }
+    openSubtaskBoard(parent,sub);
+    return;
+  }
+
   const card = e.target.closest('.act-card'); if(!card) return;
   const act = state.activities.find(a => a.id === card.dataset.id); if(!act) return;
 
@@ -3389,9 +3982,8 @@ document.getElementById('todayActivities').addEventListener('click', e => {
     const srcId = fromLink.closest('[data-fromact]')?.dataset.fromact;
     const src = state.activities.find(x => x.id === srcId);
     if(src){
-      viewDate = src.date;
       openActs.add(src.id);
-      go(src.date === addDays(todayStr(),1) ? 'tomorrow' : 'today');
+      openDayView(src.date);
       setTimeout(() => {
         const c = document.querySelector(`.act-card[data-id="${src.id}"]`);
         if(c) c.scrollIntoView({behavior:'smooth', block:'center'});
@@ -3624,9 +4216,8 @@ document.getElementById('sortSelect').addEventListener('change', e => {
       return;
     }
     if(e.target.closest('[data-goto]')){
-      viewDate = item.dataset.godate;
       openActs.add(act.id);
-      go(item.dataset.godate === addDays(todayStr(),1) ? 'tomorrow' : 'today');
+      openDayView(item.dataset.godate);
       setTimeout(() => {
         const card = document.querySelector(`.act-card[data-id="${act.id}"]`);
         if(card) card.scrollIntoView({behavior:'smooth', block:'center'});
@@ -3704,7 +4295,7 @@ function quickAddActivity(){
   viewDate = date;
   setQuickDate(date);
   renderAll();
-  toast(viewDate === addDays(todayStr(),1) ? 'Đã thêm công việc trong tab Ngày mai.' : 'Đã thêm công việc trong tab Hôm nay.');
+  toast(`Đã thêm công việc cho ${calendarDateLabel(viewDate)}.`);
 }
 document.getElementById('quickAddForm').addEventListener('submit', e => { e.preventDefault(); quickAddActivity(); });
 
@@ -3749,10 +4340,67 @@ function syncBoardDeadlineUI(){
     delBtn.disabled = isOne;
   }
 }
+function linkedWeedForActivity(act){
+  if(!act || !act.tag1pct) return null;
+  if(act.fromMistakeId){
+    const direct = state.mistakes.find(m => m.id === act.fromMistakeId);
+    if(direct) return direct;
+  }
+  if(act.fromReviewId){
+    const byReview = state.mistakes.find(m => m.reviewId === act.fromReviewId);
+    if(byReview) return byReview;
+  }
+  return null;
+}
+function renderBoardLinkedWeed(act){
+  const box = document.getElementById('bLinkedWeed');
+  if(!box) return;
+  if(!act || !act.tag1pct){
+    box.hidden = true;
+    box.innerHTML = '';
+    return;
+  }
+  const weed = linkedWeedForActivity(act);
+  const sourceAct = act.fromActivityId ? state.activities.find(a => a.id === act.fromActivityId) : null;
+  const sourceTitle = act.fromActivityTitle || weed?.activityTitle || sourceAct?.title || '';
+  box.hidden = false;
+  if(!weed){
+    box.innerHTML = `<div class="linked-weed-head"><div class="linked-weed-title">🌿 Bối cảnh tạo việc 1%</div></div>
+      <div class="linked-weed-source">${sourceTitle ? `Sinh ra từ review của: <b>${esc(sourceTitle)}</b>` : 'Không tìm thấy dữ liệu cỏ dại liên kết trong lịch sử.'}</div>
+      <div class="linked-weed-detail">Việc 1% này có thể được tạo từ dữ liệu cũ hoặc từ một review không ghi nhận mục “chưa làm tốt”.</div>
+      ${sourceAct ? `<div class="linked-weed-actions"><button type="button" class="btn btn-ghost btn-sm" data-b-open-source="${sourceAct.id}">Mở công việc nguồn</button></div>` : ''}`;
+    return;
+  }
+  box.innerHTML = `<div class="linked-weed-head">
+      <div class="linked-weed-title">🌿 Cỏ dại liên kết</div>
+      <span class="chip">${esc(weed.category || 'Khác')} · ${esc(fmtShortDate(weed.date) || '')}</span>
+    </div>
+    <div class="linked-weed-source">Xuất hiện khi review: <b>${esc(sourceTitle || weed.activityTitle || 'Công việc nguồn')}</b></div>
+    <div class="linked-weed-problem">${esc(weed.content || 'Chưa có mô tả lỗi.')}</div>
+    ${weed.rootCause ? `<div class="linked-weed-detail"><b>Gốc rễ:</b> ${esc(weed.rootCause)}</div>` : ''}
+    ${weed.lesson ? `<div class="linked-weed-detail"><b>Bài học:</b> ${esc(weed.lesson)}</div>` : ''}
+    <div class="linked-weed-actions">
+      <button type="button" class="btn btn-soft btn-sm" data-b-open-weed="${weed.id}">Mở trong Dọn vườn</button>
+      ${sourceAct ? `<button type="button" class="btn btn-ghost btn-sm" data-b-open-source="${sourceAct.id}">Mở công việc nguồn</button>` : ''}
+    </div>`;
+}
+function openLinkedWeed(mistakeId){
+  closeModals();
+  mistakeFilter = 'Tất cả';
+  go('mistakes');
+  setTimeout(() => {
+    const card = document.querySelector(`[data-mistake-id="${mistakeId}"]`);
+    if(!card) return;
+    card.classList.add('linked-focus');
+    card.scrollIntoView({behavior:'smooth', block:'center'});
+    setTimeout(() => card.classList.remove('linked-focus'), 2800);
+  }, 100);
+}
 function openActivityBoard(act){
   boardId = act.id;
   document.getElementById('bTitle').value = act.title || '';
   document.getElementById('bDesc').value = act.description || '';
+  renderBoardLinkedWeed(act);
   document.getElementById('bTag1pct').checked = !!act.tag1pct;
   document.getElementById('bLocation').value = act.location || 'company';
   document.getElementById('bCategory').value = act.category || 'Công việc';
@@ -3766,6 +4414,21 @@ function openActivityBoard(act){
   document.getElementById('activityBoardModal').classList.add('open');
   autoGrowModal('activityBoardModal');
 }
+document.getElementById('bLinkedWeed').addEventListener('click', e => {
+  const weedBtn = e.target.closest('[data-b-open-weed]');
+  if(weedBtn){
+    openLinkedWeed(weedBtn.dataset.bOpenWeed);
+    return;
+  }
+  const sourceBtn = e.target.closest('[data-b-open-source]');
+  if(sourceBtn){
+    const source = state.activities.find(a => a.id === sourceBtn.dataset.bOpenSource);
+    if(!source){ toast('Không tìm thấy công việc nguồn.'); return; }
+    closeModals();
+    openDayView(source.date);
+    setTimeout(() => openActivityBoard(source), 90);
+  }
+});
 document.getElementById('bTag1pct').addEventListener('change', syncBoardDeadlineUI);
 document.getElementById('boardForm').addEventListener('submit', e => {
   e.preventDefault();
@@ -3796,17 +4459,17 @@ document.getElementById('bAddSub').addEventListener('click', () => {
   document.getElementById('bSubDuration').value='';
   document.getElementById('bSubDurationCustom').value='';
   document.getElementById('bSubDurationCustom').style.display='none';
-  save(); renderBoardSubtasks(act); renderToday();
+  save(); renderBoardSubtasks(act); renderToday(); renderCalendar();
 });
 document.getElementById('boardSubList').addEventListener('click', e => {
   const row = e.target.closest('[data-bsid]'); if(!row) return;
   const act = state.activities.find(a => a.id === boardId); if(!act) return;
   const sub = (act.subs||[]).find(s => s.id === row.dataset.bsid); if(!sub) return;
-  if(e.target.closest('[data-board-sub-check]')){ markCompleted(sub, e.target.checked); save(); renderBoardSubtasks(act); renderToday(); return; }
+  if(e.target.closest('[data-board-sub-check]')){ markCompleted(sub, e.target.checked); save(); renderBoardSubtasks(act); renderToday(); renderCalendar(); return; }
   if(e.target.closest('[data-board-sub-play]')){ closeModals(); startTimer(act, sub); return; }
   if(e.target.closest('[data-board-sub-review]')){ closeModals(); openReview(act, sub); return; }
   if(e.target.closest('[data-board-sub-del]')){
-    if(confirm(`Xoá việc con “${sub.title}”?`)){ act.subs = act.subs.filter(s => s.id !== sub.id); save(); renderBoardSubtasks(act); renderToday(); }
+    if(confirm(`Xoá việc con “${sub.title}”?`)){ act.subs = act.subs.filter(s => s.id !== sub.id); save(); renderBoardSubtasks(act); renderToday(); renderCalendar(); }
     return;
   }
   openSubtaskBoard(act, sub);
@@ -3886,6 +4549,7 @@ document.getElementById('subtaskBoardForm').addEventListener('submit', e => {
   closeModals();
   openActivityBoard(act);
   renderToday();
+  renderCalendar();
   toast('Đã lưu board việc con.');
 });
 document.getElementById('sbReviewBtn').addEventListener('click', () => {
@@ -4135,15 +4799,18 @@ document.getElementById('reviewForm').addEventListener('submit', e => {
   Object.assign(rv, data);
 
   // Chưa tốt → Dọn vườn
+  let linkedMistake = state.mistakes.find(x => x.reviewId === rv.id) || null;
   if(data.didNotDoWell){
-    let m = state.mistakes.find(x => x.reviewId === rv.id);
     const payload = {
       activityTitle:title, category:data.mistakeCategory,
       content:data.didNotDoWell, rootCause:data.rootCause,
       lesson:data.lesson, action:''
     };
-    if(m) Object.assign(m, payload);
-    else state.mistakes.push(Object.assign({id:uid(), reviewId:rv.id, date:todayStr()}, payload));
+    if(linkedMistake) Object.assign(linkedMistake, payload);
+    else {
+      linkedMistake = Object.assign({id:uid(), reviewId:rv.id, date:todayStr()}, payload);
+      state.mistakes.push(linkedMistake);
+    }
   }
 
   // Nhổ cỏ bằng việc 1% (nếu có điền tên)
@@ -4162,7 +4829,8 @@ document.getElementById('reviewForm').addEventListener('submit', e => {
       startTime: null,
       durationMinutes: fuDur ? parseInt(fuDur,10) : null,
       completed:false, subs:[], status:'todo', reviewId:null,
-      fromReviewId: rv.id, fromActivityId: act.id, fromActivityTitle: title
+      fromReviewId: rv.id, fromActivityId: act.id, fromActivityTitle: title,
+      fromMistakeId: linkedMistake?.id || null
     });
     createdFu = true;
   }
