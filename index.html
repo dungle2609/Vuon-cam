@@ -1148,20 +1148,20 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 .timer-done-actions{display:none;gap:14px;margin-top:6vh;flex-wrap:wrap;justify-content:center}
 .timer-screen.finished .timer-controls{display:none}
 .timer-screen.finished .timer-done-actions{display:flex}
-/* ===== Ghim đồng hồ: thu nhỏ vào góc màn hình, vẫn thao tác được app phía sau ===== */
+/* ===== Ghim đồng hồ: tối giản, chỉ thời gian + icon điều khiển ===== */
 .timer-mini{display:none}
 .timer-screen.pinned{
   inset:auto;left:auto;top:auto;
-  right:calc(16px + env(safe-area-inset-right));
-  bottom:calc(16px + env(safe-area-inset-bottom));
-  width:auto;height:auto;max-width:calc(100vw - 32px);
-  padding:11px 14px;border-radius:20px;
+  right:calc(10px + env(safe-area-inset-right));
+  bottom:calc(10px + env(safe-area-inset-bottom));
+  width:auto;height:auto;max-width:calc(100vw - 20px);
+  padding:6px 7px;border-radius:14px;
   flex-direction:row;align-items:center;justify-content:flex-start;
-  gap:12px;text-align:left;
-  background:linear-gradient(135deg,#134277,#0A1F3C);
+  gap:6px;text-align:left;
+  background:rgba(10,31,60,.72);
   border:1px solid rgba(255,255,255,.16);
-  box-shadow:0 16px 44px rgba(0,0,0,.45);
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 8px 24px rgba(0,0,0,.30);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
 }
 .timer-screen.pinned .timer-title,
 .timer-screen.pinned .timer-mode,
@@ -1171,17 +1171,23 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 .timer-screen.pinned .timer-ring-wrap{width:auto;height:auto;margin:0;flex:0 0 auto}
 .timer-screen.pinned .timer-ring-wrap svg{display:none}
 .timer-screen.pinned .timer-count{
-  position:static;inset:auto;padding:0;margin:0;
-  font-size:26px;line-height:1;letter-spacing:0;min-width:76px;text-align:left;
+  position:static;inset:auto;padding:0 4px;margin:0;
+  font-size:22px;line-height:1;letter-spacing:-.02em;min-width:64px;text-align:center;
+  font-variant-numeric:tabular-nums;
 }
-.timer-screen.pinned .timer-mini{display:flex;gap:6px;flex:0 0 auto}
+.timer-screen.pinned .timer-mini{display:flex;gap:4px;flex:0 0 auto}
 .mini-btn{
-  border:1px solid rgba(255,255,255,.24);background:rgba(255,255,255,.10);color:#fff;
-  border-radius:12px;width:34px;height:34px;padding:0;font-size:14px;font-weight:800;
+  border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;
+  border-radius:9px;width:28px;height:28px;padding:0;font-size:13px;font-weight:800;
   cursor:pointer;display:grid;place-items:center;line-height:1;font-family:inherit;
 }
-.mini-btn:hover{background:rgba(255,255,255,.2)}
-[data-theme="dark"] .timer-screen.pinned{background:linear-gradient(135deg,#18402A,#0F2419)}
+.mini-btn:hover{background:rgba(255,255,255,.18)}
+[data-theme="dark"] .timer-screen.pinned{background:rgba(15,36,25,.74)}
+@media (max-width:420px){
+  .timer-screen.pinned{right:8px;bottom:calc(72px + env(safe-area-inset-bottom));padding:5px 6px}
+  .timer-screen.pinned .timer-count{font-size:20px;min-width:58px}
+  .mini-btn{width:27px;height:27px}
+}
 
 /* ============ MOBILE ============ */
 @media (max-width:760px){
@@ -2080,13 +2086,13 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
   </div>
   <div class="timer-mode" id="timerMode"></div>
   <div class="timer-tools">
-    <button class="timer-chip" id="timerPin" type="button">📌 Ghim đồng hồ</button>
+    <button class="timer-chip" id="timerPin" type="button">📌 Ghim toàn màn hình</button>
     <button class="timer-chip on" id="timerBell" type="button">🔔 Chuông bật</button>
   </div>
   <div class="timer-mini" id="timerMini">
-    <button class="mini-btn" id="miniPause" type="button" title="Tạm dừng / tiếp tục">⏸</button>
-    <button class="mini-btn" id="miniStop" type="button" title="Dừng">■</button>
-    <button class="mini-btn" id="miniExpand" type="button" title="Mở rộng lại">⤢</button>
+    <button class="mini-btn" id="miniPause" type="button" title="Tạm dừng" aria-label="Tạm dừng">⏸</button>
+    <button class="mini-btn" id="miniStop" type="button" title="Dừng" aria-label="Dừng">■</button>
+    <button class="mini-btn" id="miniExpand" type="button" title="Mở lại toàn màn hình" aria-label="Mở lại toàn màn hình">⤢</button>
   </div>
   <div class="timer-controls">
     <button class="timer-btn" id="timerPause">⏸ Tạm dừng</button>
@@ -2772,6 +2778,7 @@ function applyTheme(){
   const label = state.theme === 'dark' ? '☀️ Chế độ sáng' : '🌙 Chế độ tối';
   document.getElementById('themeToggle').textContent = label;
   document.getElementById('themeFab').textContent = state.theme === 'dark' ? '☀️' : '🌙';
+  if(typeof updateTimerPiPTheme === 'function') updateTimerPiPTheme();
 }
 ['themeToggle','themeFab'].forEach(id =>
   document.getElementById(id).addEventListener('click', () => {
@@ -3720,6 +3727,8 @@ const RING_LEN = 565.5;
 const TIMER_SETTINGS_KEY = 'onePercentOS_timerSettings_v1';
 let timerAudioCtx = null;
 let timerPinned = false;
+let timerPinMode = null; // 'pip' | 'in-app' | null
+let timerPiPWindow = null;
 const originalDocTitle = document.title;
 function loadTimerSettings(){
   try{ return Object.assign({bell:true}, JSON.parse(localStorage.getItem(TIMER_SETTINGS_KEY) || '{}')); }
@@ -3733,9 +3742,12 @@ function syncTimerToolButtons(){
   if(bell){ bell.classList.toggle('on', !!timerSettings.bell); bell.textContent = timerSettings.bell ? '🔔 Chuông bật' : '🔕 Chuông tắt'; }
   if(pin){
     pin.classList.toggle('on', timerPinned);
-    pin.textContent = timerPinned ? '📌 Đang ghim' : '📌 Ghim đồng hồ';
+    pin.textContent = timerPinMode === 'pip'
+      ? '📌 Đang ghim toàn màn hình'
+      : (timerPinMode === 'in-app' ? '📌 Đang ghim trong app' : '📌 Ghim toàn màn hình');
   }
   syncMiniPause();
+  updateTimerPiPUI();
 }
 async function unlockTimerAudio(test=false){
   if(!('AudioContext' in window || 'webkitAudioContext' in window)) return false;
@@ -3787,21 +3799,179 @@ function updateBrowserTimerTitle(){
 }
 function syncMiniPause(){
   const m = document.getElementById('miniPause');
-  if(m) m.textContent = timerState.paused ? '▶' : '⏸';
+  if(m){
+    const paused = !!timerState.paused;
+    m.textContent = paused ? '▶' : '⏸';
+    m.title = paused ? 'Tiếp tục' : 'Tạm dừng';
+    m.setAttribute('aria-label', paused ? 'Tiếp tục' : 'Tạm dừng');
+  }
 }
-function setTimerPinned(on){
-  timerPinned = !!on;
+function supportsGlobalTimerPiP(){
+  return 'documentPictureInPicture' in window &&
+    typeof window.documentPictureInPicture.requestWindow === 'function';
+}
+function timerPiPStyles(){
+  const dark = document.documentElement.dataset.theme === 'dark';
+  return `
+    :root{color-scheme:${dark ? 'dark' : 'light'}}
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{
+      width:100%;height:100%;overflow:hidden;
+      background:transparent!important;
+    }
+    body{
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+      color:#fff;padding:4px;display:flex;align-items:center;justify-content:center;
+    }
+    .pip-card{
+      width:max-content;max-width:100%;min-width:0;
+      display:flex;align-items:center;justify-content:center;gap:5px;
+      padding:6px 7px;border-radius:13px;
+      background:${dark ? 'rgba(15,36,25,.76)' : 'rgba(10,31,60,.72)'};
+      border:1px solid rgba(255,255,255,.16);
+      box-shadow:0 6px 18px rgba(0,0,0,.26);
+      backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    }
+    .pip-count{
+      min-width:68px;padding:0 3px;text-align:center;
+      font-size:23px;font-weight:850;letter-spacing:-.035em;line-height:1;
+      font-variant-numeric:tabular-nums;white-space:nowrap;
+    }
+    .pip-count.over{color:#FFD08A}
+    .pip-actions{display:flex;align-items:center;gap:4px}
+    button{
+      width:29px;height:29px;padding:0;
+      display:grid;place-items:center;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.08);color:#fff;
+      border-radius:9px;font:800 13px/1 inherit;cursor:pointer;
+    }
+    button:hover{background:rgba(255,255,255,.18)}
+    button.primary{background:rgba(255,255,255,.92);color:#143522;border-color:rgba(255,255,255,.92)}
+    .sr-only{
+      position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+      overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+    }
+  `;
+}
+function buildTimerPiPDocument(pipWindow){
+  const doc = pipWindow.document;
+  doc.head.innerHTML = `<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(timerState.title || 'Focus Timer')}</title><style id="timerPiPStyle">${timerPiPStyles()}</style>`;
+  doc.body.innerHTML = `<div class="pip-card" id="pipCard" title="${esc(timerState.title || 'Focus Timer')}">
+    <div class="pip-count" id="pipTimerCount">00:00</div>
+    <div class="pip-actions">
+      <button type="button" id="pipPause" title="Tạm dừng / tiếp tục" aria-label="Tạm dừng hoặc tiếp tục">⏸</button>
+      <button type="button" id="pipStop" title="Dừng" aria-label="Dừng">■</button>
+      <button type="button" class="primary" id="pipExpand" title="Mở lại ứng dụng" aria-label="Mở lại ứng dụng">⤢</button>
+    </div>
+  </div>`;
+  doc.getElementById('pipPause').addEventListener('click', () => document.getElementById('timerPause').click());
+  doc.getElementById('pipStop').addEventListener('click', () => document.getElementById('timerStop').click());
+  doc.getElementById('pipExpand').addEventListener('click', () => closeTimerPiP({restore:true}));
+}
+function updateTimerPiPTheme(){
+  if(!timerPiPWindow || timerPiPWindow.closed) return;
+  const style = timerPiPWindow.document.getElementById('timerPiPStyle');
+  if(style) style.textContent = timerPiPStyles();
+}
+function updateTimerPiPUI(){
+  if(!timerPiPWindow || timerPiPWindow.closed) return;
+  const doc = timerPiPWindow.document;
+  const card = doc.getElementById('pipCard');
+  const count = doc.getElementById('pipTimerCount');
+  const pause = doc.getElementById('pipPause');
+  if(card) card.title = `${timerState.title || 'Focus Timer'} · ${timerModeText()}`;
+  if(count){
+    count.textContent = timerDisplayText();
+    count.classList.toggle('over', timerState.finished || (!timerState.countUp && timerRemaining() <= 30));
+  }
+  if(pause){
+    const paused = !!timerState.paused;
+    pause.textContent = paused ? '▶' : '⏸';
+    pause.title = paused ? 'Tiếp tục' : 'Tạm dừng';
+    pause.setAttribute('aria-label', paused ? 'Tiếp tục' : 'Tạm dừng');
+  }
+}
+function setInAppTimerPinned(on){
   const screen = document.getElementById('timerScreen');
-  if(screen) screen.classList.toggle('pinned', timerPinned);
+  timerPinned = !!on;
+  timerPinMode = on ? 'in-app' : null;
+  if(screen){
+    screen.classList.toggle('pinned', !!on);
+    if(on) screen.classList.add('open');
+  }
   syncTimerToolButtons();
 }
-function toggleTimerPin(){
-  setTimerPinned(!timerPinned);
-  toast(timerPinned
-    ? 'Đã thu nhỏ đồng hồ vào góc — cứ thao tác app như bình thường.'
-    : 'Đã mở lại đồng hồ toàn màn hình.');
+async function openGlobalTimerPiP(){
+  const screen = document.getElementById('timerScreen');
+  if(timerPiPWindow && !timerPiPWindow.closed){
+    timerPiPWindow.focus();
+    return true;
+  }
+  if(!supportsGlobalTimerPiP()) return false;
+  try{
+    const pip = await window.documentPictureInPicture.requestWindow({width:190,height:64});
+    timerPiPWindow = pip;
+    timerPinned = true;
+    timerPinMode = 'pip';
+    if(screen){
+      screen.classList.remove('pinned');
+      screen.classList.remove('open');
+    }
+    buildTimerPiPDocument(pip);
+    updateTimerPiPUI();
+    pip.addEventListener('pagehide', () => {
+      if(timerPiPWindow !== pip) return;
+      timerPiPWindow = null;
+      timerPinned = false;
+      timerPinMode = null;
+      // Closing the floating window manually returns the active timer to the app.
+      if(timerState.actId && screen) screen.classList.add('open');
+      syncTimerToolButtons();
+    }, {once:true});
+    syncTimerToolButtons();
+    return true;
+  }catch(err){
+    console.warn('Global Picture-in-Picture timer unavailable:', err);
+    return false;
+  }
 }
-function closeTimerPiP(){ setTimerPinned(false); }
+async function setTimerPinned(on){
+  if(!on){
+    closeTimerPiP({restore:true});
+    return;
+  }
+  const globalPinned = await openGlobalTimerPiP();
+  if(globalPinned){
+    toast('Đồng hồ đang nổi trên toàn hệ thống — có thể chuyển tab hoặc mở ứng dụng khác.');
+  }else{
+    setInAppTimerPinned(true);
+    toast('Trình duyệt chưa hỗ trợ ghim toàn hệ thống. Đồng hồ được ghim trong góc ứng dụng.');
+  }
+}
+async function toggleTimerPin(){
+  if(timerPinned){
+    closeTimerPiP({restore:true});
+    toast('Đã mở lại đồng hồ trong ứng dụng.');
+  }else{
+    await setTimerPinned(true);
+  }
+}
+function closeTimerPiP({restore=false}={}){
+  const pip = timerPiPWindow;
+  timerPiPWindow = null;
+  timerPinned = false;
+  timerPinMode = null;
+  const screen = document.getElementById('timerScreen');
+  if(screen){
+    screen.classList.remove('pinned');
+    if(restore && timerState.actId) screen.classList.add('open');
+  }
+  if(pip && !pip.closed){
+    try{ pip.close(); }catch(e){}
+  }
+  syncTimerToolButtons();
+}
 
 
 function fmtClock(sec){
@@ -3844,7 +4014,7 @@ function startTimer(act, sub){
   document.getElementById('timerTitle').textContent = target.title;
   const screen = document.getElementById('timerScreen');
   screen.classList.remove('finished');
-  setTimerPinned(false);
+  closeTimerPiP({restore:false});
   screen.classList.add('open');
   document.getElementById('timerPause').textContent = '⏸ Tạm dừng';
   updateTimerUI();
@@ -3863,6 +4033,7 @@ function updateTimerUI(){
     modeEl.textContent = timerState.paused ? 'Tạm dừng' : 'Đang đếm (không giới hạn)';
     updateBrowserTimerTitle();
     syncMiniPause();
+    updateTimerPiPUI();
   }else{
     const rem = timerRemaining();
     countEl.textContent = fmtClock(rem);
@@ -3872,6 +4043,7 @@ function updateTimerUI(){
     modeEl.textContent = timerState.paused ? 'Tạm dừng' : '';
     updateBrowserTimerTitle();
     syncMiniPause();
+    updateTimerPiPUI();
     if(rem <= 0 && !timerState.paused){ finishTimer({manual:false}); }
   }
 }
@@ -3888,7 +4060,7 @@ function finishTimer({manual=false}={}){
   if(!timerState.countUp) countEl.textContent = '00:00';
   document.getElementById('timerMode').textContent = manual ? 'Đã dừng' : 'Hết giờ';
   document.title = manual ? originalDocTitle : `Hết giờ · ${timerState.title || '1% Garden'}`;
-  setTimerPinned(false);
+  closeTimerPiP({restore:true});
   if(!manual && !timerState.countUp){
     playTimerBell();
     toast('⏰ Hết giờ! Bạn đã hoàn thành phiên tập trung.');
@@ -3915,6 +4087,13 @@ function closeTimer(){
 // Khi quay lại tab/app: tính lại ngay (phòng khi nhịp bị bóp nghẹt lúc nền)
 document.addEventListener('visibilitychange', () => {
   if(!document.hidden && timerState.tick && !timerState.paused) updateTimerUI();
+});
+window.addEventListener('pagehide', () => {
+  const pip = timerPiPWindow;
+  timerPiPWindow = null;
+  timerPinned = false;
+  timerPinMode = null;
+  if(pip && !pip.closed){ try{ pip.close(); }catch(e){} }
 });
 
 // Điều khiển
@@ -3945,7 +4124,7 @@ document.getElementById('timerExit').addEventListener('click', closeTimer);
 document.getElementById('timerPin').addEventListener('click', toggleTimerPin);
 document.getElementById('miniPause').addEventListener('click', () => document.getElementById('timerPause').click());
 document.getElementById('miniStop').addEventListener('click', () => document.getElementById('timerStop').click());
-document.getElementById('miniExpand').addEventListener('click', () => setTimerPinned(false));
+document.getElementById('miniExpand').addEventListener('click', () => closeTimerPiP({restore:true}));
 document.getElementById('timerBell').addEventListener('click', async () => {
   timerSettings.bell = !timerSettings.bell;
   saveTimerSettings();
