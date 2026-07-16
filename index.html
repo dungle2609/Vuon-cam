@@ -1742,6 +1742,163 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
   #activityBoardModal .board-sub-item{grid-template-columns:22px 37px 37px minmax(0,1fr) auto!important;gap:4px!important}
 }
 
+
+
+/* ============ 1% HUMOR LAB ============ */
+.humor-entry{
+  background:linear-gradient(135deg,var(--surface) 0%,color-mix(in srgb,var(--cyan-soft) 62%,var(--surface)) 100%);
+  border-color:color-mix(in srgb,var(--cyan) 28%,var(--line));
+  overflow:hidden;position:relative;
+}
+.humor-entry::after{content:"🎭";position:absolute;right:18px;top:8px;font-size:70px;opacity:.07;transform:rotate(8deg);pointer-events:none}
+.humor-entry-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;position:relative;z-index:1}
+.humor-entry-title{font-family:var(--font-display);font-size:17px;font-weight:800;color:var(--ink)}
+.humor-entry-copy{font-size:12.5px;color:var(--muted);max-width:580px;margin-top:4px}
+.humor-entry-actions{display:flex;gap:8px;flex-wrap:wrap;position:relative;z-index:1;margin-top:14px}
+.humor-entry-metrics{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px;position:relative;z-index:1}
+.humor-entry-metrics span{font-size:11.5px;font-weight:700;padding:5px 9px;border-radius:99px;background:var(--surface);border:1px solid var(--line);color:var(--muted)}
+.humor-entry-metrics b{color:var(--blue)}
+.humor-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+.humor-metric{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow)}
+.humor-metric strong{display:block;font-family:var(--font-display);font-size:24px;color:var(--blue);line-height:1}
+.humor-metric span{display:block;color:var(--muted);font-size:11.5px;margin-top:5px}
+.humor-tech-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.humor-tech{border:1px solid var(--line);background:var(--surface-2);border-radius:14px;padding:13px;min-height:118px}
+.humor-tech b{display:block;font-family:var(--font-display);font-size:13.5px;color:var(--ink);margin-bottom:5px}
+.humor-tech p{font-size:11.8px;color:var(--muted);line-height:1.45}
+.humor-tech .humor-tech-count{display:inline-flex;margin-top:8px;font-size:10.5px;font-weight:800;color:var(--blue);background:var(--blue-soft);border-radius:99px;padding:3px 8px}
+.humor-seed-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.humor-seed-form .wide{grid-column:1/-1}
+.humor-seed-form .f-group{margin-bottom:0}
+.humor-card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:11px;box-shadow:var(--shadow)}
+.humor-card-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.humor-card-title{font-family:var(--font-display);font-size:14.5px;font-weight:800;color:var(--ink);line-height:1.45}
+.humor-card-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:11px}
+.humor-field{background:var(--surface-2);border:1px solid var(--line);border-radius:11px;padding:10px}
+.humor-field b{display:block;color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.humor-field span{display:block;font-size:12.5px;color:var(--ink);white-space:pre-wrap}
+.humor-draft{margin-top:12px;padding:12px;border-left:3px solid var(--cyan);background:color-mix(in srgb,var(--cyan-soft) 48%,var(--surface));border-radius:0 12px 12px 0}
+.humor-draft-label{font-size:10.5px;font-weight:900;color:var(--cyan);letter-spacing:.08em;text-transform:uppercase}
+.humor-punchline{font-family:var(--font-display);font-size:14px;font-weight:800;color:var(--ink);margin-top:5px}
+.humor-checks{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}
+.humor-check{font-size:10.5px;font-weight:800;border-radius:99px;padding:3px 7px;background:var(--warn-soft);color:var(--warn)}
+.humor-check.ok{background:var(--ok-soft);color:var(--ok)}
+.humor-card-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.humor-empty{padding:24px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:14px}
+.humor-reaction-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+.humor-reaction{font-size:11px;font-weight:800;padding:4px 8px;border-radius:99px;background:var(--surface-2);border:1px solid var(--line);color:var(--muted)}
+.humor-reaction.good{background:var(--ok-soft);color:var(--ok);border-color:transparent}
+.humor-reaction.warn{background:var(--warn-soft);color:var(--warn);border-color:transparent}
+.humor-tip{padding:11px 12px;border-radius:12px;background:var(--blue-soft);color:var(--ink);font-size:12.5px;margin-top:12px;border:1px solid color-mix(in srgb,var(--blue) 18%,var(--line))}
+.humor-workshop-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.humor-workshop-grid .wide{grid-column:1/-1}
+.humor-version{min-height:82px!important}
+.humor-practice-modal{text-align:center;max-width:760px!important}
+.humor-practice-count{font-family:var(--font-display);font-size:64px;font-weight:900;color:var(--blue);line-height:1;margin:14px 0}
+.humor-practice-script{text-align:left;background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:15px;transition:filter .2s,opacity .2s}
+.humor-practice-script.hidden-script{filter:blur(8px);opacity:.28;user-select:none}
+.humor-practice-script b{font-size:10.5px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.humor-practice-script p{font-size:14px;color:var(--ink);margin:3px 0 10px;white-space:pre-wrap}
+.humor-practice-script .punch{font-family:var(--font-display);font-weight:800;font-size:16px;color:var(--cyan)}
+.humor-form-check{display:flex;align-items:flex-start;gap:8px;padding:10px 11px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2);cursor:pointer}
+.humor-form-check input{width:18px;height:18px;flex:0 0 auto;margin-top:1px;accent-color:var(--blue)}
+.humor-form-check span{font-size:12.5px;color:var(--ink);font-weight:700}
+[data-theme="dark"] .humor-entry,[data-theme="dark"] .humor-draft{background:linear-gradient(135deg,#21170F,#332512);border-color:#795727}
+[data-theme="dark"] .humor-tech,[data-theme="dark"] .humor-field,[data-theme="dark"] .humor-practice-script,[data-theme="dark"] .humor-form-check{background:#2B2116;border-color:#62472B}
+@media(max-width:760px){
+  .humor-grid{grid-template-columns:1fr 1fr}
+  .humor-tech-grid{grid-template-columns:1fr 1fr}
+  .humor-seed-form,.humor-workshop-grid{grid-template-columns:1fr}
+  .humor-seed-form .wide,.humor-workshop-grid .wide{grid-column:auto}
+  .humor-card-grid{grid-template-columns:1fr}
+  .humor-entry-head{display:block}.humor-entry-actions .btn{flex:1;justify-content:center}
+}
+@media(max-width:430px){.humor-tech-grid{grid-template-columns:1fr}.humor-practice-count{font-size:54px}}
+
+
+/* ============ HUMOR SKILL FLOW REFINEMENT ============ */
+.humor-entry{cursor:pointer;transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,background .16s ease}
+.humor-entry:hover,.humor-entry:focus-visible{transform:translateY(-2px);border-color:color-mix(in srgb,var(--cyan) 54%,var(--line));box-shadow:0 5px 14px rgba(90,54,24,.09),0 18px 42px rgba(90,54,24,.13)}
+.humor-entry:hover .humor-entry-title,.humor-entry:focus-visible .humor-entry-title{color:var(--blue)}
+.humor-entry-open{position:relative;z-index:1;margin-top:14px;display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:800;color:var(--blue)}
+.humor-entry-open span{font-size:17px;transition:transform .16s ease}.humor-entry:hover .humor-entry-open span{transform:translateX(4px)}
+.humor-entry-metrics,.humor-entry-actions,.humor-grid{display:none!important}
+.humor-library-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:20px 0 10px}
+.humor-status{display:inline-flex;align-items:center;font-size:10.5px;font-weight:900;border-radius:99px;padding:4px 8px;background:var(--surface-2);border:1px solid var(--line);color:var(--muted)}
+.humor-status.raw{background:var(--surface-2)}.humor-status.crafted{background:var(--blue-soft);color:var(--blue);border-color:transparent}.humor-status.planned{background:var(--cyan-soft);color:var(--cyan);border-color:transparent}.humor-status.tested{background:var(--ok-soft);color:var(--ok);border-color:transparent}.humor-status.retell{background:var(--warn-soft);color:var(--warn);border-color:transparent}
+.humor-plan-summary{margin-top:10px;padding:10px 12px;border-radius:11px;background:var(--blue-soft);border:1px solid color-mix(in srgb,var(--blue) 20%,var(--line));font-size:12px;color:var(--muted)}
+.humor-plan-summary b{color:var(--ink)}
+.humor-plan-summary.retell{background:var(--warn-soft);border-color:color-mix(in srgb,var(--warn) 28%,var(--line))}
+.humor-plan-note{padding:11px 12px;border-radius:12px;background:var(--blue-soft);border:1px solid color-mix(in srgb,var(--blue) 18%,var(--line));font-size:12.5px;color:var(--muted)}
+.humor-plan-note b{color:var(--ink)}
+.humor-retell-settings{margin-top:10px;padding:12px;border:1px solid color-mix(in srgb,var(--warn) 30%,var(--line));border-radius:13px;background:var(--warn-soft)}
+.humor-retell-settings[hidden]{display:none!important}
+[data-theme="dark"] .humor-plan-summary,[data-theme="dark"] .humor-plan-note{background:#173223;border-color:#456B50}
+[data-theme="dark"] .humor-retell-settings{background:#3A2A12;border-color:#9C6A23}
+@media(max-width:760px){.humor-library-head{align-items:flex-start}.humor-entry-open{margin-top:11px}}
+
+
+/* ============ HUMOR SKILL · TWO-BOX COMPACT FLOW ============ */
+.humor-two-boxes{display:flex;flex-direction:column;gap:18px}
+.humor-skill-card{margin-bottom:0}
+.humor-skill-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.humor-skill-card-head h2{font-size:17px;margin:0}
+.humor-skill-card-head p{margin-top:3px}
+.humor-tech-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin-top:0}
+.humor-tech{
+  position:relative;display:flex;flex-direction:column;min-height:168px;
+  border:1px solid var(--line);background:var(--surface-2);border-radius:15px;padding:14px;
+  text-align:left;color:var(--ink);cursor:pointer;overflow:hidden;
+  transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,background .16s ease;
+}
+.humor-tech::after{content:"→";position:absolute;right:13px;top:12px;font-size:18px;font-weight:900;color:var(--muted);opacity:.45;transition:transform .16s,color .16s,opacity .16s}
+.humor-tech:hover,.humor-tech:focus-visible{transform:translateY(-2px);background:var(--surface);border-color:color-mix(in srgb,var(--blue) 42%,var(--line));box-shadow:var(--shadow)}
+.humor-tech:hover::after,.humor-tech:focus-visible::after{transform:translateX(3px);color:var(--blue);opacity:1}
+.humor-tech b{padding-right:24px;margin-bottom:6px}
+.humor-tech p{margin:0}
+.humor-tech-example{margin-top:auto;padding-top:10px;font-size:11.5px;line-height:1.45;color:var(--ink)}
+.humor-tech-example span{display:block;color:var(--cyan);font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px}
+.humor-tech-action{display:inline-flex;align-items:center;gap:5px;margin-top:9px;color:var(--blue);font-size:11.5px;font-weight:800}
+#humorTechniqueTip,#humorSuggestBtn,#humorCaptureCard{display:none!important}
+.humor-library-card{padding:18px}
+.humor-library-card .filter-row{margin:10px 0 14px}
+.humor-library-list{display:flex;flex-direction:column;gap:7px}
+.humor-library-row{
+  width:100%;min-height:52px;display:flex;align-items:center;gap:10px;
+  border:1px solid var(--line);border-radius:12px;background:var(--surface-2);color:var(--ink);
+  padding:11px 13px;text-align:left;cursor:pointer;
+  transition:transform .14s ease,box-shadow .14s ease,border-color .14s ease,background .14s ease;
+}
+.humor-library-row:hover,.humor-library-row:focus-visible{transform:translateY(-1px);background:var(--surface);border-color:color-mix(in srgb,var(--blue) 38%,var(--line));box-shadow:0 7px 20px rgba(90,54,24,.08)}
+.humor-library-row-title{flex:1;min-width:0;font-family:var(--font-display);font-size:13.5px;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.humor-library-row-arrow{flex:0 0 auto;color:var(--muted);font-size:18px;font-weight:900;transition:transform .14s,color .14s}
+.humor-library-row:hover .humor-library-row-arrow{transform:translateX(3px);color:var(--blue)}
+.humor-capture-example{padding:12px 13px;border-radius:13px;background:var(--blue-soft);border:1px solid color-mix(in srgb,var(--blue) 20%,var(--line));margin-bottom:14px}
+.humor-capture-example b{display:block;font-size:11px;color:var(--blue);letter-spacing:.07em;text-transform:uppercase;margin-bottom:5px}
+.humor-capture-example p{font-size:12.5px;line-height:1.55;color:var(--ink);white-space:pre-wrap}
+.humor-capture-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.humor-capture-form .wide{grid-column:1/-1}
+.humor-capture-form .f-group{margin-bottom:0}
+.humor-field-help{font-size:11.5px;line-height:1.4;color:var(--muted);margin:4px 0 0}
+.humor-detail-modal{max-width:900px!important}
+.humor-detail-content .humor-card{box-shadow:none;margin:0;border:0;padding:0;background:transparent}
+.humor-detail-content .humor-card-actions{padding-top:4px}
+[data-theme="dark"] .humor-tech,[data-theme="dark"] .humor-library-row{background:#2B2116;border-color:#62472B}
+[data-theme="dark"] .humor-tech:hover,[data-theme="dark"] .humor-library-row:hover{background:#332619;border-color:#78D08B}
+[data-theme="dark"] .humor-capture-example{background:#173223;border-color:#456B50}
+@media(max-width:760px){
+  .humor-tech-grid{grid-template-columns:1fr 1fr}
+  .humor-tech{min-height:160px}
+  .humor-capture-form{grid-template-columns:1fr}
+  .humor-capture-form .wide{grid-column:auto}
+  .humor-library-card{padding:15px}
+}
+@media(max-width:500px){
+  .humor-tech-grid{grid-template-columns:1fr}
+  .humor-tech{min-height:145px}
+  .humor-library-row{min-height:50px;padding:10px 11px}
+}
+
 </style>
 </head>
 <body>
@@ -1938,7 +2095,68 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
         </div>
       </div>
 
+
+
+      <div class="card humor-entry" id="humorEntryCard" data-nav-go="humor" role="button" tabindex="0" aria-label="Mở skill Humor">
+        <div class="humor-entry-head">
+          <div>
+            <div class="eyebrow">Skill</div>
+            <div class="humor-entry-title">🎭 Humor</div>
+            <div class="humor-entry-copy">Ghi lại tình huống, phát triển thành câu chuyện và lên kế hoạch kể cho một người cụ thể.</div>
+          </div>
+          <span class="chip chip-cat" id="humorTodayTechnique">Kỹ thuật hôm nay</span>
+        </div>
+        <div class="humor-entry-open">Mở skill Humor <span aria-hidden="true">→</span></div>
+      </div>
+
       <p class="quote" id="footerQuote" style="margin-top:20px"></p>
+    </section>
+
+
+
+
+    <!-- ============ HUMOR SKILL ============ -->
+    <section data-view="humor">
+      <div class="page-head spread">
+        <div>
+          <div class="eyebrow">Observe · Craft · Perform · Review</div>
+          <h1>🎭 Humor</h1>
+          <p class="sub">Chọn một kỹ thuật để ghi lại tình huống. Mọi nguyên liệu được lưu gọn trong kho và chỉ mở chi tiết khi cần.</p>
+        </div>
+        <button type="button" class="btn btn-ghost" data-nav-go="today">← Kế hoạch</button>
+      </div>
+
+      <div class="humor-two-boxes">
+        <div class="card humor-skill-card">
+          <div class="humor-skill-card-head">
+            <div>
+              <h2>Sáu kỹ thuật hài hước</h2>
+              <p class="hint">Click vào kỹ thuật anh muốn luyện để ghi một tình huống theo đúng cấu trúc của kỹ thuật đó.</p>
+            </div>
+          </div>
+          <div class="humor-tech-grid" id="humorTechniqueGrid"></div>
+          <div class="humor-tip" id="humorTechniqueTip"></div>
+          <button type="button" class="btn btn-soft btn-sm" id="humorSuggestBtn">Gợi ý kỹ thuật hôm nay</button>
+        </div>
+
+        <div class="card humor-skill-card humor-library-card">
+          <div class="humor-skill-card-head">
+            <div>
+              <h2>Kho tình huống</h2>
+              <p class="hint">Danh sách chỉ hiển thị tên. Click vào một tình huống để xem nội dung, phát triển bản kể hoặc lên kế hoạch sử dụng.</p>
+            </div>
+          </div>
+          <div class="filter-row" id="humorLibraryFilters" aria-label="Lọc kho Humor">
+            <button type="button" class="on" data-humor-filter="all">Tất cả</button>
+            <button type="button" data-humor-filter="raw">Mới ghi</button>
+            <button type="button" data-humor-filter="crafted">Đã phát triển</button>
+            <button type="button" data-humor-filter="planned">Đã lên kế hoạch</button>
+            <button type="button" data-humor-filter="tested">Đã kể</button>
+            <button type="button" data-humor-filter="retell">Cần kể lại 1%</button>
+          </div>
+          <div id="humorObservationList" class="humor-library-list"></div>
+        </div>
+      </div>
     </section>
 
 
@@ -2291,6 +2509,167 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
   </div>
 </div>
 
+
+
+<!-- ============ HUMOR TECHNIQUE CAPTURE MODAL ============ -->
+<div class="modal-back" id="humorCaptureModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="humorCaptureTitle">
+    <div class="spread" style="margin-bottom:14px">
+      <div>
+        <h2 id="humorCaptureTitle">Ghi tình huống</h2>
+        <p class="m-sub" id="humorCaptureSub">Điền theo gợi ý của kỹ thuật đã chọn.</p>
+      </div>
+      <button type="button" class="btn btn-ghost btn-sm" data-close>Đóng</button>
+    </div>
+    <div class="humor-capture-example" id="humorCaptureExample"></div>
+    <form id="humorSeedForm" class="humor-capture-form">
+      <input type="hidden" id="humorSeedTechnique">
+      <div class="f-group wide">
+        <label for="humorSeedTitle">Tên tình huống *</label>
+        <input id="humorSeedTitle" required placeholder="VD: Ba tiếng để tiết kiệm mười phút">
+        <p class="humor-field-help">Đặt tên ngắn để sau này nhìn trong kho là nhớ ngay chuyện gì đã xảy ra.</p>
+      </div>
+      <div class="f-group"><label for="humorSeedDate">Ngày</label><input type="date" id="humorSeedDate"></div>
+      <div class="f-group"><label for="humorSeedContext">Bối cảnh</label><select id="humorSeedContext"><option>Công việc</option><option>Khách hàng</option><option>Bạn bè</option><option>Gia đình</option><option>Billiards</option><option>Đời sống</option><option>Khác</option></select></div>
+      <div class="f-group wide">
+        <label id="humorSeedEventLabel" for="humorSeedEvent">Chuyện gì vừa xảy ra? *</label>
+        <textarea id="humorSeedEvent" required></textarea>
+        <p class="humor-field-help" id="humorSeedEventHelp"></p>
+      </div>
+      <div class="f-group">
+        <label id="humorSeedExpectedLabel" for="humorSeedExpected">Kỳ vọng</label>
+        <textarea id="humorSeedExpected"></textarea>
+        <p class="humor-field-help" id="humorSeedExpectedHelp"></p>
+      </div>
+      <div class="f-group">
+        <label id="humorSeedActualLabel" for="humorSeedActual">Thực tế</label>
+        <textarea id="humorSeedActual"></textarea>
+        <p class="humor-field-help" id="humorSeedActualHelp"></p>
+      </div>
+      <div class="f-group wide">
+        <label id="humorSeedDetailLabel" for="humorSeedDetail">Chi tiết đáng nhớ</label>
+        <textarea id="humorSeedDetail"></textarea>
+        <p class="humor-field-help" id="humorSeedDetailHelp"></p>
+      </div>
+      <div class="f-group"><label for="humorSeedTarget">Đối tượng bị trêu</label><select id="humorSeedTarget"><option value="self">Chính tôi</option><option value="situation">Hoàn cảnh</option><option value="technology">Công nghệ / quy trình</option><option value="other">Người khác</option></select></div>
+      <div class="f-group"><label for="humorSeedSafety">Mức an toàn</label><select id="humorSeedSafety"><option value="high">Cao — có thể kể rộng rãi</option><option value="consider">Cần cân nhắc bối cảnh</option><option value="private">Chỉ nên giữ riêng</option></select></div>
+      <div class="wide row" style="justify-content:flex-end;margin-top:4px"><button type="button" class="btn btn-ghost" data-close>Huỷ</button><button type="submit" class="btn btn-primary">Lưu vào kho</button></div>
+    </form>
+  </div>
+</div>
+
+<!-- ============ HUMOR DETAIL MODAL ============ -->
+<div class="modal-back" id="humorDetailModal">
+  <div class="modal humor-detail-modal" role="dialog" aria-modal="true">
+    <div class="spread" style="margin-bottom:14px">
+      <div><h2>Chi tiết tình huống</h2><p class="m-sub">Xem nguyên liệu, bản kể, kế hoạch và kết quả đã ghi.</p></div>
+      <button type="button" class="btn btn-ghost btn-sm" data-close>Đóng</button>
+    </div>
+    <div id="humorDetailContent" class="humor-detail-content"></div>
+  </div>
+</div>
+
+<!-- ============ HUMOR WORKSHOP MODAL ============ -->
+<div class="modal-back" id="humorWorkshopModal">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="spread" style="margin-bottom:14px">
+      <div><h2>✍️ Xưởng chế tác</h2><p class="m-sub">Viết lại cùng một nguyên liệu theo ba phiên bản. Phiên bản cuối nên ngắn và rõ nhất.</p></div>
+      <button type="button" class="btn btn-ghost btn-sm" data-close>Đóng</button>
+    </div>
+    <form id="humorWorkshopForm">
+      <input type="hidden" id="humorWorkshopObservationId">
+      <div class="humor-workshop-grid">
+        <div class="f-group"><label>Kỹ thuật chính</label><select id="humorWorkshopTechnique"></select></div>
+        <div class="f-group"><label>Từ hoặc ý bất ngờ nên nằm cuối</label><input id="humorWorkshopTargetWord" placeholder="VD: điều khiển điều hòa"><p class="humor-field-help">Từ khiến người nghe phải hiểu lại câu chuyện nên xuất hiện càng gần cuối càng tốt.</p></div>
+        <div class="f-group wide"><label>Setup — người nghe cần biết gì?</label><textarea id="humorWorkshopSetup" placeholder="VD: Tôi đến sớm 20 phút, mở laptop và kiểm tra slide ba lần để buổi demo thật chuyên nghiệp."></textarea><p class="humor-field-help">Chỉ giữ những chi tiết giúp người nghe hình thành kỳ vọng trước khi bị bẻ hướng.</p></div>
+        <div class="f-group wide"><label>Turn — tín hiệu sắp bẻ hướng</label><textarea id="humorWorkshopTurn" placeholder="VD: Sau năm phút loay hoay, khách hàng nhẹ nhàng bảo…"></textarea><p class="humor-field-help">Có thể để trống. Dùng khi cần một nhịp ngắn dẫn người nghe đến punchline.</p></div>
+        <div class="f-group wide"><label>Punchline — câu bẻ hướng *</label><textarea id="humorWorkshopPunchline" required placeholder="VD: “Anh Dũng, đây là điều khiển điều hòa.”"></textarea><p class="humor-field-help">Viết ngắn, đặt ý bất ngờ ở cuối và không giải thích thêm sau câu này.</p></div>
+        <div class="f-group wide"><label>Phiên bản 1 — kể như anh thường kể</label><textarea class="humor-version" id="humorVersion1" placeholder="Viết đầy đủ theo cách tự nhiên nhất, chưa cần quá ngắn."></textarea></div>
+        <div class="f-group wide"><label>Phiên bản 2 — bỏ chi tiết không phục vụ câu kết</label><textarea class="humor-version" id="humorVersion2" placeholder="Rút khoảng 30%, giữ kỳ vọng và chi tiết dẫn đến punchline."></textarea></div>
+        <div class="f-group wide"><label>Phiên bản 3 — bản sẽ kể ngoài đời</label><textarea class="humor-version" id="humorVersion3" placeholder="Bản gọn nhất, dễ nhớ, dừng ngay sau punchline."></textarea></div>
+      </div>
+      <div class="row" style="justify-content:flex-end"><button type="button" class="btn btn-ghost" data-close>Huỷ</button><button type="submit" class="btn btn-primary">Lưu bản kể</button></div>
+    </form>
+  </div>
+</div>
+
+<!-- ============ HUMOR STORY PLAN MODAL ============ -->
+<div class="modal-back" id="humorPlanModal">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="spread" style="margin-bottom:14px">
+      <div><h2>📅 Lên kế hoạch kể</h2><p class="m-sub">Lần kể đầu tiên là một công việc bình thường, chưa phải việc chăm cây 1%.</p></div>
+      <button type="button" class="btn btn-ghost btn-sm" data-close>Đóng</button>
+    </div>
+    <form id="humorPlanForm">
+      <input type="hidden" id="humorPlanDraftId">
+      <div class="f-group"><label>Tên công việc *</label><input id="humorPlanTitle" required></div>
+      <div class="f-row3">
+        <div class="f-group"><label>Ngày dự kiến *</label><input type="date" id="humorPlanDate" required></div>
+        <div class="f-group"><label>Giờ</label><input type="time" id="humorPlanTime"></div>
+        <div class="f-group"><label>Block</label><select id="humorPlanDuration"><option value="">Không đặt</option><option value="10" selected>10 phút</option><option value="15">15 phút</option><option value="30">30 phút</option><option value="45">45 phút</option><option value="60">60 phút</option></select></div>
+      </div>
+      <div class="f-row3">
+        <div class="f-group"><label>Đối tượng sẽ kể *</label><input id="humorPlanAudience" required placeholder="VD: anh Chải, khách hàng A, nhóm bạn…"></div>
+        <div class="f-group"><label>Bối cảnh dự kiến</label><input id="humorPlanContext" placeholder="VD: đầu buổi meeting, lúc nói về công nghệ…"></div>
+        <div class="f-group"><label>Cột công việc</label><select id="humorPlanLocation"><option value="company">Công ty</option><option value="home">Ở nhà</option></select></div>
+      </div>
+      <div class="humor-plan-note">Công việc được tạo với trạng thái <b>công việc bình thường</b>. Sau khi kể, hãy quay lại Humor để ghi kết quả. Chỉ kế hoạch kể lại nhằm sửa một điểm cụ thể mới được tính là việc 1%.</div>
+      <div class="row" style="justify-content:flex-end;margin-top:14px"><button type="button" class="btn btn-ghost" data-close>Huỷ</button><button type="submit" class="btn btn-primary">Tạo công việc kể</button></div>
+    </form>
+  </div>
+</div>
+
+<!-- ============ HUMOR PERFORMANCE MODAL ============ -->
+<div class="modal-back" id="humorPerformanceModal">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="spread" style="margin-bottom:14px">
+      <div><h2>🧪 Kết quả lần kể</h2><p class="m-sub">Không chỉ đo tiếng cười. Hãy ghi xem người nghe có hiểu, thấy an toàn và nhớ câu chuyện không.</p></div>
+      <button type="button" class="btn btn-ghost btn-sm" data-close>Đóng</button>
+    </div>
+    <form id="humorPerformanceForm">
+      <input type="hidden" id="humorPerformanceDraftId">
+      <div class="f-row3">
+        <div class="f-group"><label>Ngày thử</label><input type="date" id="humorPerformanceDate"></div>
+        <div class="f-group"><label>Người nghe</label><input id="humorPerformanceAudience" placeholder="VD: khách hàng, đồng nghiệp…"></div>
+        <div class="f-group"><label>Bối cảnh</label><input id="humorPerformanceContext" placeholder="VD: đầu buổi meeting"></div>
+      </div>
+      <div class="f-row3">
+        <div class="f-group"><label>Phản ứng</label><select id="humorPerformanceReaction"><option value="confused">😶 Không hiểu</option><option value="smile">🙂 Mỉm cười</option><option value="laugh">😄 Cười tự nhiên</option><option value="big_laugh">😂 Cười lớn</option><option value="callback">🔁 Nhắc lại sau đó</option><option value="awkward">😬 Khó xử</option></select></div>
+        <div class="f-group"><label>Người nghe có hiểu?</label><select id="humorPerformanceUnderstood"><option value="yes">Có</option><option value="partial">Một phần</option><option value="no">Không</option></select></div>
+        <div class="f-group"><label>Mức an toàn</label><select id="humorPerformanceSafety"><option value="safe">An toàn</option><option value="borderline">Hơi sát ranh giới</option><option value="unsafe">Không phù hợp</option></select></div>
+      </div>
+      <div class="f-group"><label>Điều gì đã xảy ra?</label><textarea id="humorPerformanceNotes" placeholder="Câu nào tạo phản ứng? Mình có nói quá nhanh hay giải thích sau punchline không?"></textarea></div>
+      <div class="f-group"><label>Có điểm nào cần điều chỉnh không?</label><textarea id="humorPerformanceNext" placeholder="Để trống nếu câu chuyện đã phù hợp. VD: Cắt setup còn 2 câu và dừng ngay sau punchline."></textarea></div>
+      <label class="humor-form-check"><input type="checkbox" id="humorPerformanceCreateTask"><span>Lên kế hoạch kể lại câu chuyện này như một việc chăm cây 1%</span></label>
+      <div class="humor-retell-settings" id="humorRetellSettings" hidden>
+        <div class="f-row3">
+          <div class="f-group"><label>Ngày kể lại *</label><input type="date" id="humorPerformanceRetellDate"></div>
+          <div class="f-group"><label>Đối tượng lần tới</label><input id="humorPerformanceRetellAudience" placeholder="Có thể là cùng người hoặc người khác"></div>
+          <div class="f-group"><label>Block</label><select id="humorPerformanceRetellDuration"><option value="10">10 phút</option><option value="15" selected>15 phút</option><option value="30">30 phút</option></select></div>
+        </div>
+        <p class="hint">Việc này được tính là 1% vì nó sinh ra từ phản hồi thực tế và có một điều chỉnh cụ thể cần kiểm chứng.</p>
+      </div>
+      <div class="row" style="justify-content:flex-end;margin-top:14px"><button type="button" class="btn btn-ghost" data-close>Huỷ</button><button type="submit" class="btn btn-primary">Lưu kết quả</button></div>
+    </form>
+  </div>
+</div>
+
+<!-- ============ HUMOR 30-SECOND PRACTICE ============ -->
+<div class="modal-back" id="humorPracticeModal">
+  <div class="modal humor-practice-modal" role="dialog" aria-modal="true">
+    <div class="spread"><div><h2>🎙️ Tập kể 30 giây</h2><p class="m-sub">Kể tự nhiên, kể ngắn hơn, rồi kể lần cuối với một nhịp dừng trước punchline.</p></div><button type="button" class="btn btn-ghost btn-sm" data-close>Đóng</button></div>
+    <div class="humor-practice-count" id="humorPracticeCount">00:30</div>
+    <div class="humor-practice-script" id="humorPracticeScript"></div>
+    <div class="row" style="justify-content:center;margin-top:14px">
+      <button type="button" class="btn btn-ghost" id="humorPracticeHide">Ẩn văn bản</button>
+      <button type="button" class="btn btn-primary" id="humorPracticeStart">Bắt đầu</button>
+      <button type="button" class="btn btn-soft" id="humorPracticeReset">Làm lại</button>
+    </div>
+    <div class="row" style="justify-content:center;margin-top:10px"><button type="button" class="btn btn-primary" id="humorPracticeComplete">✓ Hoàn thành một lượt kể</button></div>
+  </div>
+</div>
+
+
 <!-- ============ REVIEW MODAL ============ -->
 <div class="modal-back" id="reviewModal">
   <div class="modal" role="dialog" aria-modal="true">
@@ -2434,8 +2813,8 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
 
 // ---------- Constants ----------
 const LS_KEY = 'onePercentOS_v1';
-const ACTIVITY_CATS = ['Công việc','Học tập','Sức khỏe','Gia đình','Tài chính','Kỹ năng','Billiards','Tinh thần','Khác'];
-const MISTAKE_CATS = ['Tư duy','Giao tiếp','Kỷ luật','Công việc','Cảm xúc','Sức khỏe','Kỹ năng','Hệ thống cá nhân','Khác'];
+const ACTIVITY_CATS = ['Công việc','Học tập','Sức khỏe','Gia đình','Tài chính','Kỹ năng','Hài hước','Billiards','Tinh thần','Khác'];
+const MISTAKE_CATS = ['Tư duy','Giao tiếp','Hài hước','Kỷ luật','Công việc','Cảm xúc','Sức khỏe','Kỹ năng','Hệ thống cá nhân','Khác'];
 const FOCUS_SUGGEST = {
   'Tư duy':'Chậm lại một nhịp trước khi kết luận: viết ra giả định trước khi quyết định.',
   'Giao tiếp':'Trước mỗi cuộc trao đổi quan trọng, viết trước 1 câu key message bạn muốn người nghe nhớ.',
@@ -2919,7 +3298,30 @@ function ensureRecurringTasksForDate(date, persist=true){
   return added;
 }
 
+
+
+function normalizeHumorState(){
+  if(!state.humor || typeof state.humor !== 'object') state.humor = {};
+  if(!Array.isArray(state.humor.observations)) state.humor.observations = [];
+  if(!Array.isArray(state.humor.drafts)) state.humor.drafts = [];
+  if(!Array.isArray(state.humor.performances)) state.humor.performances = [];
+  state.humor.observations.forEach(o => {
+    if(!o.date) o.date = todayStr();
+    if(!o.context) o.context = 'Đời sống';
+    if(!o.target) o.target = 'self';
+    if(!o.safety) o.safety = 'high';
+    const linkedDraft = state.humor.drafts.find(d => d.observationId === o.id);
+    if(!o.technique) o.technique = linkedDraft?.technique || 'anomaly';
+    if(!o.title) o.title = String(o.event || 'Tình huống chưa đặt tên').replace(/\s+/g,' ').trim().slice(0,80);
+  });
+  state.humor.drafts.forEach(d => {
+    if(!Array.isArray(d.versions)) d.versions = [d.version1||'',d.version2||'',d.version3||''];
+    if(!Number.isFinite(Number(d.rehearsals))) d.rehearsals = 0;
+  });
+}
+
 function migrateActivities(){
+  normalizeHumorState();
   if(!state.gardenStartDate) state.gardenStartDate = todayStr();
   if(!state.columnSettings) state.columnSettings = {};
   if(!state.columnSettings.home) state.columnSettings.home = {label:'Ở nhà', icon:'🏠'};
@@ -3048,7 +3450,7 @@ let state = null;
 
 function defaultState(){
   const start = todayStr();
-  return { activities:[], reviews:[], actions:[], mistakes:[], focus:{}, weekly:[], gardenStartDate:start, goalTargets:defaultGoalTargets(), celebratedOnePctDays:[], recurringTasks:[], recurringSkips:[], columnSettings:{home:{label:'Ở nhà',icon:'🏠'},company:{label:'Công ty',icon:'🏢'}}, seeded:false, theme:'light' };
+  return { activities:[], reviews:[], actions:[], mistakes:[], focus:{}, weekly:[], humor:{observations:[],drafts:[],performances:[]}, gardenStartDate:start, goalTargets:defaultGoalTargets(), celebratedOnePctDays:[], recurringTasks:[], recurringSkips:[], columnSettings:{home:{label:'Ở nhà',icon:'🏠'},company:{label:'Công ty',icon:'🏢'}}, seeded:false, theme:'light' };
 }
 
 function load(){
@@ -3142,6 +3544,10 @@ document.querySelectorAll('.nav-btn').forEach(b => b.addEventListener('click', (
 document.addEventListener('click', e => {
   const g = e.target.closest('[data-nav-go]');
   if(g) go(g.dataset.navGo);
+});
+document.addEventListener('keydown', e => {
+  const g = e.target.closest('[data-nav-go][role="button"]');
+  if(g && (e.key === 'Enter' || e.key === ' ')){ e.preventDefault(); go(g.dataset.navGo); }
 });
 
 // ---------- Theme ----------
@@ -3507,7 +3913,7 @@ document.getElementById('calendarModeTabs')?.addEventListener('click',e=>{
 
 // ---------- Renders ----------
 function renderAll(){
-  renderToday(); renderCalendar(); renderActions(); renderMistakes(); renderReport(); renderDataSummary();
+  renderToday(); renderCalendar(); renderActions(); renderMistakes(); renderReport(); renderHumor(); renderDataSummary();
 }
 
 
@@ -5843,6 +6249,7 @@ function closeSubtaskLayer(){
 }
 
 function closeModals(){
+  if(typeof stopHumorPracticeTimer === 'function') stopHumorPracticeTimer();
   const subModal = document.getElementById('subtaskBoardModal');
   if(subBoardRef && subBoardRef.draft && subModal && subModal.classList.contains('open')){
     closeSubtaskLayer();
@@ -6102,8 +6509,350 @@ function renderDataSummary(){
   document.getElementById('dataSummary').innerHTML =
     `Hiện có: <b>${state.activities.length}</b> hoạt động · <b>${state.reviews.length}</b> review ·
      <b>${state.activities.filter(a=>a.tag1pct).length}</b> việc cải thiện 1% · <b>${state.recurringTasks.filter(t=>t && t.active !== false).length}</b> lịch lặp theo tuần · <b>${state.mistakes.length}</b> cỏ dại ·
-     <b>${state.weekly.length}</b> tổng kết tuần.`;
+     <b>${state.weekly.length}</b> tổng kết tuần · <b>${state.humor.observations.length}</b> tình huống Humor · <b>${state.humor.performances.length}</b> kết quả lần kể.`;
 }
+
+
+
+// ---------- Humor Skill ----------
+const HUMOR_TECHNIQUES = {
+  anomaly:{
+    icon:'🔎',name:'Tìm sự bất thường',
+    desc:'Tìm khoảng cách giữa điều lẽ ra xảy ra và điều thực tế xảy ra.',
+    prompt:'Viết theo mẫu: “Lẽ ra… nhưng thực tế…”',
+    cardExample:'Tốn 3 giờ cài app để tiết kiệm 10 phút mỗi ngày.',
+    sample:'TÌNH HUỐNG: Ba tiếng để tiết kiệm mười phút\nLẽ ra: Cài app nhanh rồi làm việc hiệu quả hơn.\nThực tế: Tôi mất cả buổi tối để thiết lập nó.\nChi tiết: Tôi mở sáu tab hướng dẫn cùng lúc.',
+    fields:{
+      event:{label:'Sự việc cụ thể đã xảy ra là gì? *',placeholder:'VD: Tôi dành cả buổi tối để thiết lập một app quản lý thời gian.',help:'Chỉ kể sự việc thật trong một hoặc hai câu, chưa cần làm nó buồn cười.'},
+      expected:{label:'Lẽ ra chuyện này phải diễn ra thế nào?',placeholder:'VD: Tôi cài app trong vài phút rồi tiết kiệm thời gian mỗi ngày.',help:'Viết kỳ vọng tự nhiên mà anh hoặc người nghe sẽ mặc định.'},
+      actual:{label:'Nhưng thực tế đã ngược lại thế nào?',placeholder:'VD: Tôi mất ba tiếng chỉ để chọn cấu trúc và màu sắc cho app.',help:'Chỉ ra sự trái ngược, nghịch lý hoặc điều hơi vô lý.'},
+      detail:{label:'Chi tiết nào làm sự đối lập rõ hơn?',placeholder:'VD: Tôi mở sáu tab hướng dẫn để học cách dùng app “đơn giản”.',help:'Ưu tiên con số, hành động hoặc đồ vật có thể hình dung được.'}
+    }
+  },
+  exaggeration:{
+    icon:'📈',name:'Phóng đại sự thật',
+    desc:'Giữ lõi sự thật rồi phóng đại cảm xúc hoặc hệ quả thêm một cấp.',
+    prompt:'Hoàn thành câu: “Trong đầu tôi lúc đó giống như…”',
+    cardExample:'Khách hỏi ngoài kịch bản; trong đầu tôi mở họp khẩn.',
+    sample:'TÌNH HUỐNG: Một câu hỏi ngoài kịch bản\nSự thật: Khách hàng hỏi điều tôi chưa chuẩn bị.\nCảm xúc thật: Tôi khựng lại vài giây.\nPhóng đại: Trong đầu, toàn bộ đội tư vấn lập tức mở cuộc họp khẩn.',
+    fields:{
+      event:{label:'Sự thật ban đầu là gì? *',placeholder:'VD: Khách hàng hỏi một câu nằm ngoài phần tôi đã chuẩn bị.',help:'Ghi sự việc thật, nhỏ và cụ thể. Phần này giữ câu chuyện đáng tin.'},
+      expected:{label:'Cảm xúc hoặc phản ứng thật của anh là gì?',placeholder:'VD: Tôi khựng lại và cố giữ vẻ mặt bình tĩnh.',help:'Đừng phóng đại ngay. Trước tiên hãy gọi đúng cảm xúc hoặc phản ứng thật.'},
+      actual:{label:'Nếu phóng đại thêm một cấp thì nó giống điều gì?',placeholder:'VD: Trong đầu tôi, toàn bộ đội tư vấn lập tức mở cuộc họp khẩn.',help:'Phóng đại hình ảnh hoặc hệ quả, nhưng vẫn để người nghe nhận ra lõi sự thật.'},
+      detail:{label:'Chi tiết thật nào neo câu chuyện lại?',placeholder:'VD: Tay tôi vẫn gật slide, còn mắt thì tìm trang FAQ lần thứ sáu.',help:'Một chi tiết thật giúp phần phóng đại không trở thành bịa đặt vô nghĩa.'}
+    }
+  },
+  specificity:{
+    icon:'🎯',name:'Chi tiết cụ thể',
+    desc:'Thay các từ chung chung bằng hành động, con số hoặc đồ vật nhìn thấy được.',
+    prompt:'Đừng viết “tôi lo”; hãy cho người nghe nhìn thấy việc anh làm.',
+    cardExample:'Không nói “tôi lo”; nói “mở lại báo giá lần thứ sáu”.',
+    sample:'TÌNH HUỐNG: Lo trước buổi báo giá\nMô tả chung: Tôi khá lo.\nChi tiết nhìn thấy: Tôi mở lại file báo giá lần thứ sáu.\nChi tiết mạnh nhất: Tay dưới bàn vẫn cuộn đúng một trang lên xuống.',
+    fields:{
+      event:{label:'Tình huống anh đang muốn mô tả là gì? *',placeholder:'VD: Tôi lo trước khi khách hàng phản hồi báo giá.',help:'Ghi bối cảnh thật để chi tiết cụ thể có chỗ đứng.'},
+      expected:{label:'Anh thường mô tả nó chung chung thế nào?',placeholder:'VD: Tôi rất lo và hơi mất tự tin.',help:'Ghi đúng câu trừu tượng ban đầu mà anh muốn thay thế.'},
+      actual:{label:'Người ngoài có thể nhìn thấy anh làm gì?',placeholder:'VD: Tôi mở lại file báo giá lần thứ sáu trong mười phút.',help:'Thay cảm xúc bằng hành động, con số, câu nói hoặc đồ vật cụ thể.'},
+      detail:{label:'Chi tiết cụ thể nào đáng giữ nhất?',placeholder:'VD: Tay dưới bàn vẫn cuộn đúng một trang lên xuống.',help:'Chọn một hình ảnh đủ mạnh, không cần ghi quá nhiều chi tiết.'}
+    }
+  },
+  reenactment:{
+    icon:'🎬',name:'Tái hiện bằng đối thoại',
+    desc:'Đưa người nghe vào hiện trường bằng lời nói, phản ứng và khoảng dừng.',
+    prompt:'Viết: “Họ nói…” / “Tôi đáp…”',
+    cardExample:'Khách: “Trao đổi nhanh nhé.” Tôi mở slide 1/84.',
+    sample:'TÌNH HUỐNG: Trao đổi nhanh\nKhách hàng nói: “Hôm nay mình trao đổi nhanh thôi nhé.”\nTôi đáp: “Hoàn toàn được ạ.”\nHành động sau đó: Tôi mở slide số 1 trong tổng số 84 slide.',
+    fields:{
+      event:{label:'Cuộc đối thoại diễn ra trong tình huống nào? *',placeholder:'VD: Khách hàng bắt đầu buổi họp bằng việc đề nghị trao đổi thật nhanh.',help:'Chỉ cần một câu để người nghe biết ai đang ở đâu và chuyện gì đang diễn ra.'},
+      expected:{label:'Người kia đã nói chính xác điều gì?',placeholder:'VD: “Hôm nay mình trao đổi nhanh thôi nhé.”',help:'Ghi càng gần lời nói thật càng tốt; câu ngắn thường dễ tái hiện hơn.'},
+      actual:{label:'Anh đã đáp hoặc nghĩ gì?',placeholder:'VD: Tôi đáp: “Hoàn toàn được ạ.”',help:'Có thể ghi lời nói ngoài miệng hoặc câu độc thoại trong đầu.'},
+      detail:{label:'Hành động hoặc khoảng dừng nào hoàn tất cảnh?',placeholder:'VD: Sau đó tôi mở slide số 1 trong tổng số 84 slide.',help:'Một cử chỉ, ánh mắt hoặc hành động thường tạo hình ảnh mạnh hơn lời giải thích.'}
+    }
+  },
+  rule_of_three:{
+    icon:'3️⃣',name:'Quy tắc ba',
+    desc:'Hai ý đầu tạo quy luật; ý thứ ba giữ cùng nhịp nhưng bẻ hướng.',
+    prompt:'Viết hai ý hợp lý và một ý thứ ba bất ngờ.',
+    cardExample:'Đúng người, đúng dữ liệu và đúng mật khẩu Wi-Fi.',
+    sample:'TÌNH HUỐNG: Điều kiện để họp hiệu quả\nÝ 1: Đúng người.\nÝ 2: Đúng dữ liệu.\nÝ 3 bẻ hướng: Đúng mật khẩu Wi-Fi.',
+    fields:{
+      event:{label:'Anh đang liệt kê hoặc nói về chủ đề gì? *',placeholder:'VD: Những điều cần có để một buổi họp diễn ra hiệu quả.',help:'Chọn một chủ đề tự nhiên có thể tạo thành danh sách ba ý.'},
+      expected:{label:'Hai ý đầu hợp lý là gì?',placeholder:'VD: Đúng người; đúng dữ liệu.',help:'Hai ý đầu nên cùng loại và đủ quen thuộc để người nghe nhận ra quy luật.'},
+      actual:{label:'Ý thứ ba bẻ hướng là gì?',placeholder:'VD: Đúng mật khẩu Wi-Fi.',help:'Giữ cùng cấu trúc ngôn ngữ nhưng chuyển sang một chi tiết bất ngờ và cụ thể.'},
+      detail:{label:'Viết thử cả câu theo đúng nhịp',placeholder:'VD: Muốn họp hiệu quả, chúng ta cần đúng người, đúng dữ liệu và đúng mật khẩu Wi-Fi.',help:'Đọc thành tiếng để kiểm tra ba vế có cùng nhịp hay chưa.'}
+    }
+  },
+  callback:{
+    icon:'🔁',name:'Callback',
+    desc:'Gọi lại một chi tiết cũ ở cuối câu chuyện với ý nghĩa mới.',
+    prompt:'Tìm một từ hoặc hình ảnh có thể xuất hiện ở cả đầu và cuối.',
+    cardExample:'Wi-Fi “xin nghỉ phép”; cuối buổi đơn đã được duyệt.',
+    sample:'TÌNH HUỐNG: Wi-Fi muốn nghỉ phép\nChi tiết đầu: Đầu buổi tôi nói Wi-Fi hôm nay có vẻ muốn nghỉ phép.\nSự việc sau đó: Cuối buổi mạng mất hẳn.\nCallback: “Có vẻ đơn nghỉ phép vừa được phê duyệt.”',
+    fields:{
+      event:{label:'Chi tiết nào đã xuất hiện trước đó? *',placeholder:'VD: Đầu buổi tôi nói Wi-Fi hôm nay có vẻ muốn nghỉ phép.',help:'Callback cần một chi tiết mà người nghe đã nghe và còn nhớ.'},
+      expected:{label:'Ban đầu chi tiết đó mang nghĩa gì?',placeholder:'VD: Mạng hơi chậm, nhưng vẫn dùng được.',help:'Ghi cách hiểu đầu tiên để sau này thấy được sự thay đổi nghĩa.'},
+      actual:{label:'Chuyện gì xảy ra sau đó để gọi lại chi tiết này?',placeholder:'VD: Cuối buổi, mạng mất hoàn toàn.',help:'Sự kiện mới phải khiến chi tiết cũ trở nên phù hợp một lần nữa.'},
+      detail:{label:'Câu callback anh có thể nói là gì?',placeholder:'VD: “Có vẻ đơn nghỉ phép vừa được phê duyệt.”',help:'Lặp lại từ hoặc hình ảnh cũ càng gần nguyên bản, người nghe càng dễ nhận ra callback.'}
+    }
+  }
+};
+const HUMOR_REACTIONS = {
+  confused:{label:'😶 Không hiểu',tone:'warn'},smile:{label:'🙂 Mỉm cười',tone:''},laugh:{label:'😄 Cười tự nhiên',tone:'good'},
+  big_laugh:{label:'😂 Cười lớn',tone:'good'},callback:{label:'🔁 Được nhắc lại',tone:'good'},awkward:{label:'😬 Khó xử',tone:'warn'}
+};
+function humorData(){ normalizeHumorState(); return state.humor; }
+function humorTechniqueForDate(date=todayStr()){
+  const keys=Object.keys(HUMOR_TECHNIQUES); return keys[quoteIndexForDate(date,keys.length)];
+}
+function humorLeastPracticedTechnique(){
+  const h=humorData(), counts={}; Object.keys(HUMOR_TECHNIQUES).forEach(k=>counts[k]=0);
+  h.drafts.forEach(d=>{ if(counts[d.technique]!==undefined) counts[d.technique]++; });
+  return Object.keys(counts).sort((a,b)=>counts[a]-counts[b])[0] || 'anomaly';
+}
+function humorDraftForObservation(id){
+  return humorData().drafts.filter(d=>d.observationId===id).sort((a,b)=>String(b.updatedAt||b.createdAt||'').localeCompare(String(a.updatedAt||a.createdAt||'')))[0] || null;
+}
+function humorPerformancesForDraft(id){ return humorData().performances.filter(p=>p.draftId===id); }
+function words(s){ return String(s||'').trim().split(/\s+/).filter(Boolean).length; }
+function humorDraftChecks(d,o){
+  const v=d.versions||[]; const checks=[];
+  checks.push({ok:words(d.setup)<=45,label:words(d.setup)<=45?'Setup gọn':'Setup hơi dài'});
+  checks.push({ok:words(d.punchline)<=20,label:words(d.punchline)<=20?'Punchline gọn':'Punchline nên ngắn hơn'});
+  checks.push({ok:v.filter(x=>String(x||'').trim()).length>=3,label:v.filter(x=>String(x||'').trim()).length>=3?'Đủ 3 phiên bản':'Chưa đủ 3 phiên bản'});
+  checks.push({ok:!(o&&o.target==='other'),label:o&&o.target==='other'?'Cân nhắc đổi đối tượng':'Đối tượng an toàn'});
+  if(d.targetWord){
+    const p=String(d.punchline||'').trim().toLowerCase(); const t=String(d.targetWord).trim().toLowerCase();
+    checks.push({ok:p.endsWith(t),label:p.endsWith(t)?'Từ khóa ở cuối':'Đưa từ khóa gần cuối'});
+  }
+  return checks;
+}
+function reactionMarkup(p){ const r=HUMOR_REACTIONS[p.reaction]||{label:p.reaction||'Đã thử',tone:''}; return `<span class="humor-reaction ${r.tone}">${esc(r.label)} · ${esc(p.date||'')}</span>`; }
+function humorTargetLabel(v){ return ({self:'Chính tôi',situation:'Hoàn cảnh',technology:'Công nghệ / quy trình',other:'Người khác'})[v]||v; }
+function humorTechniqueOptions(selected){ return Object.entries(HUMOR_TECHNIQUES).map(([k,t])=>`<option value="${k}" ${selected===k?'selected':''}>${t.icon} ${esc(t.name)}</option>`).join(''); }
+
+let humorLibraryFilter='all';
+function humorLinkedActivities(observationId,draftId,type=null){
+  return (state.activities||[]).filter(a=>{
+    const linked=(a.linkedHumorObservationId===observationId)||(draftId&&a.linkedHumorDraftId===draftId)||(draftId&&a.fromHumorDraftId===draftId);
+    return linked && (!type || a.humorPlanType===type);
+  }).sort((a,b)=>String(b.createdAt||b.date||'').localeCompare(String(a.createdAt||a.date||'')));
+}
+function humorStatusFor(o,d,performances){
+  const plans=humorLinkedActivities(o.id,d?.id,'first_tell');
+  const retells=humorLinkedActivities(o.id,d?.id,'retell_1pct');
+  if(retells.length) return {key:'retell',label:'Cần kể lại 1%'};
+  if(performances.length) return {key:'tested',label:'Đã kể'};
+  if(plans.length) return {key:'planned',label:'Đã lên kế hoạch'};
+  if(d) return {key:'crafted',label:'Đã phát triển'};
+  return {key:'raw',label:'Mới ghi'};
+}
+function humorTaskSummary(task,retell=false){
+  if(!task)return '';
+  return `<div class="humor-plan-summary ${retell?'retell':''}"><b>${retell?'Việc 1% kể lại':'Kế hoạch kể'}:</b> ${esc(fmtShortDate(task.date)||task.date||'')} ${task.startTime?`· ${esc(task.startTime)}`:''}${task.humorAudience?` · ${esc(task.humorAudience)}`:''}<br>${esc(task.title||'')}</div>`;
+}
+function humorObservationTitle(o){
+  return String(o?.title || o?.event || 'Tình huống chưa đặt tên').replace(/\s+/g,' ').trim() || 'Tình huống chưa đặt tên';
+}
+function humorDetailMarkup(o){
+  const d=humorDraftForObservation(o.id),performances=d?humorPerformancesForDraft(d.id):[];
+  const checks=d?humorDraftChecks(d,o):[],status=humorStatusFor(o,d,performances);
+  const plans=humorLinkedActivities(o.id,d?.id,'first_tell');
+  const retells=humorLinkedActivities(o.id,d?.id,'retell_1pct');
+  const technique=HUMOR_TECHNIQUES[o.technique||d?.technique]||HUMOR_TECHNIQUES.anomaly;
+  return `<article class="humor-card" data-humor-observation="${o.id}">
+    <div class="humor-card-head"><div><div class="row" style="gap:6px;margin-bottom:6px"><span class="chip chip-cat">${technique.icon} ${esc(technique.name)}</span><span class="chip">${esc(o.context)}</span><span class="chip">${esc(fmtShortDate(o.date))}</span><span class="chip">Trêu: ${esc(humorTargetLabel(o.target))}</span><span class="humor-status ${status.key}">${esc(status.label)}</span></div><div class="humor-card-title">${esc(humorObservationTitle(o))}</div></div></div>
+    <div class="humor-card-grid">
+      <div class="humor-field" style="grid-column:1/-1"><b>Tình huống</b><span>${esc(o.event||'Chưa ghi')}</span></div>
+      <div class="humor-field"><b>${esc(technique.fields?.expected?.label?.replace(/\s*\?$/,'')||'Kỳ vọng')}</b><span>${esc(o.expected||'Chưa ghi')}</span></div>
+      <div class="humor-field"><b>${esc(technique.fields?.actual?.label?.replace(/\s*\?$/,'')||'Thực tế')}</b><span>${esc(o.actual||'Chưa ghi')}</span></div>
+      ${o.detail?`<div class="humor-field" style="grid-column:1/-1"><b>${esc(technique.fields?.detail?.label?.replace(/\s*\?$/,'')||'Chi tiết')}</b><span>${esc(o.detail)}</span></div>`:''}
+    </div>
+    ${d?`<div class="humor-draft"><div class="humor-draft-label">${HUMOR_TECHNIQUES[d.technique]?.icon||'✍️'} ${esc(HUMOR_TECHNIQUES[d.technique]?.name||d.technique)}</div><div class="humor-punchline">${esc(d.punchline)}</div><div class="humor-checks">${checks.map(c=>`<span class="humor-check ${c.ok?'ok':''}">${c.ok?'✓':'!'} ${esc(c.label)}</span>`).join('')}</div>${performances.length?`<div class="humor-reaction-row">${performances.slice(-4).map(reactionMarkup).join('')}</div>`:''}</div>`:''}
+    ${plans[0]?humorTaskSummary(plans[0],false):''}
+    ${retells[0]?humorTaskSummary(retells[0],true):''}
+    <div class="humor-card-actions">
+      <button type="button" class="btn btn-soft btn-sm" data-humor-workshop="${o.id}">${d?'✎ Sửa bản kể':'✍️ Phát triển câu chuyện'}</button>
+      ${d?`<button type="button" class="btn btn-primary btn-sm" data-humor-plan="${d.id}">📅 Lên kế hoạch kể</button><button type="button" class="btn btn-ghost btn-sm" data-humor-practice="${d.id}">🎙️ Tập kể 30s</button><button type="button" class="btn btn-ghost btn-sm" data-humor-performance="${d.id}">📝 Ghi kết quả đã kể</button>`:''}
+      <button type="button" class="btn btn-danger btn-sm" data-humor-delete="${o.id}">Xoá</button>
+    </div>
+  </article>`;
+}
+function renderHumor(){
+  const h=humorData();
+  const todayTech=HUMOR_TECHNIQUES[humorTechniqueForDate()];
+  const setText=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  setText('humorTodayTechnique',`${todayTech.icon} ${todayTech.name}`);
+  const techSelect=document.getElementById('humorWorkshopTechnique'); if(techSelect&&!techSelect.options.length) techSelect.innerHTML=humorTechniqueOptions(humorTechniqueForDate());
+  const techGrid=document.getElementById('humorTechniqueGrid');
+  if(techGrid) techGrid.innerHTML=Object.entries(HUMOR_TECHNIQUES).map(([key,t])=>`<button type="button" class="humor-tech" data-humor-capture="${key}"><b>${t.icon} ${esc(t.name)}</b><p>${esc(t.desc)}</p><div class="humor-tech-example"><span>Ví dụ</span>${esc(t.cardExample)}</div><div class="humor-tech-action">Ghi tình huống theo kỹ thuật này</div></button>`).join('');
+  document.querySelectorAll('#humorLibraryFilters [data-humor-filter]').forEach(b=>b.classList.toggle('on',b.dataset.humorFilter===humorLibraryFilter));
+  const list=document.getElementById('humorObservationList'); if(!list)return;
+  let observations=[...h.observations].sort((a,b)=>String(b.createdAt||b.date).localeCompare(String(a.createdAt||a.date)));
+  observations=observations.filter(o=>{
+    const d=humorDraftForObservation(o.id),performances=d?humorPerformancesForDraft(d.id):[],status=humorStatusFor(o,d,performances);
+    return humorLibraryFilter==='all'||status.key===humorLibraryFilter;
+  });
+  list.innerHTML=observations.length?observations.map(o=>`<button type="button" class="humor-library-row" data-humor-open="${o.id}" title="Mở tình huống"><span class="humor-library-row-title">${esc(humorObservationTitle(o))}</span><span class="humor-library-row-arrow" aria-hidden="true">›</span></button>`).join(''):`<div class="humor-empty">${humorLibraryFilter==='all'?'Kho đang trống. Hãy click một trong sáu kỹ thuật phía trên để ghi tình huống đầu tiên.':'Không có tình huống ở trạng thái này.'}</div>`;
+}
+function setHumorCaptureField(prefix,field){
+  const label=document.getElementById(`humorSeed${prefix}Label`),input=document.getElementById(`humorSeed${prefix}`),help=document.getElementById(`humorSeed${prefix}Help`);
+  if(label)label.textContent=field.label;
+  if(input)input.placeholder=field.placeholder;
+  if(help)help.textContent=field.help;
+}
+function openHumorCapture(techniqueKey){
+  const key=HUMOR_TECHNIQUES[techniqueKey]?techniqueKey:'anomaly',t=HUMOR_TECHNIQUES[key];
+  const form=document.getElementById('humorSeedForm');form?.reset();
+  document.getElementById('humorSeedTechnique').value=key;
+  document.getElementById('humorSeedDate').value=todayStr();
+  document.getElementById('humorCaptureTitle').textContent=`${t.icon} ${t.name}`;
+  document.getElementById('humorCaptureSub').textContent='Ghi nguyên liệu theo cấu trúc của kỹ thuật này. Chưa cần viết thành câu chuyện hoàn chỉnh.';
+  document.getElementById('humorCaptureExample').innerHTML=`<b>Ví dụ điền hoàn chỉnh</b><p>${esc(t.sample)}</p>`;
+  setHumorCaptureField('Event',t.fields.event);setHumorCaptureField('Expected',t.fields.expected);setHumorCaptureField('Actual',t.fields.actual);setHumorCaptureField('Detail',t.fields.detail);
+  document.getElementById('humorCaptureModal').classList.add('open');
+  setTimeout(()=>document.getElementById('humorSeedTitle')?.focus(),80);
+}
+function openHumorDetail(observationId){
+  const o=humorData().observations.find(x=>x.id===observationId);if(!o)return;
+  document.getElementById('humorDetailContent').innerHTML=humorDetailMarkup(o);
+  document.getElementById('humorDetailModal').classList.add('open');
+}
+
+document.getElementById('humorSuggestBtn')?.addEventListener('click',()=>{
+  const key=humorLeastPracticedTechnique(),t=HUMOR_TECHNIQUES[key];
+  const tip=document.getElementById('humorTechniqueTip');if(tip)tip.innerHTML=`<b>${t.icon} Nên luyện tiếp — ${esc(t.name)}:</b> ${esc(t.prompt)}`;
+  toast(`Gợi ý: ${t.name}`);
+});
+
+document.getElementById('humorTechniqueGrid')?.addEventListener('click',e=>{
+  const card=e.target.closest('[data-humor-capture]');if(!card)return;openHumorCapture(card.dataset.humorCapture);
+});
+
+document.getElementById('humorSeedForm')?.addEventListener('submit',e=>{
+  e.preventDefault();const h=humorData();
+  h.observations.push({id:uid(),title:document.getElementById('humorSeedTitle').value.trim(),technique:document.getElementById('humorSeedTechnique').value||'anomaly',date:document.getElementById('humorSeedDate').value||todayStr(),context:document.getElementById('humorSeedContext').value,event:document.getElementById('humorSeedEvent').value.trim(),expected:document.getElementById('humorSeedExpected').value.trim(),actual:document.getElementById('humorSeedActual').value.trim(),detail:document.getElementById('humorSeedDetail').value.trim(),target:document.getElementById('humorSeedTarget').value,safety:document.getElementById('humorSeedSafety').value,createdAt:new Date().toISOString()});
+  e.target.reset();save();closeModals();renderHumor();toast('Đã lưu tình huống vào kho Humor.');
+});
+
+function openHumorWorkshop(observationId){
+  const o=humorData().observations.find(x=>x.id===observationId);if(!o)return;
+  const d=humorDraftForObservation(observationId), key=d?.technique||o.technique||humorTechniqueForDate(o.date);
+  document.getElementById('humorWorkshopObservationId').value=o.id;
+  document.getElementById('humorWorkshopTechnique').innerHTML=humorTechniqueOptions(key);
+  document.getElementById('humorWorkshopTargetWord').value=d?.targetWord||'';
+  document.getElementById('humorWorkshopSetup').value=d?.setup||[o.event,o.expected?`Lẽ ra: ${o.expected}`:''].filter(Boolean).join('\n');
+  document.getElementById('humorWorkshopTurn').value=d?.turn||'';
+  document.getElementById('humorWorkshopPunchline').value=d?.punchline||o.actual||'';
+  const versions=d?.versions||['','',''];
+  document.getElementById('humorVersion1').value=versions[0]||[o.event,o.actual].filter(Boolean).join(' ');
+  document.getElementById('humorVersion2').value=versions[1]||'';document.getElementById('humorVersion3').value=versions[2]||'';
+  document.getElementById('humorWorkshopModal').classList.add('open');
+}
+document.getElementById('humorWorkshopForm')?.addEventListener('submit',e=>{
+  e.preventDefault();const h=humorData(),observationId=document.getElementById('humorWorkshopObservationId').value;
+  let d=humorDraftForObservation(observationId);const data={observationId,technique:document.getElementById('humorWorkshopTechnique').value,targetWord:document.getElementById('humorWorkshopTargetWord').value.trim(),setup:document.getElementById('humorWorkshopSetup').value.trim(),turn:document.getElementById('humorWorkshopTurn').value.trim(),punchline:document.getElementById('humorWorkshopPunchline').value.trim(),versions:[document.getElementById('humorVersion1').value.trim(),document.getElementById('humorVersion2').value.trim(),document.getElementById('humorVersion3').value.trim()],updatedAt:new Date().toISOString()};
+  if(d)Object.assign(d,data);else h.drafts.push({...data,id:uid(),rehearsals:0,createdAt:new Date().toISOString()});
+  save();closeModals();renderHumor();toast('Đã lưu bản kể. Anh có thể tập hoặc lên kế hoạch kể.');
+});
+
+function openHumorPlan(draftId){
+  const d=humorData().drafts.find(x=>x.id===draftId);if(!d)return;
+  const o=humorData().observations.find(x=>x.id===d.observationId);
+  document.getElementById('humorPlanDraftId').value=draftId;
+  document.getElementById('humorPlanDate').value=todayStr();
+  document.getElementById('humorPlanTime').value='';
+  document.getElementById('humorPlanDuration').value='10';
+  document.getElementById('humorPlanAudience').value='';
+  document.getElementById('humorPlanContext').value='';
+  document.getElementById('humorPlanLocation').value=(o?.context==='Gia đình'||o?.context==='Bạn bè'||o?.context==='Đời sống')?'home':'company';
+  document.getElementById('humorPlanTitle').value='🎭 Kể câu chuyện: '+String(o?.title||o?.event||d.punchline||'').replace(/\s+/g,' ').slice(0,72);
+  document.getElementById('humorPlanModal').classList.add('open');
+}
+document.getElementById('humorPlanForm')?.addEventListener('submit',e=>{
+  e.preventDefault();
+  const h=humorData(),draftId=document.getElementById('humorPlanDraftId').value,d=h.drafts.find(x=>x.id===draftId);if(!d)return;
+  const o=h.observations.find(x=>x.id===d.observationId),date=document.getElementById('humorPlanDate').value||todayStr();
+  const audience=document.getElementById('humorPlanAudience').value.trim(),context=document.getElementById('humorPlanContext').value.trim();
+  const script=(d.versions||[]).filter(Boolean).slice(-1)[0]||[d.setup,d.turn,d.punchline].filter(Boolean).join('\n');
+  state.activities.push({id:uid(),date,location:document.getElementById('humorPlanLocation').value||'company',tag1pct:false,title:document.getElementById('humorPlanTitle').value.trim(),description:`Đối tượng: ${audience}\nBối cảnh: ${context||'Chưa xác định'}\n\nBản kể dự kiến:\n${script}`,category:'Hài hước',startTime:document.getElementById('humorPlanTime').value||null,durationMinutes:Number(document.getElementById('humorPlanDuration').value)||null,completed:false,status:'todo',subs:[],reviewId:null,linkedHumorObservationId:o?.id||null,linkedHumorDraftId:d.id,humorPlanType:'first_tell',humorAudience:audience,humorContext:context,createdAt:new Date().toISOString()});
+  save();closeModals();renderAll();toast('Đã tạo một công việc bình thường để kể câu chuyện.');openDayView(date);
+});
+
+document.getElementById('humorLibraryFilters')?.addEventListener('click',e=>{
+  const b=e.target.closest('[data-humor-filter]');if(!b)return;humorLibraryFilter=b.dataset.humorFilter;renderHumor();
+});
+
+let humorPracticeDraftId=null,humorPracticeSeconds=30,humorPracticeTick=null,humorPracticeRunning=false;
+function humorPracticeDisplay(){const el=document.getElementById('humorPracticeCount');if(el)el.textContent=`00:${String(Math.max(0,humorPracticeSeconds)).padStart(2,'0')}`;}
+function stopHumorPracticeTimer(){if(humorPracticeTick){clearInterval(humorPracticeTick);humorPracticeTick=null;}humorPracticeRunning=false;const b=document.getElementById('humorPracticeStart');if(b)b.textContent='Bắt đầu';}
+function resetHumorPractice(){stopHumorPracticeTimer();humorPracticeSeconds=30;humorPracticeDisplay();}
+function openHumorPractice(draftId){
+  const d=humorData().drafts.find(x=>x.id===draftId);if(!d)return;humorPracticeDraftId=draftId;resetHumorPractice();
+  const script=document.getElementById('humorPracticeScript');script.classList.remove('hidden-script');script.innerHTML=`<b>Setup</b><p>${esc(d.setup||d.versions?.[2]||'')}</p>${d.turn?`<b>Turn</b><p>${esc(d.turn)}</p>`:''}<b>Punchline</b><p class="punch">${esc(d.punchline)}</p>`;
+  document.getElementById('humorPracticeHide').textContent='Ẩn văn bản';document.getElementById('humorPracticeModal').classList.add('open');
+}
+document.getElementById('humorPracticeStart')?.addEventListener('click',()=>{
+  if(humorPracticeRunning){stopHumorPracticeTimer();return;}humorPracticeRunning=true;document.getElementById('humorPracticeStart').textContent='Tạm dừng';
+  humorPracticeTick=setInterval(()=>{humorPracticeSeconds--;humorPracticeDisplay();if(humorPracticeSeconds<=0){stopHumorPracticeTimer();toast('Hết 30 giây. Dừng sau punchline và đánh giá nhịp kể.');}},1000);
+});
+document.getElementById('humorPracticeReset')?.addEventListener('click',resetHumorPractice);
+document.getElementById('humorPracticeHide')?.addEventListener('click',()=>{const s=document.getElementById('humorPracticeScript');s.classList.toggle('hidden-script');document.getElementById('humorPracticeHide').textContent=s.classList.contains('hidden-script')?'Hiện văn bản':'Ẩn văn bản';});
+document.getElementById('humorPracticeComplete')?.addEventListener('click',()=>{
+  const d=humorData().drafts.find(x=>x.id===humorPracticeDraftId);if(!d)return;d.rehearsals=(Number(d.rehearsals)||0)+1;d.lastPracticedAt=new Date().toISOString();save();resetHumorPractice();renderHumor();toast(`Đã ghi nhận lượt kể thứ ${d.rehearsals}.`);
+});
+
+function setHumorRetellVisibility(){
+  const on=!!document.getElementById('humorPerformanceCreateTask')?.checked;
+  const box=document.getElementById('humorRetellSettings');if(box)box.hidden=!on;
+}
+function openHumorPerformance(draftId){
+  const h=humorData(),d=h.drafts.find(x=>x.id===draftId);if(!d)return;
+  const o=h.observations.find(x=>x.id===d.observationId);
+  const latestPlan=humorLinkedActivities(o?.id,draftId,'first_tell')[0];
+  document.getElementById('humorPerformanceDraftId').value=draftId;
+  document.getElementById('humorPerformanceDate').value=todayStr();
+  document.getElementById('humorPerformanceAudience').value=latestPlan?.humorAudience||'';
+  document.getElementById('humorPerformanceContext').value=latestPlan?.humorContext||'';
+  document.getElementById('humorPerformanceReaction').value='smile';document.getElementById('humorPerformanceUnderstood').value='yes';document.getElementById('humorPerformanceSafety').value='safe';
+  document.getElementById('humorPerformanceNotes').value='';document.getElementById('humorPerformanceNext').value='';
+  document.getElementById('humorPerformanceCreateTask').checked=false;
+  document.getElementById('humorPerformanceRetellDate').value=addDays(todayStr(),1);
+  document.getElementById('humorPerformanceRetellAudience').value=latestPlan?.humorAudience||'';
+  document.getElementById('humorPerformanceRetellDuration').value='15';setHumorRetellVisibility();
+  document.getElementById('humorPerformanceModal').classList.add('open');
+}
+document.getElementById('humorPerformanceCreateTask')?.addEventListener('change',setHumorRetellVisibility);
+document.getElementById('humorPerformanceForm')?.addEventListener('submit',e=>{
+  e.preventDefault();const h=humorData(),draftId=document.getElementById('humorPerformanceDraftId').value,d=h.drafts.find(x=>x.id===draftId);if(!d)return;
+  const nextAdjustment=document.getElementById('humorPerformanceNext').value.trim(),createRetell=document.getElementById('humorPerformanceCreateTask').checked;
+  if(createRetell&&!nextAdjustment){toast('Hãy ghi một điều chỉnh cụ thể trước khi lên kế hoạch kể lại 1%.');return;}
+  const p={id:uid(),draftId,date:document.getElementById('humorPerformanceDate').value||todayStr(),audience:document.getElementById('humorPerformanceAudience').value.trim(),context:document.getElementById('humorPerformanceContext').value.trim(),reaction:document.getElementById('humorPerformanceReaction').value,understood:document.getElementById('humorPerformanceUnderstood').value,safety:document.getElementById('humorPerformanceSafety').value,notes:document.getElementById('humorPerformanceNotes').value.trim(),nextAdjustment,createdAt:new Date().toISOString()};h.performances.push(p);
+  const o=h.observations.find(x=>x.id===d.observationId);
+  if(['confused','awkward'].includes(p.reaction)||p.safety==='unsafe') state.mistakes.push({id:uid(),reviewId:null,activityTitle:'Humor',date:p.date,category:'Hài hước',content:p.reaction==='confused'?'Người nghe chưa hiểu câu chuyện hoặc punchline':p.reaction==='awkward'?'Câu chuyện tạo cảm giác khó xử':'Nội dung chưa an toàn với người nghe',rootCause:p.notes||'Cần xem lại setup, nhịp kể, đối tượng hoặc bối cảnh.',lesson:p.nextAdjustment,action:''});
+  let created=false;
+  if(createRetell){
+    const date=document.getElementById('humorPerformanceRetellDate').value||addDays(p.date,1),audience=document.getElementById('humorPerformanceRetellAudience').value.trim()||p.audience;
+    const script=(d.versions||[]).filter(Boolean).slice(-1)[0]||[d.setup,d.turn,d.punchline].filter(Boolean).join('\n');
+    state.activities.push({id:uid(),date,location:'company',tag1pct:true,title:`🎭 Kể lại câu chuyện${audience?' với '+audience:''}`.slice(0,110),description:`Điều chỉnh cần kiểm chứng: ${p.nextAdjustment}\nĐối tượng: ${audience||'Chưa xác định'}\n\nBản kể hiện tại:\n${script}`,category:'Hài hước',startTime:null,durationMinutes:Number(document.getElementById('humorPerformanceRetellDuration').value)||15,completed:false,status:'todo',subs:[],reviewId:null,linkedHumorObservationId:o?.id||null,linkedHumorDraftId:d.id,fromHumorPerformanceId:p.id,humorPlanType:'retell_1pct',humorAudience:audience,humorContext:p.context,createdAt:new Date().toISOString()});created=true;
+  }
+  save();closeModals();renderAll();toast(created?'Đã lưu kết quả và tạo việc 1% để kể lại.':'Đã lưu kết quả lần kể.');
+});
+
+function handleHumorLibraryAction(e){
+  const open=e.target.closest('[data-humor-open]');if(open){openHumorDetail(open.dataset.humorOpen);return;}
+  const w=e.target.closest('[data-humor-workshop]');if(w){openHumorWorkshop(w.dataset.humorWorkshop);return;}
+  const plan=e.target.closest('[data-humor-plan]');if(plan){openHumorPlan(plan.dataset.humorPlan);return;}
+  const p=e.target.closest('[data-humor-practice]');if(p){openHumorPractice(p.dataset.humorPractice);return;}
+  const r=e.target.closest('[data-humor-performance]');if(r){openHumorPerformance(r.dataset.humorPerformance);return;}
+  const del=e.target.closest('[data-humor-delete]');if(del){
+    const id=del.dataset.humorDelete;if(!confirm('Xoá tình huống này và toàn bộ bản kể, kế hoạch, kết quả liên quan?'))return;
+    const h=humorData(),draftIds=h.drafts.filter(d=>d.observationId===id).map(d=>d.id);h.observations=h.observations.filter(o=>o.id!==id);h.drafts=h.drafts.filter(d=>d.observationId!==id);h.performances=h.performances.filter(p=>!draftIds.includes(p.draftId));state.activities=(state.activities||[]).filter(a=>a.linkedHumorObservationId!==id&&!draftIds.includes(a.linkedHumorDraftId)&&!draftIds.includes(a.fromHumorDraftId));save();closeModals();renderAll();toast('Đã xoá tình huống khỏi kho Humor.');
+  }
+}
+document.getElementById('humorObservationList')?.addEventListener('click',handleHumorLibraryAction);
+document.getElementById('humorDetailModal')?.addEventListener('click',handleHumorLibraryAction);
+
+document.addEventListener('click',e=>{if(e.target.closest('#humorPracticeModal [data-close]'))stopHumorPracticeTimer();});
+
 
 // ---------- Boot ----------
 load();
