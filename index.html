@@ -4699,6 +4699,15 @@ function timerPiPStyles(){
     }
   `;
 }
+// Đưa người dùng quay lại tab công cụ trên trình duyệt.
+// Gọi trong handler nút của cửa sổ PiP (cùng realm với cửa sổ chính,
+// và đang trong user gesture nên trình duyệt cho phép focus).
+function focusMainAppWindow(){
+  try{ window.focus(); }catch(e){}
+  // Một số trình duyệt chỉ trả focus về tab sau khi cửa sổ PiP đóng,
+  // nên gọi lại một nhịp sau để chắc chắn.
+  setTimeout(() => { try{ window.focus(); }catch(e){} }, 120);
+}
 function buildTimerPiPDocument(pipWindow){
   const doc = pipWindow.document;
   doc.head.innerHTML = `<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(timerState.title || 'Focus Timer')}</title><style id="timerPiPStyle">${timerPiPStyles()}</style>`;
@@ -4715,11 +4724,25 @@ function buildTimerPiPDocument(pipWindow){
       <button type="button" id="pipDismiss" title="Đóng thông báo" aria-label="Đóng thông báo">×</button>
     </div>
   </div>`;
+  // Tạm dừng/tiếp tục: giữ nguyên PiP, không cần quay về app.
   doc.getElementById('pipPause').addEventListener('click', () => document.getElementById('timerPause').click());
-  doc.getElementById('pipStop').addEventListener('click', () => document.getElementById('timerStop').click());
-  doc.getElementById('pipExpand').addEventListener('click', () => closeTimerPiP({restore:true}));
-  doc.getElementById('pipDone').addEventListener('click', () => document.getElementById('timerDone').click());
-  doc.getElementById('pipDismiss').addEventListener('click', () => closeTimer());
+  // Dừng, Đã xong, Đóng, Mở lại: điều hướng người dùng về trang công cụ trên trình duyệt.
+  doc.getElementById('pipStop').addEventListener('click', () => {
+    focusMainAppWindow();
+    document.getElementById('timerStop').click();
+  });
+  doc.getElementById('pipExpand').addEventListener('click', () => {
+    focusMainAppWindow();
+    closeTimerPiP({restore:true});
+  });
+  doc.getElementById('pipDone').addEventListener('click', () => {
+    focusMainAppWindow();
+    document.getElementById('timerDone').click();
+  });
+  doc.getElementById('pipDismiss').addEventListener('click', () => {
+    focusMainAppWindow();
+    closeTimer();
+  });
 }
 function updateTimerPiPTheme(){
   if(!timerPiPWindow || timerPiPWindow.closed) return;
