@@ -341,7 +341,7 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 .act-row:hover h3{color:var(--blue)}
 .act-card{transition:transform .15s, box-shadow .15s, border-color .15s}
 .act-card:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--blue) 22%,var(--line));box-shadow:0 10px 28px rgba(13,44,84,.10)}
-.act-check,.act-play,.act-drag,.act-move button{cursor:pointer!important}
+.act-check,.act-play{cursor:pointer!important}
 .hero-onepct{
   margin-top:16px;padding:13px 14px;border-radius:16px;
   background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);
@@ -375,42 +375,6 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 }
 .quick-chip input{width:15px;height:15px;accent-color:#D9962B;padding:0}
 .quick-chip.on{background:var(--blue-soft);color:var(--blue);border-color:transparent}
-.repeat-daily-check{
-  display:inline-flex;align-items:center;gap:8px;
-  width:max-content;max-width:100%;
-  margin:-4px 0 14px;
-  padding:7px 11px;
-  border:1px solid var(--line);
-  border-radius:999px;
-  background:var(--surface-2);
-  color:var(--muted);
-  font-size:12.5px;font-weight:800;
-  cursor:pointer;
-}
-.repeat-daily-check input{width:16px;height:16px;accent-color:var(--blue);padding:0;flex:0 0 auto;cursor:pointer}
-.repeat-daily-check span{white-space:nowrap;color:var(--ink)}
-.repeat-daily-check small{font-size:11.5px;font-weight:600;color:var(--muted);white-space:nowrap}
-.repeat-daily-check:has(input:checked){background:var(--blue-soft);border-color:transparent;color:var(--blue)}
-.repeat-daily-check:has(input:checked) span{color:var(--blue)}
-.repeat-controls{margin-bottom:14px}
-.repeat-controls .repeat-daily-check{margin-bottom:0}
-.repeat-weekdays{
-  margin-top:8px;padding:11px;border:1px solid var(--line);border-radius:14px;
-  background:var(--surface-2);
-}
-.repeat-weekdays[hidden]{display:none!important}
-.repeat-weekdays-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;font-size:12px;font-weight:800;color:var(--muted)}
-.repeat-weekdays-head button{border:none;background:transparent;color:var(--blue);font-size:11.5px;font-weight:800;padding:3px 5px}
-.repeat-day-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
-.repeat-day-grid button{
-  min-width:0;height:34px;border:1px solid var(--line);border-radius:10px;
-  background:var(--surface);color:var(--muted);font-size:12px;font-weight:800;
-}
-.repeat-day-grid button.on{background:var(--blue);border-color:var(--blue);color:#fff}
-.repeat-summary{margin-top:8px;font-size:11.5px;color:var(--muted);font-weight:600}
-[data-theme="dark"] .repeat-weekdays{background:#2E2318;border-color:#755532}
-[data-theme="dark"] .repeat-day-grid button{background:#21170F;border-color:#755532;color:#E5D0B3}
-[data-theme="dark"] .repeat-day-grid button.on{background:#78D08B;border-color:#78D08B;color:#082016}
 
 .quick-inline{width:auto;min-width:112px;border-radius:99px!important;background:var(--surface)!important}
 .location-toggle{display:inline-flex;border:1px solid var(--line);background:var(--surface-2);border-radius:99px;padding:3px;gap:3px}
@@ -551,8 +515,6 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 .sub-row .sub-date{flex-shrink:0;font-size:11.5px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums;min-width:42px;}
 .sub-row .sub-date:empty{display:none;}
 @media (max-width:760px){
-  .repeat-daily-check{width:100%;justify-content:flex-start;margin-top:-2px}
-  .repeat-daily-check small{display:none}
   .create-meta-grid,.board-meta-grid,.subtask-meta-grid{grid-template-columns:1fr 1fr;}
   .board-sub-add{grid-template-columns:1fr 1fr;}
   .board-sub-add input:first-child{grid-column:1/-1;}
@@ -650,17 +612,6 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 .act-row .act-caret{display:none}
 .act-card.dragging{opacity:.5;border-style:dashed}
 .act-card.drag-over{border-color:var(--blue);border-style:solid}
-.act-drag{flex-shrink:0;color:var(--muted);cursor:grab;font-size:18px;line-height:1;touch-action:none;display:none;padding:4px}
-.sort-manual .act-drag{display:inline-flex;align-items:center}
-.sort-manual .act-row{cursor:pointer}
-.act-move{display:none;flex-direction:column;gap:3px;flex-shrink:0}
-.sort-manual .act-move{display:flex}
-.act-move button{
-  border:1px solid var(--line);background:var(--surface-2);color:var(--muted);cursor:pointer;
-  font-size:11px;width:28px;height:22px;line-height:1;border-radius:6px;
-  display:flex;align-items:center;justify-content:center;
-}
-.act-move button:active{background:var(--blue-soft);color:var(--blue);border-color:transparent}
 .act-card.drag-ghost{opacity:.35}
 .act-card.drag-float{position:fixed;z-index:90;pointer-events:none;box-shadow:0 12px 32px rgba(9,22,40,.28);left:0;top:0;margin:0}
 .act-details{display:none;padding:0 12px 12px 46px;border-top:1px dashed var(--line);padding-top:10px}
@@ -829,8 +780,8 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 .fu-box{background:#FDF7EC;border:1px solid #F0DDB8;border-radius:14px;padding:16px;margin:8px 0 18px}
 [data-theme="dark"] .fu-box{background:#2E2513;border-color:#4A3A17}
 
-/* Review 1% action: hide location choice and keep only deadline + duration */
-.fu-review-meta{grid-template-columns:1fr 1fr;}
+/* Review 1% action: hide location choice and keep date + execution time + duration */
+.fu-review-meta{grid-template-columns:repeat(3,minmax(0,1fr));}
 @media (max-width:760px){.fu-review-meta{grid-template-columns:1fr;}}
 .fu-head{font-family:var(--font-display);font-weight:700;font-size:14px;color:#B5730B;margin-bottom:6px}
 [data-theme="dark"] .fu-head{color:#F0C674}
@@ -914,6 +865,49 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 .bar-track{flex:1;height:8px;background:var(--surface-2);border-radius:99px;overflow:hidden}
 .bar-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:99px}
 .bar-row .bn{width:26px;text-align:right;font-weight:600;font-size:12.5px}
+
+/* Dọn vườn: insight 7 ngày, bộ lọc tổng hợp và hai nhóm trạng thái */
+.garden-insight{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:12px 14px;margin-bottom:14px;border-radius:14px;
+  background:linear-gradient(135deg,var(--blue-soft),var(--surface));
+  border:1px solid color-mix(in srgb,var(--blue) 24%,var(--line));
+}
+.garden-insight-icon{width:34px;height:34px;flex:0 0 auto;display:grid;place-items:center;border-radius:11px;background:var(--surface);border:1px solid var(--line);font-size:17px}
+.garden-insight-copy{min-width:0;font-size:12.8px;color:var(--muted);line-height:1.5}
+.garden-insight-copy b{display:block;color:var(--ink);font-family:var(--font-display);font-size:13.5px;margin-bottom:2px}
+.mistake-filter-bar{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  margin:0 0 14px;padding:10px 12px;border:1px solid var(--line);border-radius:14px;
+  background:var(--surface);box-shadow:var(--shadow);
+}
+.mistake-filter-main{display:flex;align-items:center;gap:8px;min-width:0;flex:1 1 280px}
+.mistake-filter-main label{margin:0;white-space:nowrap;font-size:12px;color:var(--muted)}
+.mistake-filter-main select{width:auto;min-width:190px;height:36px;padding:6px 30px 6px 10px;background:var(--surface-2);font-weight:700}
+.mistake-filter-summary{font-size:11.8px;color:var(--muted);white-space:nowrap}
+.mistake-filter-summary b{color:var(--ink)}
+.mistake-groups{display:flex;flex-direction:column;gap:16px}
+.mistake-group{min-width:0}
+.mistake-group-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;padding:0 2px}
+.mistake-group-title{font-family:var(--font-display);font-size:14px;font-weight:800;color:var(--ink)}
+.mistake-group-count{font-size:11px;font-weight:800;padding:3px 8px;border-radius:99px;background:var(--surface-2);border:1px solid var(--line);color:var(--muted)}
+.mistake-group.pending .mistake-group-title{color:var(--warn)}
+.mistake-group.cared .mistake-group-title{color:var(--ok)}
+.mist-card.cared{background:color-mix(in srgb,var(--ok-soft) 38%,var(--surface));border-color:color-mix(in srgb,var(--ok) 22%,var(--line))}
+.mist-card .mist-status{margin-left:auto}
+.mist-card .mist-status.pending{background:var(--warn-soft);color:var(--warn);border-color:transparent}
+.mist-card .mist-status.cared{background:var(--ok-soft);color:var(--ok);border-color:transparent}
+.act-card[data-id]{cursor:grab}
+.act-card[data-id].drag-ready,.act-card[data-id].drag-ghost{cursor:grabbing}
+[data-theme="dark"] .garden-insight{background:linear-gradient(135deg,#173223,#2B2116);border-color:#456B50}
+[data-theme="dark"] .mistake-filter-bar{background:#21170F;border-color:#62472B}
+[data-theme="dark"] .mist-card.cared{background:#183024;border-color:#456B50}
+@media(max-width:560px){
+  .mistake-filter-bar{align-items:stretch;padding:9px}
+  .mistake-filter-main{width:100%;flex:1 1 100%}
+  .mistake-filter-main select{min-width:0;width:100%}
+  .mistake-filter-summary{width:100%;white-space:normal;padding-left:1px}
+}
 
 /* ============ MODAL & TOAST ============ */
 .modal-back{
@@ -1408,7 +1402,6 @@ section[data-view].active{display:block;animation:fadein .25s ease}
     gap:4px;padding-top:0;font-size:8.5px;line-height:1.2;
   }
   .hero-budget .daypart-summary b{font-size:9.5px}
-  .repeat-day-grid{grid-template-columns:repeat(4,1fr)}
   .theme-fab{
     display:flex!important;position:fixed;top:14px;right:14px;z-index:41;
     width:38px;height:38px;border-radius:99px;align-items:center;justify-content:center;
@@ -1479,14 +1472,6 @@ section[data-view].active{display:block;animation:fadein .25s ease}
   color:#082016;
   border-color:transparent;
 }
-[data-theme="dark"] .repeat-daily-check{
-  background:#2E2318;
-  border-color:#755532;
-  color:#F1DEC1;
-}
-[data-theme="dark"] .repeat-daily-check span{color:#FFF3E0}
-[data-theme="dark"] .repeat-daily-check:has(input:checked){background:#173223;color:#8BE39D;border-color:#78D08B}
-[data-theme="dark"] .repeat-daily-check:has(input:checked) span{color:#8BE39D}
 [data-theme="dark"] .btn-ghost{
   color:#F6C46C;
   border-color:#755532;
@@ -2071,14 +2056,14 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
           </div>
           <div class="activity-tools">
             <div class="sort-select-wrap">
-              <label for="sortSelect" class="sort-lbl">Sắp xếp:</label>
-              <select id="sortSelect" class="sort-select">
+              <label for="sortSelect" class="sort-lbl">Sắp xếp nhanh:</label>
+              <select id="sortSelect" class="sort-select" aria-label="Sắp xếp nhanh danh sách hiện tại">
+                <option value="">Chọn cách sắp xếp…</option>
                 <option value="time">🕒 Theo giờ bắt đầu</option>
                 <option value="durationDesc">⏱️ Thời lượng: dài → ngắn</option>
                 <option value="durationAsc">⏱️ Thời lượng: ngắn → dài</option>
                 <option value="incomplete">✅ Chưa xong lên trên</option>
                 <option value="needReview">📝 Chưa review lên trên</option>
-                <option value="manual">↕ Thủ công (kéo-thả)</option>
               </select>
             </div>
           </div>
@@ -2276,8 +2261,7 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
         <h3 style="font-size:15px;margin-bottom:12px">Tình trạng khu vườn</h3>
         <div id="mistakeStats"></div>
       </div>
-      <div class="hint" style="margin:0 0 8px;font-weight:700;color:var(--muted)">Khu vực chăm sóc</div>
-      <div class="filter-row" id="mistakeFilters"></div>
+      <div class="mistake-filter-bar" id="mistakeFilters" aria-label="Bộ lọc Dọn vườn"></div>
       <div id="mistakeList"></div>
     </section>
 
@@ -2367,22 +2351,6 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
         <div class="f-group"><label>Ngày</label><input type="date" id="cDate"></div>
         <div class="f-group"><label>Giờ</label><input type="time" id="cStartTime"></div>
         <div class="f-group"><label>Block</label><select id="cDuration"><option value="">Không đặt</option><option value="15">15 phút</option><option value="30">30 phút</option><option value="45">45 phút</option><option value="60">60 phút</option><option value="90">90 phút</option><option value="120">120 phút</option><option value="custom">Tùy chỉnh…</option></select><input type="number" id="cDurationCustom" min="1" max="1440" placeholder="phút" style="display:none;margin-top:8px"></div>
-      </div>
-      <div class="repeat-controls" id="cRepeatControls">
-        <label class="repeat-daily-check"><input type="checkbox" id="cRepeatDaily"> <span>↻ Lặp lại theo ngày trong tuần</span><small>Chọn một hoặc nhiều ngày</small></label>
-        <div class="repeat-weekdays" id="cRepeatWeekdays" hidden>
-          <div class="repeat-weekdays-head"><span>Lặp vào</span><button type="button" id="cRepeatAllDays">Chọn cả tuần</button></div>
-          <div class="repeat-day-grid" role="group" aria-label="Chọn ngày lặp lại">
-            <button type="button" data-repeat-day="1">T2</button>
-            <button type="button" data-repeat-day="2">T3</button>
-            <button type="button" data-repeat-day="3">T4</button>
-            <button type="button" data-repeat-day="4">T5</button>
-            <button type="button" data-repeat-day="5">T6</button>
-            <button type="button" data-repeat-day="6">T7</button>
-            <button type="button" data-repeat-day="0">CN</button>
-          </div>
-          <div class="repeat-summary" id="cRepeatSummary">Chưa chọn ngày lặp.</div>
-        </div>
       </div>
       <div class="f-group create-subtasks">
         <label>Việc con</label>
@@ -2691,6 +2659,7 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
         <input type="hidden" id="rFuLoc" value="company">
         <div class="f-row3 fu-review-meta">
           <div class="f-group"><label>Ngày</label><input type="date" id="rFuDate"></div>
+          <div class="f-group"><label>Giờ thực hiện</label><input type="time" id="rFuTime"></div>
           <div class="f-group"><label>Thời lượng</label>
             <select id="rFuDur"><option value="">Không đặt</option><option value="15">15 phút</option><option value="30">30 phút</option><option value="45">45 phút</option><option value="60">60 phút</option><option value="90">90 phút</option></select>
           </div>
@@ -3225,81 +3194,6 @@ function dateDiffDays(start, end){
   if(Number.isNaN(a.getTime()) || Number.isNaN(b.getTime())) return 0;
   return Math.round((b - a) / 86400000);
 }
-function normalizeRecurringState(){
-  if(!Array.isArray(state.recurringTasks)) state.recurringTasks = [];
-  if(!Array.isArray(state.recurringSkips)) state.recurringSkips = [];
-  state.recurringTasks.forEach(t => {
-    if(t.active === undefined) t.active = true;
-    if(!t.startDate) t.startDate = todayStr();
-    // Existing recurring tasks were daily. Missing weekDays therefore means all seven days.
-    if(!Array.isArray(t.weekDays) || !t.weekDays.length) t.weekDays = [0,1,2,3,4,5,6];
-    t.weekDays = [...new Set(t.weekDays.map(Number).filter(d => d >= 0 && d <= 6))];
-    if(!t.weekDays.length) t.weekDays = [0,1,2,3,4,5,6];
-    if(!Array.isArray(t.subs)) t.subs = [];
-    t.subs.forEach(s => {
-      if(s.dateOffset === undefined) s.dateOffset = 0;
-      if(s.description === undefined) s.description = '';
-    });
-  });
-}
-function buildRecurringTemplateFromActivity(act, weekDays=[0,1,2,3,4,5,6]){
-  const baseDate = act.date || todayStr();
-  return {
-    id:uid(), active:true, createdAt:new Date().toISOString(), startDate:baseDate,
-    weekDays:[...new Set((weekDays || []).map(Number).filter(d => d >= 0 && d <= 6))],
-    title:act.title || '', description:act.description || '', location:act.location || 'company',
-    category:act.category || 'Công việc', startTime:act.startTime || null,
-    durationMinutes:Number(act.durationMinutes) || null,
-    subs:(act.subs || []).map(s => ({
-      title:s.title || '', description:s.description || '', startTime:s.startTime || null,
-      durationMinutes:Number(s.durationMinutes) || null,
-      dateOffset:dateDiffDays(baseDate, s.date || baseDate)
-    }))
-  };
-}
-function activityFromRecurringTemplate(t, date){
-  return {
-    id:uid(), date, title:t.title, location:t.location || 'company',
-    description:t.description || '', tag1pct:false, category:t.category || 'Công việc',
-    startTime:t.startTime || null, durationMinutes:Number(t.durationMinutes) || null,
-    completed:false, status:'todo', reviewId:null,
-    recurringId:t.id, generatedFromRecurring:true,
-    subs:(t.subs || []).map(s => ({
-      id:uid(), title:s.title || '', description:s.description || '',
-      date:addDays(date, Number(s.dateOffset) || 0), startTime:s.startTime || null,
-      durationMinutes:Number(s.durationMinutes) || null,
-      completed:false, status:'todo', reviewId:null
-    }))
-  };
-}
-function hasRecurringSkip(recurringId, date){
-  return (state.recurringSkips || []).some(x => x && x.recurringId === recurringId && x.date === date);
-}
-function addRecurringSkip(recurringId, date){
-  if(!recurringId || !date) return;
-  if(!Array.isArray(state.recurringSkips)) state.recurringSkips = [];
-  if(!hasRecurringSkip(recurringId, date)) state.recurringSkips.push({recurringId, date, skippedAt:new Date().toISOString()});
-}
-function ensureRecurringTasksForDate(date, persist=true){
-  if(!state || !Array.isArray(state.recurringTasks) || !date) return 0;
-  let added = 0;
-  state.recurringTasks.forEach(t => {
-    if(!t || t.active === false || !t.id) return;
-    if(t.startDate && date < t.startDate) return;
-    const repeatDays = Array.isArray(t.weekDays) && t.weekDays.length ? t.weekDays : [0,1,2,3,4,5,6];
-    if(!repeatDays.includes(weekdayIndexFromDate(date))) return;
-    if(hasRecurringSkip(t.id, date)) return;
-    const exists = (state.activities || []).some(a => a.recurringId === t.id && a.date === date);
-    if(exists) return;
-    state.activities.push(activityFromRecurringTemplate(t, date));
-    added++;
-  });
-  if(added && persist) save();
-  return added;
-}
-
-
-
 function normalizeHumorState(){
   if(!state.humor || typeof state.humor !== 'object') state.humor = {};
   if(!Array.isArray(state.humor.observations)) state.humor.observations = [];
@@ -3318,6 +3212,87 @@ function normalizeHumorState(){
     if(!Array.isArray(d.versions)) d.versions = [d.version1||'',d.version2||'',d.version3||''];
     if(!Number.isFinite(Number(d.rehearsals))) d.rehearsals = 0;
   });
+}
+
+const LEGACY_RECURRING_CLEANUP_DATE = '2026-07-21';
+const LEGACY_RECURRING_CLEANUP_KEY = 'removeRecurringInstancesFrom20260721_v1';
+
+function recurringCleanupSignature(item){
+  if(!item) return '';
+  const subs = (item.subs || []).map(sub => [
+    String(sub.title || '').trim().toLowerCase(),
+    String(sub.description || '').trim().toLowerCase(),
+    String(sub.startTime || ''),
+    Number(sub.durationMinutes) || 0
+  ].join('¦')).join('§');
+  return [
+    String(item.title || '').trim().toLowerCase(),
+    String(item.description || '').trim().toLowerCase(),
+    String(item.location || 'company'),
+    String(item.category || 'Công việc'),
+    String(item.startTime || ''),
+    Number(item.durationMinutes) || 0,
+    subs
+  ].join('¶');
+}
+
+function removeLegacyRecurringInstances(){
+  if(!state || !Array.isArray(state.activities)) return 0;
+  if(!state.migrations || typeof state.migrations !== 'object') state.migrations = {};
+  if(state.migrations[LEGACY_RECURRING_CLEANUP_KEY]) return 0;
+
+  const templates = Array.isArray(state.recurringTasks) ? state.recurringTasks.filter(Boolean) : [];
+  const templateIds = new Set(templates.map(t => t.id).filter(Boolean));
+  const templateSignatures = new Set(templates.map(recurringCleanupSignature).filter(Boolean));
+
+  // Fallback for data that has already passed through the previous version, where
+  // recurringId/generatedFromRecurring may have been stripped: detect an identical
+  // non-1% card repeated on at least two days before the cutoff. This is deliberately
+  // conservative so one-off future plans are not removed.
+  const datesBySignature = new Map();
+  state.activities.forEach(a => {
+    if(!a || !a.date || a.date >= LEGACY_RECURRING_CLEANUP_DATE || a.tag1pct) return;
+    if(a.fromReviewId || a.fromMistakeId || a.linkedHumorObservationId || a.linkedHumorDraftId || a.humorPlanType) return;
+    const sig = recurringCleanupSignature(a);
+    if(!sig) return;
+    if(!datesBySignature.has(sig)) datesBySignature.set(sig, new Set());
+    datesBySignature.get(sig).add(a.date);
+  });
+  const repeatedHistoricalSignatures = new Set(
+    [...datesBySignature.entries()].filter(([, dates]) => dates.size >= 2).map(([sig]) => sig)
+  );
+
+  const removedIds = new Set();
+  state.activities = state.activities.filter(a => {
+    if(!a || !a.date || a.date < LEGACY_RECURRING_CLEANUP_DATE) return true;
+
+    const hasLegacyMarker = !!a.generatedFromRecurring || !!a.recurringId || templateIds.has(a.recurringId);
+    const sig = recurringCleanupSignature(a);
+    const matchesLegacyTemplate = templateSignatures.has(sig);
+    const looksLikeStrippedRecurring = !a.tag1pct
+      && !a.completed
+      && !a.reviewId
+      && !a.fromReviewId
+      && !a.fromMistakeId
+      && !a.linkedHumorObservationId
+      && !a.linkedHumorDraftId
+      && !a.humorPlanType
+      && repeatedHistoricalSignatures.has(sig);
+
+    const shouldRemove = hasLegacyMarker || matchesLegacyTemplate || looksLikeStrippedRecurring;
+    if(shouldRemove && a.id) removedIds.add(a.id);
+    return !shouldRemove;
+  });
+
+  if(removedIds.size){
+    state.reviews = (state.reviews || []).filter(r => !removedIds.has(r.activityId));
+  }
+  state.migrations[LEGACY_RECURRING_CLEANUP_KEY] = {
+    appliedAt:new Date().toISOString(),
+    cutoff:LEGACY_RECURRING_CLEANUP_DATE,
+    removed:removedIds.size
+  };
+  return removedIds.size;
 }
 
 function migrateActivities(){
@@ -3340,13 +3315,18 @@ function migrateActivities(){
   // Mục tiêu năm luôn bám theo mùa trồng hiện tại: từ ngày bắt đầu dùng app đến 31/12.
   state.goalTargets.year = defaults.year;
   if(!Array.isArray(state.celebratedOnePctDays)) state.celebratedOnePctDays = [];
-  normalizeRecurringState();
+  // Dọn các phiên bản công việc từng được lịch lặp sinh ra từ 21/07/2026 trở đi,
+  // sau đó xoá cấu hình lặp cũ để không thể phát sinh thêm công việc mới.
+  const removedLegacyRecurring = removeLegacyRecurringInstances();
+  delete state.recurringTasks;
+  delete state.recurringSkips;
   (state.activities || []).forEach(a => {
     if(a.completed === undefined) a.completed = (a.status === 'done');
     if(!Array.isArray(a.subs)) a.subs = [];
     if(!a.location) a.location = 'company'; // dữ liệu cũ mặc định vào cột Công ty
     if(a.tag1pct === undefined) a.tag1pct = false;
-    if(a.generatedFromRecurring === undefined) a.generatedFromRecurring = !!a.recurringId;
+    delete a.recurringId;
+    delete a.generatedFromRecurring;
     // gộp mục tiêu + tiêu chuẩn -> mô tả (nếu chưa có description)
     if(a.description === undefined){
       a.description = mergeDesc(a.goal, a.successCriteria);
@@ -3358,6 +3338,7 @@ function migrateActivities(){
       if(s.reviewId === undefined) s.reviewId = null;
     });
   });
+  return removedLegacyRecurring;
 }
 
 // Thời lượng hiệu lực của việc lớn: nếu tự nhập thì dùng, nếu không thì cộng từ subtask
@@ -3443,14 +3424,14 @@ function dayItemDuration(item, date){
 }
 
 // Chế độ sắp xếp danh sách (không đồng bộ, lưu localStorage riêng)
-let sortMode = localStorage.getItem('opos_sortmode') || 'time';
+let sortMode = 'manual';
 
 // ---------- State ----------
 let state = null;
 
 function defaultState(){
   const start = todayStr();
-  return { activities:[], reviews:[], actions:[], mistakes:[], focus:{}, weekly:[], humor:{observations:[],drafts:[],performances:[]}, gardenStartDate:start, goalTargets:defaultGoalTargets(), celebratedOnePctDays:[], recurringTasks:[], recurringSkips:[], columnSettings:{home:{label:'Ở nhà',icon:'🏠'},company:{label:'Công ty',icon:'🏢'}}, seeded:false, theme:'light' };
+  return { activities:[], reviews:[], actions:[], mistakes:[], focus:{}, weekly:[], humor:{observations:[],drafts:[],performances:[]}, gardenStartDate:start, goalTargets:defaultGoalTargets(), celebratedOnePctDays:[], columnSettings:{home:{label:'Ở nhà',icon:'🏠'},company:{label:'Công ty',icon:'🏢'}}, seeded:false, theme:'light' };
 }
 
 function load(){
@@ -3460,7 +3441,8 @@ function load(){
   }catch(e){ state = defaultState(); }
   if(!state.seeded){ seedDemo(); state.seeded = true; save(); }
   migrateActivities();
-  ensureRecurringTasksForDate(todayStr());
+  // Persist cleanup/migrations immediately so deleted recurring instances do not reappear after refresh.
+  localStorage.setItem(LS_KEY, JSON.stringify(state));
 }
 let afterSaveHook = null;
 function save(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); if(afterSaveHook) afterSaveHook(); }
@@ -4118,10 +4100,6 @@ function renderTreeProgress(){
 
 function renderToday(){
   const t = viewDate;
-  const todaySection = document.querySelector('section[data-view="today"]');
-  // Chỉ sinh việc lặp khi người dùng thực sự mở dashboard ngày.
-  // Tab Lịch chỉ đọc dữ liệu lịch sử, không tự tạo thêm việc ở quá khứ/tương lai.
-  if(todaySection && todaySection.classList.contains('active')) ensureRecurringTasksForDate(t);
   const today = todayStr();
   document.getElementById('todayDate').textContent = fmtDate(t);
 
@@ -4160,49 +4138,18 @@ function renderToday(){
   if(footerQuote) footerQuote.innerHTML = quoteMarkup(qt);
   renderTreeProgress();
 
-  // sort UI (dropdown)
-  document.getElementById('sortSelect').value = sortMode;
-  const wrap = document.getElementById('todayActivities');
-  wrap.classList.toggle('sort-manual', sortMode === 'manual');
-
+  // Kéo-thả là thứ tự mặc định. Bộ chọn phía trên chỉ áp dụng một lần rồi ghi lại order.
+  const sortSelect = document.getElementById('sortSelect');
+  if(sortSelect) sortSelect.value = '';
   const byStart = (a,b) => {
     if(a.startTime && b.startTime) return a.startTime.localeCompare(b.startTime);
     if(a.startTime) return -1;
     if(b.startTime) return 1;
     return 0;
   };
-  const sorter = (list) => {
-    const arr = [...list];
-    switch(sortMode){
-      case 'manual':
-        return arr.sort((a,b) => (a.order ?? 1e9) - (b.order ?? 1e9));
-      case 'durationDesc':
-        return arr.sort((a,b) => effectiveDuration(b) - effectiveDuration(a) || byStart(a,b));
-      case 'durationAsc':
-        return arr.sort((a,b) => {
-          const da = effectiveDuration(a), db = effectiveDuration(b);
-          // việc chưa có thời lượng (0) xuống cuối cho hợp lý
-          if(da === 0 && db === 0) return byStart(a,b);
-          if(da === 0) return 1;
-          if(db === 0) return -1;
-          return da - db || byStart(a,b);
-        });
-      case 'incomplete':
-        return arr.sort((a,b) => (isCompleted(a)?1:0) - (isCompleted(b)?1:0) || byStart(a,b));
-      case 'needReview':
-        // đã xong nhưng chưa review lên đầu; rồi tới chưa xong; đã review xuống cuối
-        const rank = (x) => {
-          const done = isCompleted(x), rev = !!state.reviews.find(r => r.id === x.reviewId);
-          if(done && !rev) return 0;   // cần review gấp
-          if(!done) return 1;          // chưa xong
-          return 2;                     // đã review
-        };
-        return arr.sort((a,b) => rank(a) - rank(b) || byStart(a,b));
-      case 'time':
-      default:
-        return arr.sort(byStart);
-    }
-  };
+  const sorter = (list) => [...list].sort((a,b) =>
+    (a.order ?? 1e9) - (b.order ?? 1e9) || byStart(a,b)
+  );
 
   renderColumnHeaders();
 
@@ -4275,8 +4222,6 @@ function renderActCard(a){
   const subsDone = subs.filter(s => s.completed).length;
   return `<div class="act-card ${doneA?'completed':''} ${openActs.has(a.id)?'open':''}" data-id="${a.id}">
     <div class="act-row">
-      <span class="act-drag" title="Giữ và kéo để sắp xếp">⠿</span>
-      <span class="act-move"><button data-move="up" title="Lên">▲</button><button data-move="down" title="Xuống">▼</button></span>
       <input type="checkbox" class="act-check" data-complete ${doneA?'checked':''} aria-label="Đánh dấu hoàn thành">
       <span class="act-time ${a.startTime?'':'unset'}">${a.startTime ? esc(a.startTime) : ''}</span>
       <h3>${a.tag1pct ? '<span class="chip chip-1pct" style="margin-right:6px">🌱1%</span>' : ''}${esc(a.title)}${subs.length ? ` <span style="font-weight:400;color:var(--muted);font-size:12px">(${subsDone}/${subs.length})</span>` : ''}</h3>
@@ -4286,7 +4231,6 @@ function renderActCard(a){
     <div class="act-details">
       <div class="row" style="gap:8px;flex-wrap:wrap">
         ${a.tag1pct ? '<span class="chip chip-1pct">🌱 Việc chăm cây</span>' : ''}
-        ${a.recurringId ? `<span class="chip">↻ ${esc(recurringScheduleText(a))}</span>` : ''}
         <span class="chip chip-cat">${esc(a.category)}</span>
         ${eff ? `<span class="chip chip-time">${fmtMins(eff)}${!Number(a.durationMinutes) && subs.length ? ' (từ việc con)' : ''}</span>` : ''}
         ${rv ? '<span class="chip" style="background:var(--ok-soft);color:var(--ok);border-color:transparent">Đã review</span>' : ''}
@@ -4365,23 +4309,92 @@ function renderActions(){
 }
 
 let mistakeFilter = 'Tất cả';
+function mistakeLinkedActivity(m){
+  return (state.activities || []).find(a => a.fromMistakeId === m.id) || null;
+}
+function isMistakeCared(m){
+  return !!((m.action && m.action.trim()) || mistakeLinkedActivity(m));
+}
+function gardenInsight7Days(){
+  const end = todayStr();
+  const start = addDays(end,-6);
+  const recent = (state.mistakes || []).filter(m => m.date && m.date >= start && m.date <= end);
+  if(!recent.length){
+    return {icon:'🌱', title:'7 ngày gần nhất', copy:'Chưa ghi nhận cỏ dại mới. Khu vườn đang khá yên; tiếp tục review đều để phát hiện sớm những điểm nhỏ.'};
+  }
+  const categoryCounts = {};
+  const contentCounts = {};
+  recent.forEach(m => {
+    const cat = m.category || 'Khác';
+    categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+    const key = String(m.content || '').trim().toLowerCase();
+    if(key){
+      if(!contentCounts[key]) contentCounts[key] = {n:0,label:m.content};
+      contentCounts[key].n++;
+    }
+  });
+  const topCategory = Object.entries(categoryCounts).sort((a,b)=>b[1]-a[1])[0];
+  const topRepeat = Object.values(contentCounts).sort((a,b)=>b.n-a.n)[0];
+  const openCount = recent.filter(m => !isMistakeCared(m)).length;
+  let copy = `Đã ghi nhận ${recent.length} cỏ dại; ${openCount} cỏ vẫn chưa có hành động chăm sóc.`;
+  if(topRepeat && topRepeat.n >= 2){
+    copy = `Điểm lặp lại rõ nhất là “${topRepeat.label}” (${topRepeat.n} lần). ${openCount ? `${openCount} cỏ trong tuần vẫn chưa được chăm sóc.` : 'Toàn bộ cỏ trong tuần đã có hành động chăm sóc.'}`;
+  }else if(topCategory && topCategory[1] >= 2){
+    copy = `${topCategory[0]} là khu vực nổi bật nhất với ${topCategory[1]}/${recent.length} cỏ dại. ${openCount ? `Ưu tiên xử lý ${openCount} cỏ chưa được chăm sóc.` : 'Các cỏ đã được chuyển thành hành động chăm sóc.'}`;
+  }
+  return {icon:'🔎', title:'Điểm đáng chú ý trong 7 ngày', copy};
+}
+function renderMistakeCard(m, cared){
+  const linked = mistakeLinkedActivity(m);
+  const actionText = (m.action && m.action.trim()) || linked?.title || '';
+  const actionDone = linked ? isCompleted(linked) : false;
+  return `<div class="mist-card ${cared?'cared':''}" data-mistake-id="${m.id}">
+    <div class="row" style="gap:8px;margin-bottom:6px">
+      <span class="chip chip-cat">${esc(m.category)}</span>
+      <span class="chip">${m.date.split('-').reverse().join('/')}</span>
+      ${m.activityTitle ? `<span class="chip">${esc(m.activityTitle)}</span>` : ''}
+      <span class="chip mist-status ${cared?'cared':'pending'}">${cared ? (actionDone ? '✓ Đã hoàn thành chăm sóc' : '🌱 Đã có hành động') : 'Chưa chăm sóc'}</span>
+    </div>
+    <div class="m-field" style="margin-top:0;color:var(--muted)"><b>Cỏ dại được phát hiện</b></div>
+    <div class="m-content">${esc(m.content)}</div>
+    ${m.rootCause ? `<div class="m-field"><b>Gốc rễ:</b> ${esc(m.rootCause)}</div>` : ''}
+    ${m.lesson ? `<div class="m-field"><b>Bài học:</b> ${esc(m.lesson)}</div>` : ''}
+    ${actionText ? `<div class="m-field" style="color:var(--cyan)"><b style="color:var(--cyan)">→ Hành động chăm sóc:</b> ${esc(actionText)}</div>` : ''}
+    <div class="mist-actions">
+      ${cared ? '' : `<button class="btn btn-soft btn-sm" data-m-create="${m.id}">🌿 Nhổ cỏ</button>`}
+      ${linked ? `<button class="btn btn-ghost btn-sm" data-m-open-task="${linked.id}">Mở việc chăm sóc</button>` : ''}
+      ${m.reviewId ? `<button class="btn btn-ghost btn-sm" data-m-open-source="${m.reviewId}">Xem gốc rễ</button>` : ''}
+    </div>
+  </div>`;
+}
 function renderMistakes(){
-  // filters
-  const cats = ['Tất cả', ...MISTAKE_CATS];
-  document.getElementById('mistakeFilters').innerHTML =
-    cats.map(c => `<button data-mf="${esc(c)}" class="${mistakeFilter===c?'on':''}">${esc(c)}</button>`).join('');
+  const filtered = (state.mistakes || [])
+    .filter(m => mistakeFilter === 'Tất cả' || m.category === mistakeFilter)
+    .sort((a,b)=> b.date.localeCompare(a.date));
+  const pending = filtered.filter(m => !isMistakeCared(m));
+  const cared = filtered.filter(isMistakeCared);
 
-  // stats
+  const categoryOptions = ['Tất cả', ...MISTAKE_CATS].map(c =>
+    `<option value="${esc(c)}" ${mistakeFilter===c?'selected':''}>${c === 'Tất cả' ? 'Tất cả khu vực' : esc(c)}</option>`
+  ).join('');
+  document.getElementById('mistakeFilters').innerHTML = `
+    <div class="mistake-filter-main">
+      <label for="mistakeCategorySelect">Bộ lọc tổng hợp</label>
+      <select id="mistakeCategorySelect">${categoryOptions}</select>
+    </div>
+    <div class="mistake-filter-summary"><b>${pending.length}</b> chưa chăm sóc · <b>${cared.length}</b> đã chăm sóc</div>`;
+
   const counts = {};
   state.mistakes.forEach(m => counts[m.category] = (counts[m.category]||0)+1);
   const contentCount = {};
   state.mistakes.forEach(m => {
-    const k = m.content.trim().toLowerCase();
+    const k = String(m.content || '').trim().toLowerCase();
+    if(!k) return;
     contentCount[k] = contentCount[k] || {n:0, label:m.content};
     contentCount[k].n++;
   });
   const topRepeat = Object.values(contentCount).sort((a,b)=>b.n-a.n)[0];
-  const withAction = state.mistakes.filter(m => m.action && m.action.trim()).length;
+  const withAction = state.mistakes.filter(isMistakeCared).length;
   const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
   const max = sorted.length ? sorted[0][1] : 1;
 
@@ -4395,40 +4408,34 @@ function renderMistakes(){
     <div class="hint" style="margin-top:12px">
       Bụi cỏ mọc lại nhiều nhất: <b style="color:var(--ink)">${topRepeat && topRepeat.n>1 ? esc(topRepeat.label)+' ('+topRepeat.n+' lần)' : 'chưa có bụi cỏ nào mọc lại'}</b><br>
       Cỏ dại đã phát hiện: <b style="color:var(--ink)">${state.mistakes.length}</b> ·
-      Đã chăm sóc: <b style="color:var(--ink)">${withAction}</b>
+      Đã chăm sóc: <b style="color:var(--ink)">${withAction}</b> ·
+      Chưa chăm sóc: <b style="color:var(--ink)">${state.mistakes.length-withAction}</b>
     </div>` : `<div class="hint">Chưa có cỏ dại nào được ghi nhận. Khi review phát hiện điều chưa tốt, khu vườn sẽ tự lưu lại.</div>`;
 
-  // pattern alerts (category >= 3)
-  const alerts = sorted.filter(([,n]) => n >= 3);
-  document.getElementById('patternAlerts').innerHTML = alerts.map(([c,n]) => `
-    <div class="pattern-alert">🌿 <div><b>${esc(c)}</b> có ${n} cỏ dại. Bụi cỏ này đã mọc lại nhiều lần —
-    có thể đây không còn là lỗi cá nhân, mà là một gốc rễ cần chăm sóc.</div></div>`).join('');
+  const insight = gardenInsight7Days();
+  document.getElementById('patternAlerts').innerHTML = `<div class="garden-insight">
+    <div class="garden-insight-icon">${insight.icon}</div>
+    <div class="garden-insight-copy"><b>${esc(insight.title)}</b>${esc(insight.copy)}</div>
+  </div>`;
 
-  // list
-  const list = state.mistakes
-    .filter(m => mistakeFilter === 'Tất cả' || m.category === mistakeFilter)
-    .sort((a,b)=> b.date.localeCompare(a.date));
-  document.getElementById('mistakeList').innerHTML = list.length ? list.map(m => `
-    <div class="mist-card" data-mistake-id="${m.id}">
-      <div class="row" style="gap:8px;margin-bottom:6px">
-        <span class="chip chip-cat">${esc(m.category)}</span>
-        <span class="chip">${m.date.split('-').reverse().join('/')}</span>
-        ${m.activityTitle ? `<span class="chip">${esc(m.activityTitle)}</span>` : ''}
-      </div>
-      <div class="m-field" style="margin-top:0;color:var(--muted)"><b>Cỏ dại được phát hiện</b></div>
-      <div class="m-content">${esc(m.content)}</div>
-      ${m.rootCause ? `<div class="m-field"><b>Gốc rễ:</b> ${esc(m.rootCause)}</div>` : ''}
-      ${m.lesson ? `<div class="m-field"><b>Bài học:</b> ${esc(m.lesson)}</div>` : ''}
-      ${m.action ? `<div class="m-field" style="color:var(--cyan)"><b style="color:var(--cyan)">→ Đã chăm sóc:</b> ${esc(m.action)}</div>` : ''}
-      <div class="mist-actions">
-        <button class="btn btn-soft btn-sm" data-m-create="${m.id}">🌿 Nhổ cỏ</button>
-        ${m.reviewId ? `<button class="btn btn-ghost btn-sm" data-m-open-source="${m.reviewId}">Xem gốc rễ</button>` : ''}
-      </div>
-    </div>`).join('') : `<div class="empty">Khu vực này chưa có cỏ dại.</div>`;
+  const pendingHtml = pending.length ? pending.map(m => renderMistakeCard(m,false)).join('') : `<div class="empty">Không có cỏ dại chưa chăm sóc trong khu vực này.</div>`;
+  const caredHtml = cared.length ? cared.map(m => renderMistakeCard(m,true)).join('') : `<div class="empty">Chưa có cỏ dại đã được chăm sóc trong khu vực này.</div>`;
+  document.getElementById('mistakeList').innerHTML = `<div class="mistake-groups">
+    <section class="mistake-group pending">
+      <div class="mistake-group-head"><div class="mistake-group-title">Cỏ dại chưa được chăm sóc</div><span class="mistake-group-count">${pending.length}</span></div>
+      ${pendingHtml}
+    </section>
+    <section class="mistake-group cared">
+      <div class="mistake-group-head"><div class="mistake-group-title">Cỏ dại đã được chăm sóc</div><span class="mistake-group-count">${cared.length}</span></div>
+      ${caredHtml}
+    </section>
+  </div>`;
 }
-document.getElementById('mistakeFilters').addEventListener('click', e => {
-  const b = e.target.closest('[data-mf]');
-  if(b){ mistakeFilter = b.dataset.mf; renderMistakes(); }
+document.getElementById('mistakeFilters').addEventListener('change', e => {
+  if(e.target.id === 'mistakeCategorySelect'){
+    mistakeFilter = e.target.value;
+    renderMistakes();
+  }
 });
 
 
@@ -4438,6 +4445,13 @@ document.getElementById('mistakeList').addEventListener('click', e => {
     const m = state.mistakes.find(x => x.id === createBtn.dataset.mCreate);
     if(!m) return;
     createOnePctFromMistake(m);
+    return;
+  }
+  const taskBtn = e.target.closest('[data-m-open-task]');
+  if(taskBtn){
+    const act = state.activities.find(a => a.id === taskBtn.dataset.mOpenTask);
+    if(act){ openDayView(act.date); setTimeout(() => openActivityBoard(act), 80); }
+    else toast('Không tìm thấy việc chăm sóc liên kết.');
     return;
   }
   const openBtn = e.target.closest('[data-m-open-source]');
@@ -4486,8 +4500,6 @@ function createOnePctFromMistake(m){
   document.getElementById('cTitle').value = draft.title;
   document.getElementById('cDesc').value = draft.description;
   document.getElementById('cTag1pct').checked = true;
-  const repeatBox = document.getElementById('cRepeatControls');
-  if(repeatBox) repeatBox.style.display = 'none';
   document.getElementById('cDate').value = draft.date;
   document.getElementById('cCategory').value = draft.category;
   document.getElementById('cStartTime').value = '';
@@ -5121,48 +5133,6 @@ document.getElementById('dayPick').addEventListener('change', e => {
 let creatingLocation = 'company';
 let createDraftSubs = [];
 let createDraftMeta = null;
-const REPEAT_DAY_LABELS = {1:'Thứ 2',2:'Thứ 3',3:'Thứ 4',4:'Thứ 5',5:'Thứ 6',6:'Thứ 7',0:'Chủ nhật'};
-function selectedRepeatWeekdays(){
-  return [...document.querySelectorAll('#cRepeatWeekdays [data-repeat-day].on')]
-    .map(b => Number(b.dataset.repeatDay));
-}
-function setSelectedRepeatWeekdays(days=[]){
-  const picked = new Set((days || []).map(Number));
-  document.querySelectorAll('#cRepeatWeekdays [data-repeat-day]').forEach(b => {
-    b.classList.toggle('on', picked.has(Number(b.dataset.repeatDay)));
-  });
-  updateRepeatSummary();
-}
-function repeatScheduleLabel(days){
-  const normalized = [...new Set((days || []).map(Number))];
-  if(normalized.length === 7) return 'hằng ngày';
-  const order = [1,2,3,4,5,6,0];
-  return order.filter(d => normalized.includes(d)).map(d => REPEAT_DAY_LABELS[d]).join(', ');
-}
-function updateRepeatSummary(){
-  const box = document.getElementById('cRepeatWeekdays');
-  const summary = document.getElementById('cRepeatSummary');
-  const checked = !!document.getElementById('cRepeatDaily')?.checked;
-  if(box) box.hidden = !checked;
-  if(!summary) return;
-  const days = selectedRepeatWeekdays();
-  summary.textContent = days.length ? `Sẽ lặp vào: ${repeatScheduleLabel(days)}.` : 'Chưa chọn ngày lặp.';
-}
-function recurringTemplateForActivity(act){
-  return act?.recurringId ? (state.recurringTasks || []).find(t => t.id === act.recurringId) : null;
-}
-function recurringScheduleText(act){
-  const template = recurringTemplateForActivity(act);
-  return template ? repeatScheduleLabel(template.weekDays || [0,1,2,3,4,5,6]) : '';
-}
-function nextRepeatDateOnOrAfter(startDate, days){
-  const selected = new Set((days || []).map(Number));
-  for(let offset=0; offset<7; offset++){
-    const candidate = addDays(startDate, offset);
-    if(selected.has(weekdayIndexFromDate(candidate))) return candidate;
-  }
-  return startDate;
-}
 function renderCreateSubtasks(){
   const list = document.getElementById('createSubList');
   if(!list) return;
@@ -5194,11 +5164,6 @@ function openCreateActivity(loc='company'){
   createDraftMeta = null;
   renderCreateSubtasks();
   document.getElementById('cTag1pct').checked = false;
-  document.getElementById('cRepeatDaily').checked = false;
-  setSelectedRepeatWeekdays([]);
-  updateRepeatSummary();
-  const repeatBox = document.getElementById('cRepeatControls');
-  if(repeatBox) repeatBox.style.display = '';
   const cLoc = document.getElementById('cLocation');
   if(cLoc) cLoc.value = loc;
   document.getElementById('cDate').value = viewDate;
@@ -5241,28 +5206,6 @@ document.getElementById('createSubList').addEventListener('click', e => {
   }
   openDraftSubtaskBoard(sub);
 });
-document.getElementById('cRepeatDaily').addEventListener('change', e => {
-  if(e.target.checked && !selectedRepeatWeekdays().length){
-    setSelectedRepeatWeekdays([weekdayIndexFromDate(document.getElementById('cDate').value || viewDate)]);
-  }
-  updateRepeatSummary();
-});
-document.getElementById('cRepeatWeekdays').addEventListener('click', e => {
-  const day = e.target.closest('[data-repeat-day]');
-  if(day){
-    day.classList.toggle('on');
-    updateRepeatSummary();
-  }
-});
-document.getElementById('cRepeatAllDays').addEventListener('click', () => {
-  setSelectedRepeatWeekdays([1,2,3,4,5,6,0]);
-});
-document.getElementById('cDate').addEventListener('change', () => {
-  if(document.getElementById('cRepeatDaily').checked && !selectedRepeatWeekdays().length){
-    setSelectedRepeatWeekdays([weekdayIndexFromDate(document.getElementById('cDate').value || viewDate)]);
-  }
-});
-
 document.getElementById('createActivityForm').addEventListener('submit', e => {
   e.preventDefault();
   const title = document.getElementById('cTitle').value.trim();
@@ -5271,14 +5214,7 @@ document.getElementById('createActivityForm').addEventListener('submit', e => {
   const requestedDate = document.getElementById('cDate').value || viewDate;
   const meta = createDraftMeta;
   const isOnePct = meta?.forceOnePct ? true : document.getElementById('cTag1pct').checked;
-  const repeatDaily = document.getElementById('cRepeatDaily').checked && !isOnePct;
-  const repeatDays = repeatDaily ? selectedRepeatWeekdays() : [];
-  if(repeatDaily && !repeatDays.length){
-    toast('Hãy chọn ít nhất một ngày trong tuần để lặp lại.');
-    return;
-  }
-  const date = repeatDaily ? nextRepeatDateOnOrAfter(requestedDate, repeatDays) : requestedDate;
-  const dateShift = dateDiffDays(requestedDate, date);
+  const date = requestedDate;
   const act = {
     id:uid(), date, title, location:loc,
     description:document.getElementById('cDesc').value.trim(),
@@ -5287,7 +5223,7 @@ document.getElementById('createActivityForm').addEventListener('submit', e => {
     startTime:document.getElementById('cStartTime').value || null,
     durationMinutes:readDuration('cDuration','cDurationCustom'),
     completed:false,
-    subs:createDraftSubs.map(sub => ({...sub, date:addDays(sub.date || requestedDate, dateShift)})),
+    subs:createDraftSubs.map(sub => ({...sub, date:sub.date || requestedDate})),
     status:'todo', reviewId:null
   };
   if(meta){
@@ -5295,12 +5231,6 @@ document.getElementById('createActivityForm').addEventListener('submit', e => {
     act.fromActivityId = meta.fromActivityId || null;
     act.fromActivityTitle = meta.fromActivityTitle || null;
     act.fromMistakeId = meta.fromMistakeId || null;
-  }
-  if(repeatDaily){
-    const tmpl = buildRecurringTemplateFromActivity(act, repeatDays);
-    act.recurringId = tmpl.id;
-    act.generatedFromRecurring = true;
-    state.recurringTasks.push(tmpl);
   }
   state.activities.push(act);
   if(meta?.type === 'mistakeOnePct' && meta.fromMistakeId){
@@ -5315,9 +5245,7 @@ document.getElementById('createActivityForm').addEventListener('submit', e => {
   const locLabel = getColumnSetting(loc).label;
   toast(meta?.type === 'mistakeOnePct'
     ? 'Đã tạo việc 1% để nhổ cỏ. Deadline đã được khóa.'
-    : (repeatDaily
-      ? `Đã tạo công việc lặp ${repeatScheduleLabel(repeatDays)} trong cột ${locLabel}.`
-      : `Đã tạo công việc trong cột ${locLabel}.`));
+    : `Đã tạo công việc trong cột ${locLabel}.`);
   setTimeout(() => {
     const card = document.querySelector(`.act-card[data-id="${act.id}"]`);
     if(card) card.scrollIntoView({behavior:'smooth', block:'center'});
@@ -5364,6 +5292,7 @@ document.getElementById('todayActivities').addEventListener('submit', e => {
 });
 
 document.getElementById('todayActivities').addEventListener('click', e => {
+  if(Date.now() < suppressCardClickUntil){ e.preventDefault(); e.stopPropagation(); return; }
   const editColumnBtn = e.target.closest('[data-edit-column]');
   if(editColumnBtn){ openColumnEdit(editColumnBtn.dataset.editColumn); return; }
   const addCard = e.target.closest('[data-col-add-card]');
@@ -5411,10 +5340,6 @@ document.getElementById('todayActivities').addEventListener('click', e => {
   }
   // ----- nút play việc lớn -> mở màn hình tập trung -----
   if(e.target.closest('[data-play]')){ startTimer(act, null); return; }
-
-  // ----- move up/down (chế độ thủ công) -----
-  const mv = e.target.closest('[data-move]');
-  if(mv){ moveActivity(act, mv.dataset.move); return; }
 
   // ----- việc lớn: tick hoàn thành -----
   const cb = e.target.closest('[data-complete]');
@@ -5486,10 +5411,9 @@ document.getElementById('todayActivities').addEventListener('click', e => {
       return;
     }
     if(confirm(`Xoá hoạt động “${act.title}”? Review gắn với nó vẫn được giữ trong Dọn vườn.`)){
-      if(act.recurringId) addRecurringSkip(act.recurringId, act.date);
       state.activities = state.activities.filter(a => a.id !== act.id);
       openActs.delete(act.id);
-      save(); renderToday(); toast(act.recurringId ? 'Đã xoá việc lặp của ngày này.' : 'Đã xoá hoạt động.');
+      save(); renderToday(); toast('Đã xoá hoạt động.');
     }
     return;
   }
@@ -5507,111 +5431,162 @@ document.getElementById('todayActivities').addEventListener('keydown', e => {
   }
 });
 
-// ----- Sắp xếp thủ công: nút lên/xuống (trong cùng cột/địa điểm) -----
+// ----- Thứ tự kéo-thả mặc định (chuột + cảm ứng) -----
 function colActsForView(loc){
   return state.activities
     .filter(a => a.date === viewDate && (a.location||'company') === loc)
-    .sort((a,b) => (a.order ?? 1e9) - (b.order ?? 1e9));
+    .sort((a,b) => (a.order ?? 1e9) - (b.order ?? 1e9) || (a.startTime||'99:99').localeCompare(b.startTime||'99:99'));
 }
 function normalizeOrderCol(loc){
   colActsForView(loc).forEach((a,i) => a.order = i);
 }
-function moveActivity(act, dir){
-  const loc = act.location || 'company';
-  normalizeOrderCol(loc);
-  const list = colActsForView(loc);
-  const i = list.indexOf(act);
-  const j = dir === 'up' ? i-1 : i+1;
-  if(j < 0 || j >= list.length) return;
-  const tmp = list[i].order; list[i].order = list[j].order; list[j].order = tmp;
-  save(); renderToday();
+function quickSortComparator(mode){
+  const byStart = (a,b) => {
+    if(a.startTime && b.startTime) return a.startTime.localeCompare(b.startTime);
+    if(a.startTime) return -1;
+    if(b.startTime) return 1;
+    return 0;
+  };
+  if(mode === 'durationDesc') return (a,b) => effectiveDuration(b)-effectiveDuration(a) || byStart(a,b);
+  if(mode === 'durationAsc') return (a,b) => {
+    const da=effectiveDuration(a), db=effectiveDuration(b);
+    if(!da && !db) return byStart(a,b);
+    if(!da) return 1;
+    if(!db) return -1;
+    return da-db || byStart(a,b);
+  };
+  if(mode === 'incomplete') return (a,b) => (isCompleted(a)?1:0)-(isCompleted(b)?1:0) || byStart(a,b);
+  if(mode === 'needReview'){
+    const rank = x => {
+      const done=isCompleted(x), reviewed=!!state.reviews.find(r => r.id === x.reviewId);
+      if(done && !reviewed) return 0;
+      if(!done) return 1;
+      return 2;
+    };
+    return (a,b) => rank(a)-rank(b) || byStart(a,b);
+  }
+  return byStart;
+}
+function applyQuickSort(mode){
+  if(!mode) return;
+  ['home','company'].forEach(loc => {
+    const list = state.activities
+      .filter(a => a.date === viewDate && (a.location||'company') === loc)
+      .sort(quickSortComparator(mode));
+    list.forEach((a,i) => a.order = i);
+  });
+  save();
+  renderToday();
+  toast('Đã sắp xếp danh sách. Bạn vẫn có thể kéo thả để điều chỉnh.');
 }
 
-// ----- Kéo-thả bằng pointer (chạy cả chuột + cảm ứng, kiểu Trello) -----
-// Bấm-giữ tay kéo ⠿ rồi di chuyển. Thả vào thẻ nào thì chèn trước thẻ đó (cùng/ khác cột đều được).
 let dragCtx = null;
+let suppressCardClickUntil = 0;
+function clearDragCandidate(){
+  if(!dragCtx) return;
+  if(dragCtx.longPressTimer) clearTimeout(dragCtx.longPressTimer);
+  dragCtx.card?.classList.remove('drag-ready','drag-ghost');
+  if(dragCtx.float) dragCtx.float.remove();
+  document.querySelectorAll('.act-card.drag-over').forEach(c => c.classList.remove('drag-over'));
+  dragCtx = null;
+}
 document.getElementById('todayActivities').addEventListener('pointerdown', e => {
-  if(sortMode !== 'manual') return;
-  const handle = e.target.closest('.act-drag'); if(!handle) return;
-  const card = e.target.closest('.act-card'); if(!card) return;
-  e.preventDefault();
+  if(e.button !== undefined && e.button !== 0) return;
+  if(e.target.closest('button,input,select,textarea,a,.sub-row,.sub-details,.sub-add,.col-add-card')) return;
+  const row = e.target.closest('.act-row');
+  const card = row && row.closest('.act-card[data-id]');
+  if(!card) return;
   const rect = card.getBoundingClientRect();
   dragCtx = {
-    id: card.dataset.id, card,
-    offsetX: e.clientX - rect.left, offsetY: e.clientY - rect.top,
-    width: rect.width, started:false, pointerId:e.pointerId
+    id:card.dataset.id, card, pointerId:e.pointerId, pointerType:e.pointerType,
+    startX:e.clientX, startY:e.clientY,
+    offsetX:e.clientX-rect.left, offsetY:e.clientY-rect.top,
+    width:rect.width, ready:e.pointerType !== 'touch', started:false, overId:null, overLoc:null
   };
-  handle.setPointerCapture(e.pointerId);
+  if(e.pointerType === 'touch'){
+    dragCtx.longPressTimer = setTimeout(() => {
+      if(!dragCtx || dragCtx.id !== card.dataset.id) return;
+      dragCtx.ready = true;
+      card.classList.add('drag-ready');
+      if(navigator.vibrate) navigator.vibrate(20);
+    }, 260);
+  }
 });
 document.getElementById('todayActivities').addEventListener('pointermove', e => {
-  if(!dragCtx) return;
+  if(!dragCtx || dragCtx.pointerId !== e.pointerId) return;
+  const dx=e.clientX-dragCtx.startX, dy=e.clientY-dragCtx.startY;
+  const dist=Math.hypot(dx,dy);
+  if(!dragCtx.ready){
+    if(dist > 9) clearDragCandidate();
+    return;
+  }
+  if(dist < 5 && !dragCtx.started) return;
   e.preventDefault();
-  // bắt đầu "nổi" thẻ lên
   if(!dragCtx.started){
     dragCtx.started = true;
+    if(dragCtx.longPressTimer) clearTimeout(dragCtx.longPressTimer);
+    dragCtx.card.classList.remove('drag-ready');
     dragCtx.card.classList.add('drag-ghost');
+    try{ dragCtx.card.setPointerCapture(e.pointerId); }catch(_){ }
     const float = dragCtx.card.cloneNode(true);
     float.classList.add('drag-float');
-    float.classList.remove('drag-ghost');
+    float.classList.remove('drag-ghost','drag-ready');
     float.style.width = dragCtx.width + 'px';
     document.body.appendChild(float);
     dragCtx.float = float;
   }
-  dragCtx.float.style.transform =
-    `translate(${e.clientX - dragCtx.offsetX}px, ${e.clientY - dragCtx.offsetY}px)`;
-  // tô sáng thẻ đang hướng tới
-  dragCtx.float.style.display = 'none';
-  const under = document.elementFromPoint(e.clientX, e.clientY);
-  dragCtx.float.style.display = '';
+  dragCtx.float.style.transform = `translate(${e.clientX-dragCtx.offsetX}px, ${e.clientY-dragCtx.offsetY}px)`;
+  dragCtx.float.style.display='none';
+  const under=document.elementFromPoint(e.clientX,e.clientY);
+  dragCtx.float.style.display='';
   document.querySelectorAll('.act-card.drag-over').forEach(c => c.classList.remove('drag-over'));
-  const overCard = under && under.closest('.act-card');
+  const overCard=under && under.closest('.act-card[data-id]');
   if(overCard && overCard.dataset.id !== dragCtx.id) overCard.classList.add('drag-over');
-  dragCtx.overId = overCard && overCard.dataset.id !== dragCtx.id ? overCard.dataset.id : null;
-  // phát hiện thả vào vùng trống của cột (đưa xuống cuối cột đó)
-  const overCol = under && under.closest('.col-home, .col-company');
-  dragCtx.overLoc = overCol ? (overCol.classList.contains('col-home') ? 'home' : 'company') : null;
+  dragCtx.overId=overCard && overCard.dataset.id !== dragCtx.id ? overCard.dataset.id : null;
+  const overCol=under && under.closest('.col-home,.col-company');
+  dragCtx.overLoc=overCol ? (overCol.classList.contains('col-home')?'home':'company') : null;
 });
-function endPointerDrag(){
-  if(!dragCtx) return;
-  const ctx = dragCtx; dragCtx = null;
+function endPointerDrag(e){
+  if(!dragCtx || (e && dragCtx.pointerId !== e.pointerId)) return;
+  const ctx=dragCtx;
+  if(ctx.longPressTimer) clearTimeout(ctx.longPressTimer);
   if(ctx.float) ctx.float.remove();
-  ctx.card.classList.remove('drag-ghost');
+  ctx.card.classList.remove('drag-ready','drag-ghost');
   document.querySelectorAll('.act-card.drag-over').forEach(c => c.classList.remove('drag-over'));
+  dragCtx=null;
   if(!ctx.started) return;
-
-  const from = state.activities.find(a => a.id === ctx.id);
+  suppressCardClickUntil=Date.now()+450;
+  const from=state.activities.find(a => a.id===ctx.id);
   if(!from) return;
-
+  const oldLoc=from.location||'company';
+  normalizeOrderCol(oldLoc);
   if(ctx.overId){
-    // thả lên một thẻ cụ thể -> chèn trước thẻ đó, theo cột của thẻ đích
-    const to = state.activities.find(a => a.id === ctx.overId);
+    const to=state.activities.find(a => a.id===ctx.overId);
     if(!to) return;
-    const loc = to.location || 'company';
-    from.location = loc;
-    normalizeOrderCol(loc);
-    const list = colActsForView(loc);
-    if(list.indexOf(from) >= 0) list.splice(list.indexOf(from), 1);
-    list.splice(list.indexOf(to), 0, from);
-    list.forEach((a,i) => a.order = i);
-    save(); renderToday();
-  }else if(ctx.overLoc && (from.location||'company') !== ctx.overLoc){
-    // thả vào vùng trống của cột khác -> chuyển cột, xuống cuối
-    from.location = ctx.overLoc;
-    normalizeOrderCol(ctx.overLoc);
-    const list = colActsForView(ctx.overLoc);
-    list.forEach((a,i) => a.order = i);
-    save(); renderToday();
+    const newLoc=to.location||'company';
+    from.location=newLoc;
+    const list=colActsForView(newLoc).filter(a => a.id!==from.id);
+    const targetIndex=Math.max(0,list.findIndex(a => a.id===to.id));
+    list.splice(targetIndex,0,from);
+    list.forEach((a,i)=>a.order=i);
+    if(oldLoc!==newLoc) normalizeOrderCol(oldLoc);
+    save();renderToday();
+  }else if(ctx.overLoc){
+    from.location=ctx.overLoc;
+    const list=colActsForView(ctx.overLoc).filter(a => a.id!==from.id);
+    list.push(from);
+    list.forEach((a,i)=>a.order=i);
+    if(oldLoc!==ctx.overLoc) normalizeOrderCol(oldLoc);
+    save();renderToday();
   }
 }
 document.getElementById('todayActivities').addEventListener('pointerup', endPointerDrag);
-document.getElementById('todayActivities').addEventListener('pointercancel', endPointerDrag);
+document.getElementById('todayActivities').addEventListener('pointercancel', clearDragCandidate);
 
-// ----- Chọn kiểu sắp xếp -----
 document.getElementById('sortSelect').addEventListener('change', e => {
-  sortMode = e.target.value;
-  localStorage.setItem('opos_sortmode', sortMode);
-  if(sortMode === 'manual'){ normalizeOrderCol('home'); normalizeOrderCol('company'); save(); }
-  renderToday();
+  const mode=e.target.value;
+  e.target.value='';
+  applyQuickSort(mode);
 });
 
 // Tương tác trong tab Công việc cải thiện 1%
@@ -5850,14 +5825,12 @@ document.getElementById('boardForm').addEventListener('submit', e => {
   e.preventDefault();
   const act = state.activities.find(a => a.id === boardId); if(!act) return;
   const wasOne = !!act.tag1pct;
-  const oldDate = act.date;
   act.title = document.getElementById('bTitle').value.trim();
   act.description = document.getElementById('bDesc').value.trim();
   // Không cho đổi tag 1% trong board: việc 1% chỉ sinh ra từ review/bài học của việc khác.
   // Địa điểm/cột được chỉnh ở cấp cột, không hiển thị trong board.
   act.category = document.getElementById('bCategory').value;
   if(!wasOne) act.date = document.getElementById('bDate').value || act.date;
-  if(act.recurringId && oldDate && act.date !== oldDate) addRecurringSkip(act.recurringId, oldDate);
   act.startTime = document.getElementById('bStartTime').value || null;
   act.durationMinutes = readDuration('bDuration','bDurationCustom');
   save(); closeModals(); renderAll();
@@ -6027,9 +6000,8 @@ document.getElementById('bDeleteBtn').addEventListener('click', () => {
     return;
   }
   if(confirm(`Xoá hoạt động “${act.title}”?`)){
-    if(act.recurringId) addRecurringSkip(act.recurringId, act.date);
     state.activities = state.activities.filter(a => a.id !== act.id);
-    save(); closeModals(); renderAll(); toast(act.recurringId ? 'Đã xoá việc lặp của ngày này.' : 'Đã xoá hoạt động.');
+    save(); closeModals(); renderAll(); toast('Đã xoá hoạt động.');
   }
 });
 
@@ -6184,6 +6156,7 @@ function openReview(act, sub){
   document.getElementById('rFuTitle').value = '';
   document.getElementById('rFuDesc').value = '';
   document.getElementById('rFuDate').value = addDays(todayStr(),1);
+  document.getElementById('rFuTime').value = '';
   document.getElementById('rFuLoc').value = act.location || 'company';
   document.getElementById('rFuDur').value = '';
   document.getElementById('reviewModal').classList.add('open');
@@ -6241,7 +6214,7 @@ document.getElementById('reviewForm').addEventListener('submit', e => {
       tag1pct: true,
       location: document.getElementById('rFuLoc').value,
       category: act.category,
-      startTime: null,
+      startTime: document.getElementById('rFuTime').value || null,
       durationMinutes: fuDur ? parseInt(fuDur,10) : null,
       completed:false, subs:[], status:'todo', reviewId:null,
       fromReviewId: rv.id, fromActivityId: act.id, fromActivityTitle: title,
@@ -6506,8 +6479,7 @@ document.getElementById('importFile').addEventListener('change', e => {
       if(confirm('Import sẽ thay thế toàn bộ dữ liệu hiện tại. Tiếp tục?')){
         state = Object.assign(defaultState(), data, {seeded:true});
         migrateActivities();
-        ensureRecurringTasksForDate(todayStr());
-        save(); applyTheme(); renderAll();
+              save(); applyTheme(); renderAll();
         toast('Đã import dữ liệu thành công.');
       }
     }catch(err){
@@ -6531,7 +6503,7 @@ document.getElementById('resetBtn').addEventListener('click', () => {
 function renderDataSummary(){
   document.getElementById('dataSummary').innerHTML =
     `Hiện có: <b>${state.activities.length}</b> hoạt động · <b>${state.reviews.length}</b> review ·
-     <b>${state.activities.filter(a=>a.tag1pct).length}</b> việc cải thiện 1% · <b>${state.recurringTasks.filter(t=>t && t.active !== false).length}</b> lịch lặp theo tuần · <b>${state.mistakes.length}</b> cỏ dại ·
+     <b>${state.activities.filter(a=>a.tag1pct).length}</b> việc cải thiện 1% · <b>${state.mistakes.length}</b> cỏ dại ·
      <b>${state.weekly.length}</b> tổng kết tuần · <b>${state.humor.observations.length}</b> tình huống Humor · <b>${state.humor.performances.length}</b> kết quả lần kể.`;
 }
 
@@ -6966,7 +6938,6 @@ function applyCloudState(cloud, {announce=true}={}){
     applyingCloudState = true;
     state = Object.assign(defaultState(), data, {seeded:true, theme:localTheme});
     if(typeof migrateActivities === 'function') migrateActivities();
-    if(typeof ensureRecurringTasksForDate === 'function') ensureRecurringTasksForDate(todayStr(), false);
     localStorage.setItem(LS_KEY, JSON.stringify(state)); // no save hook -> no echo write
     setKnownStamp(cloudStamp || Date.now());
     applyTheme();
