@@ -172,6 +172,44 @@ section[data-view].active{display:block;animation:fadein .25s ease}
   background:var(--surface-2);color:var(--muted);border:1px solid var(--line);
 }
 .chip-cat{background:var(--cyan-soft);color:var(--cyan);border-color:transparent}
+.chip-tag{background:var(--cyan-soft);color:var(--cyan);border-color:transparent}
+.chip-tag::before{content:"#";opacity:.55;margin-right:1px}
+
+/* Dọn vườn: bộ lọc trạng thái + phân trang */
+.mistake-status-filter{display:flex;gap:6px;flex-wrap:wrap}
+.mist-status-btn{border:1px solid var(--line);background:var(--surface-2);color:var(--muted);font:inherit;font-size:12px;font-weight:700;padding:7px 12px;border-radius:99px;cursor:pointer}
+.mist-status-btn:hover{border-color:var(--blue);color:var(--ink)}
+.mist-status-btn.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.mist-pager{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:4px;padding:6px 2px}
+.mist-pager-label{font-size:12px;color:var(--muted);white-space:nowrap}
+.mist-pager-label b{color:var(--ink)}
+.mist-pager .btn[disabled]{opacity:.4;cursor:not-allowed}
+
+/* ============ TÌM KIẾM CÔNG VIỆC ============ */
+.task-search-wrap{position:relative;display:flex;align-items:center}
+.task-search{width:230px;max-width:100%;padding:7px 11px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font:inherit;font-size:13px}
+.task-search:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 16%,transparent)}
+.search-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 2px 14px;font-size:13px;color:var(--muted)}
+.search-row{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:8px;cursor:pointer;font:inherit;color:var(--ink)}
+.search-row:hover{border-color:var(--blue)}
+.search-row.done .search-row-title{text-decoration:line-through;color:var(--muted)}
+.search-row-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}
+.search-row-title{font-weight:700;font-size:14px}
+.search-row-meta{font-size:11.5px;color:var(--muted)}
+.search-row-tags{display:flex;gap:5px;flex-wrap:wrap}
+.search-row-state{color:var(--muted);font-size:15px}
+@media(max-width:760px){.task-search{width:100%}.task-search-wrap{width:100%}}
+
+/* ============ TAG INPUT ============ */
+.tag-input{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:7px 8px;border:1px solid var(--line);border-radius:12px;background:var(--surface);min-height:42px;cursor:text}
+.tag-input.focus{border-color:var(--blue);box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 16%,transparent)}
+.tag-input .tag-chips{display:contents}
+.tag-input .tag-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:4px 9px;border-radius:99px;background:var(--cyan-soft);color:var(--cyan);white-space:nowrap}
+.tag-input .tag-chip button{border:0;background:none;cursor:pointer;color:inherit;opacity:.65;font-size:15px;line-height:1;padding:0}
+.tag-input .tag-chip button:hover{opacity:1;color:var(--danger)}
+.tag-input input{flex:1;min-width:88px;border:0;background:none;outline:none;font:inherit;color:var(--ink);padding:3px 2px}
+.tag-input.compact{min-height:34px;padding:4px 7px;border-radius:10px}
+.tag-input.compact input{min-width:70px;font-size:12.5px}
 .quote{
   border-left:3px solid var(--cyan);
   padding:8px 14px;color:var(--muted);
@@ -1873,7 +1911,7 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
             <button type="button" class="quick-chip quick-date-hidden" id="qTodayBtn">Hôm nay</button>
             <button type="button" class="quick-chip quick-date-hidden" id="qTomorrowBtn">Ngày mai</button>
             <input type="date" id="qDate" class="quick-inline quick-date-hidden" aria-label="Ngày công việc">
-            <select id="qCategory" class="quick-inline"></select>
+            <div class="tag-input compact" id="qTags" data-tag-input data-placeholder="Tag…"><span class="tag-chips"></span><input type="text" list="tagSuggestions" placeholder="Tag…" autocomplete="off" aria-label="Thêm tag"></div>
             <input type="number" id="qDurationCustom" min="1" max="1440" placeholder="phút" class="quick-inline" style="display:none;width:92px">
             <textarea id="qDesc" placeholder="Mô tả ngắn nếu cần…"></textarea>
           </div>
@@ -1912,8 +1950,12 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
                 <option value="needReview">📝 Chưa review lên trên</option>
               </select>
             </div>
+            <div class="task-search-wrap">
+              <input type="search" id="taskSearch" class="task-search" placeholder="Tìm việc theo tên hoặc tag…" aria-label="Tìm kiếm công việc theo tên hoặc tag">
+            </div>
           </div>
         </div>
+        <div id="taskSearchResults" hidden></div>
         <div id="todayActivities" class="two-col">
           <div class="col-home">
             <div class="col-head" id="colHeadHome">🏠 Ở nhà <span class="col-time" id="colTimeHome">0p</span><span class="col-count" id="colCountHome">0 việc</span></div>
@@ -1993,8 +2035,8 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
               </select>
             </div>
             <div class="f-group">
-              <label for="fCategory">Nhóm hoạt động</label>
-              <select id="fCategory"></select>
+              <label>Tag</label>
+              <div class="tag-input" id="fTags" data-tag-input data-placeholder="Thêm tag…"><span class="tag-chips"></span><input type="text" list="tagSuggestions" placeholder="Thêm tag…" autocomplete="off" aria-label="Thêm tag"></div>
             </div>
           </div>
           <div class="f-row3">
@@ -2138,8 +2180,8 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
       <div class="f-group"><label>Tên công việc *</label><input id="cTitle" required placeholder="VD: 09:00 · Gọi khách hàng"></div>
       <div class="f-group"><label>Mô tả</label><textarea id="cDesc" placeholder="Mục tiêu, tiêu chuẩn làm tốt hoặc ghi chú ngắn…"></textarea></div>
       <input type="checkbox" id="cTag1pct" hidden>
+      <div class="f-group"><label>Tag</label><div class="tag-input" id="cTags" data-tag-input data-placeholder="Thêm tag…"><span class="tag-chips"></span><input type="text" list="tagSuggestions" placeholder="Thêm tag…" autocomplete="off" aria-label="Thêm tag"></div></div>
       <div class="compact-meta-grid create-meta-grid">
-        <div class="f-group"><label>Nhóm</label><select id="cCategory"></select></div>
         <div class="f-group"><label>Ngày</label><input type="date" id="cDate"></div>
         <div class="f-group"><label>Giờ</label><input type="time" id="cStartTime"></div>
         <div class="f-group"><label>Block</label><select id="cDuration"><option value="">Không đặt</option><option value="15">15 phút</option><option value="30">30 phút</option><option value="45">45 phút</option><option value="60">60 phút</option><option value="90">90 phút</option><option value="120">120 phút</option><option value="custom">Tùy chỉnh…</option></select><input type="number" id="cDurationCustom" min="1" max="1440" placeholder="phút" style="display:none;margin-top:8px"></div>
@@ -2180,9 +2222,9 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
       <div id="bLinkedWeed" class="linked-weed-card" hidden></div>
       <input type="checkbox" id="bTag1pct" hidden>
       <div class="deadline-lock" id="bDeadlineLock">Việc chăm cây 1% có ngày hẹn cố định, không thể đổi deadline hoặc xoá</div>
+      <div class="f-group"><label>Tag</label><div class="tag-input" id="bTags" data-tag-input data-placeholder="Thêm tag…"><span class="tag-chips"></span><input type="text" list="tagSuggestions" placeholder="Thêm tag…" autocomplete="off" aria-label="Thêm tag"></div></div>
       <div class="board-meta-grid compact-meta-grid activity-board-meta-grid">
         <div class="f-group board-location-field"><label>Địa điểm</label><select id="bLocation"><option value="home">🏠 Ở nhà</option><option value="company">🏢 Công ty</option></select></div>
-        <div class="f-group"><label>Nhóm</label><select id="bCategory"></select></div>
         <div class="f-group"><label>Ngày</label><input type="date" id="bDate"></div>
         <div class="f-group"><label>Giờ</label><input type="time" id="bStartTime"></div>
         <div class="f-group"><label>Block</label><select id="bDuration"><option value="">Không đặt</option><option value="15">15 phút</option><option value="30">30 phút</option><option value="45">45 phút</option><option value="60">60 phút</option><option value="90">90 phút</option><option value="120">120 phút</option><option value="custom">Tùy chỉnh…</option></select><input type="number" id="bDurationCustom" min="1" max="1440" placeholder="Số phút" style="display:none;margin-top:8px"></div>
@@ -2282,7 +2324,7 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
       <div class="f-group"><label>1. Tôi đã làm tốt điều gì?</label><textarea id="rDidWell"></textarea></div>
       <div class="f-group"><label>2. Tôi chưa làm tốt điều gì?</label><textarea id="rDidNot"></textarea>
         <p class="hint">Điền mục này sẽ tự động lưu vào Dọn vườn như một cỏ dại cần chăm sóc.</p></div>
-      <div class="f-group"><label>Khu vực chăm sóc (nếu có điểm chưa tốt)</label><select id="rMistakeCat"></select></div>
+      <div class="f-group"><label>Tag cho cỏ dại (nếu có điểm chưa tốt)</label><div class="tag-input" id="rMistakeTags" data-tag-input data-placeholder="Thêm tag…"><span class="tag-chips"></span><input type="text" list="tagSuggestions" placeholder="Thêm tag…" autocomplete="off" aria-label="Thêm tag"></div></div>
       <div class="f-group"><label>3. Vì sao điều đó xảy ra?</label><textarea id="rCause"></textarea></div>
       <div class="f-group"><label>4. Bài học rút ra là gì?</label><textarea id="rLesson"></textarea></div>
 
@@ -2324,7 +2366,7 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
             <option value="company">🏢 Công ty</option>
           </select>
         </div>
-        <div class="f-group"><label>Nhóm hoạt động</label><select id="eCategory"></select></div>
+        <div class="f-group"><label>Tag</label><div class="tag-input" id="eTags" data-tag-input data-placeholder="Thêm tag…"><span class="tag-chips"></span><input type="text" list="tagSuggestions" placeholder="Thêm tag…" autocomplete="off" aria-label="Thêm tag"></div></div>
       </div>
       <div class="f-row3">
         <div class="f-group"><label>Ngày</label><input type="date" id="eDate"></div>
@@ -2417,19 +2459,63 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
 
 // ---------- Constants ----------
 const LS_KEY = 'onePercentOS_v1';
-const ACTIVITY_CATS = ['Công việc','Học tập','Sức khỏe','Gia đình','Tài chính','Kỹ năng','Hài hước','Billiards','Tinh thần','Khác'];
-const MISTAKE_CATS = ['Tư duy','Giao tiếp','Hài hước','Kỷ luật','Công việc','Cảm xúc','Sức khỏe','Kỹ năng','Hệ thống cá nhân','Khác'];
-const FOCUS_SUGGEST = {
-  'Tư duy':'Chậm lại một nhịp trước khi kết luận: viết ra giả định trước khi quyết định.',
-  'Giao tiếp':'Trước mỗi cuộc trao đổi quan trọng, viết trước 1 câu key message bạn muốn người nghe nhớ.',
-  'Kỷ luật':'Thiết kế lại môi trường: giảm ma sát cho việc nên làm, tăng ma sát cho việc gây xao nhãng.',
-  'Công việc':'Chia nhỏ đầu việc và định nghĩa “xong” rõ ràng trước khi bắt đầu.',
-  'Cảm xúc':'Khi cảm xúc mạnh xuất hiện, gọi tên nó trước khi phản ứng (name it to tame it).',
-  'Sức khỏe':'Gắn một thói quen sức khỏe nhỏ vào một thói quen đã có sẵn (habit stacking).',
-  'Kỹ năng':'Luyện có chủ đích: chọn 1 kỹ năng con nhỏ nhất và lặp lại với phản hồi.',
-  'Hệ thống cá nhân':'Đừng sửa bản thân, hãy sửa quy trình: viết checklist cho tình huống hay sai.',
-  'Khác':'Chọn một hành vi nhỏ, một tình huống cụ thể, và một bằng chứng quan sát được.'
-};
+// ---------- Tag ----------
+// Nhãn tự do thay cho hệ "Nhóm hoạt động" cũ: mỗi công việc / cỏ dại gắn được
+// nhiều tag, tên do người dùng tự đặt, không có danh sách cố định.
+const TAG_MAX_LEN = 28;
+const TAG_MAX_PER_ITEM = 8;
+
+function normalizeTagName(raw){
+  return String(raw == null ? '' : raw)
+    .replace(/[\u0000-\u001f,]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, TAG_MAX_LEN);
+}
+// Bỏ tag rỗng và tag trùng (không phân biệt hoa thường), giữ thứ tự người dùng nhập.
+function normalizeTags(list){
+  const out = [], seen = new Set();
+  (Array.isArray(list) ? list : []).forEach(t => {
+    const name = normalizeTagName(t);
+    if(!name) return;
+    const key = name.toLowerCase();
+    if(seen.has(key)) return;
+    seen.add(key);
+    if(out.length < TAG_MAX_PER_ITEM) out.push(name);
+  });
+  return out;
+}
+function tagsOf(item){ return Array.isArray(item && item.tags) ? item.tags : []; }
+function itemHasTag(item, tag){
+  if(!tag) return true;
+  const key = String(tag).toLowerCase();
+  return tagsOf(item).some(t => t.toLowerCase() === key);
+}
+// Các tag đang được dùng kèm số lần, dùng cho gợi ý nhập và cho bộ lọc.
+function tagUsage(sources){
+  const map = new Map();
+  (sources || []).forEach(list => (list || []).forEach(item => tagsOf(item).forEach(t => {
+    const key = t.toLowerCase();
+    const cur = map.get(key) || {name:t, n:0};
+    cur.n++;
+    map.set(key, cur);
+  })));
+  return [...map.values()].sort((a,b) => b.n - a.n || a.name.localeCompare(b.name,'vi'));
+}
+function allTags(){ return tagUsage([state.activities, state.mistakes]).map(t => t.name); }
+
+// Gỡ hệ category cũ khỏi dữ liệu. Mọi mục bắt đầu với tag trống.
+function migrateTagSystem(){
+  const strip = item => {
+    if(!item || typeof item !== 'object') return;
+    item.tags = normalizeTags(item.tags);
+    delete item.category;
+    delete item.mistakeCategory;
+  };
+  (state.activities || []).forEach(strip);
+  (state.mistakes || []).forEach(strip);
+  (state.reviews || []).forEach(r => { if(r) delete r.mistakeCategory; });
+}
 
 // Original daily inspiration collection — used on Today and celebration screens
 const DAILY_QUOTES = [
@@ -2845,7 +2931,7 @@ function recurringCleanupSignature(item){
     String(item.title || '').trim().toLowerCase(),
     String(item.description || '').trim().toLowerCase(),
     String(item.location || 'company'),
-    String(item.category || 'Công việc'),
+    tagsOf(item).join('|'),
     String(item.startTime || ''),
     Number(item.durationMinutes) || 0,
     subs
@@ -2909,6 +2995,7 @@ function removeLegacyRecurringInstances(){
 }
 
 function migrateActivities(){
+  migrateTagSystem();
   if(!state.gardenStartDate) state.gardenStartDate = todayStr();
   if(!state.columnSettings) state.columnSettings = {};
   if(!state.columnSettings.home) state.columnSettings.home = {label:'Ở nhà', icon:'🏠'};
@@ -3010,7 +3097,7 @@ function makeDaySubtaskItem(parent, sub){
     title:sub.title || '',
     description:sub.description || '',
     location:parent.location || 'company',
-    category:parent.category || 'Công việc',
+    tags:tagsOf(parent),
     startTime:sub.startTime || null,
     durationMinutes:Number(sub.durationMinutes) || null,
     completed:!!sub.completed,
@@ -3068,19 +3155,18 @@ function seedDemo(){
     id:actId, date:t, location:'company', tag1pct:false,
     title:'Chuẩn bị proposal cho khách hàng',
     description:'Tạo proposal rõ insight, ít chữ, có key message mạnh.\nTiêu chuẩn: mỗi slide chỉ có một thông điệp chính.',
-    category:'Công việc', status:'done', completed:true, subs:[], reviewId:revId
+    tags:[], status:'done', completed:true, subs:[], reviewId:revId
   });
   state.reviews.push({
     id:revId, activityId:actId, subId:null, date:t,
     didWell:'Có cấu trúc rõ hơn hôm trước',
     didNotDoWell:'Vẫn đưa quá nhiều nội dung vào một slide',
     rootCause:'Sợ thiếu thông tin, chưa dám cắt bỏ',
-    lesson:'Slide tốt không phải là slide chứa nhiều thông tin, mà là slide giúp người nghe hiểu đúng một ý chính',
-    mistakeCategory:'Công việc'
+    lesson:'Slide tốt không phải là slide chứa nhiều thông tin, mà là slide giúp người nghe hiểu đúng một ý chính'
   });
   state.mistakes.push({
     id:m1, reviewId:revId, activityTitle:'Chuẩn bị proposal cho khách hàng', date:t,
-    category:'Công việc',
+    tags:[],
     content:'Vẫn đưa quá nhiều nội dung vào một slide',
     rootCause:'Sợ thiếu thông tin, chưa dám cắt bỏ',
     lesson:'Slide tốt không phải là slide chứa nhiều thông tin, mà là slide giúp người nghe hiểu đúng một ý chính',
@@ -3091,14 +3177,14 @@ function seedDemo(){
     id:uid(), date:addDays(t,1), location:'company', tag1pct:true,
     title:'Thiết kế lại proposal theo nguyên tắc 1 slide 1 ý',
     description:'Trước khi thiết kế mỗi slide, viết một câu: “Người xem cần nhớ điều gì sau slide này?”',
-    category:'Công việc', status:'todo', completed:false, subs:[], reviewId:null,
+    tags:[], status:'todo', completed:false, subs:[], reviewId:null,
     fromReviewId:revId, fromActivityId:actId, fromActivityTitle:'Chuẩn bị proposal cho khách hàng'
   });
   state.activities.push({
     id:uid(), date:t, location:'home', tag1pct:false,
     title:'Tập trung 25 phút không điện thoại',
     description:'Hoàn thành 1 phiên deep work.\nTiêu chuẩn: điện thoại để phòng khác trong suốt 25 phút.',
-    category:'Kỹ năng', status:'todo', completed:false, subs:[], reviewId:null
+    tags:[], status:'todo', completed:false, subs:[], reviewId:null
   });
 }
 
@@ -3417,7 +3503,7 @@ function calendarTaskRows(list, date=calendarSelectedDate){
     }
     return `<button type="button" class="calendar-task-row ${done?'done':''}" data-calendar-act="${a.id}">
       <span class="ctr-check">${done?'✓':''}</span>
-      <span class="ctr-body"><span class="ctr-title">${a.tag1pct?'🌱 ':''}${esc(a.title)}</span><span class="ctr-meta">${esc(a.category||'Công việc')}${rv?' · Đã review':''}${dur?' · '+fmtMinsShort(dur):''}</span></span>
+      <span class="ctr-body"><span class="ctr-title">${a.tag1pct?'🌱 ':''}${esc(a.title)}</span><span class="ctr-meta">${tagsOf(a).length ? esc(tagsOf(a).join(' · ')) : 'Không tag'}${rv?' · Đã review':''}${dur?' · '+fmtMinsShort(dur):''}</span></span>
       <span class="ctr-time">${a.startTime?esc(a.startTime):'Mở ›'}</span>
     </button>`;
   }).join('');
@@ -3508,6 +3594,7 @@ document.getElementById('calendarModeTabs')?.addEventListener('click',e=>{
 // ---------- Renders ----------
 function renderAll(){
   renderToday(); renderCalendar(); renderActions(); renderMistakes(); renderReport(); renderDataSummary();
+  refreshTagSuggestions(); renderTaskSearch();
 }
 
 
@@ -3780,6 +3867,64 @@ function renderToday(){
   });
 }
 
+// ---------- Tìm kiếm công việc ----------
+// Tìm trên toàn bộ công việc ở mọi ngày, theo tên hoặc tag.
+let taskQuery = '';
+function taskSearchMatches(q){
+  const key = String(q || '').trim().toLowerCase();
+  if(!key) return [];
+  return (state.activities || [])
+    .filter(a => String(a.title || '').toLowerCase().includes(key)
+              || tagsOf(a).some(t => t.toLowerCase().includes(key)))
+    .sort((a,b) => String(b.date || '').localeCompare(String(a.date || ''))
+                || String(a.startTime || '').localeCompare(String(b.startTime || '')));
+}
+function renderTaskSearch(){
+  const box = document.getElementById('taskSearchResults');
+  const grid = document.getElementById('todayActivities');
+  if(!box || !grid) return;
+  const q = taskQuery.trim();
+  grid.hidden = !!q;
+  box.hidden = !q;
+  if(!q){ box.innerHTML = ''; return; }
+  const hits = taskSearchMatches(q);
+  const head = `<div class="search-head"><span>Tìm thấy <b>${hits.length}</b> việc khớp với “${esc(q)}”</span>`
+             + `<button type="button" class="btn btn-ghost btn-sm" id="taskSearchClear">Xoá tìm kiếm</button></div>`;
+  if(!hits.length){
+    box.innerHTML = head + `<div class="empty" style="padding:20px 12px">Không có công việc nào khớp tên hoặc tag này.</div>`;
+    return;
+  }
+  box.innerHTML = head + hits.map(a => {
+    const col = getColumnSetting(a.location || 'company');
+    const done = isCompleted(a);
+    return `<button type="button" class="search-row ${done?'done':''}" data-search-act="${a.id}">
+      <span class="search-row-main">
+        <span class="search-row-title">${a.tag1pct ? '🌱 ' : ''}${esc(a.title)}</span>
+        <span class="search-row-meta">${esc(fmtShortDate(a.date) || a.date || '')} · ${col.icon} ${esc(col.label)}${a.startTime ? ' · ' + esc(a.startTime) : ''}</span>
+        <span class="search-row-tags">${tagChipsMarkup(a, '<span class="chip chip-mut">Chưa gắn tag</span>')}</span>
+      </span>
+      <span class="search-row-state">${done ? '✓' : '›'}</span>
+    </button>`;
+  }).join('');
+}
+document.getElementById('taskSearch')?.addEventListener('input', e => {
+  taskQuery = e.target.value;
+  renderTaskSearch();
+});
+document.getElementById('taskSearchResults')?.addEventListener('click', e => {
+  if(e.target.closest('#taskSearchClear')){
+    taskQuery = '';
+    const inp = document.getElementById('taskSearch');
+    if(inp) inp.value = '';
+    renderTaskSearch();
+    return;
+  }
+  const row = e.target.closest('[data-search-act]');
+  if(!row) return;
+  const act = state.activities.find(a => a.id === row.dataset.searchAct);
+  if(act) openActivityBoard(act);
+});
+
 function getColumnSetting(loc){
   const fallback = loc === 'home' ? {label:'Ở nhà', icon:'🏠'} : {label:'Công ty', icon:'🏢'};
   const cfg = (state.columnSettings && state.columnSettings[loc]) || {};
@@ -3843,7 +3988,7 @@ function renderActCard(a){
     <div class="act-details">
       <div class="row" style="gap:8px;flex-wrap:wrap">
         ${a.tag1pct ? '<span class="chip chip-1pct">🌱 Việc chăm cây</span>' : ''}
-        <span class="chip chip-cat">${esc(a.category)}</span>
+        ${tagChipsMarkup(a)}
         ${eff ? `<span class="chip chip-time">${fmtMins(eff)}${!Number(a.durationMinutes) && subs.length ? ' (từ việc con)' : ''}</span>` : ''}
         ${rv ? '<span class="chip" style="background:var(--ok-soft);color:var(--ok);border-color:transparent">Đã review</span>' : ''}
       </div>
@@ -3920,7 +4065,46 @@ function renderActions(){
     done.length ? done.map(oneP_itemHTML).join('') : `<div class="empty">Chưa có công việc cải thiện nào hoàn thành.</div>`;
 }
 
-let mistakeFilter = 'Tất cả';
+const MIST_PAGE_SIZE = 3;
+let mistakeTagFilter = '';          // '' = mọi tag, '__none__' = chưa gắn tag
+let mistakeStatusFilter = 'all';    // all | pending | cared
+let mistakePage = { pending: 1, cared: 1 };
+
+function mistakesMatchingFilter(){
+  return (state.mistakes || [])
+    .filter(m => {
+      if(!mistakeTagFilter) return true;
+      if(mistakeTagFilter === '__none__') return tagsOf(m).length === 0;
+      return itemHasTag(m, mistakeTagFilter);
+    })
+    .sort((a,b) => String(b.date || '').localeCompare(String(a.date || '')));
+}
+function renderMistakePager(kind, page, pages){
+  if(pages <= 1) return '';
+  return `<div class="mist-pager">
+    <button type="button" class="btn btn-ghost btn-sm" data-mist-page="${kind}:${page-1}" ${page<=1?'disabled':''}>‹ Trước</button>
+    <span class="mist-pager-label">Trang <b>${page}</b>/${pages}</span>
+    <button type="button" class="btn btn-ghost btn-sm" data-mist-page="${kind}:${page+1}" ${page>=pages?'disabled':''}>Sau ›</button>
+  </div>`;
+}
+function renderMistakeSection(kind, items, title){
+  const pages = Math.max(1, Math.ceil(items.length / MIST_PAGE_SIZE));
+  const page = Math.min(Math.max(1, mistakePage[kind] || 1), pages);
+  mistakePage[kind] = page;
+  const slice = items.slice((page-1)*MIST_PAGE_SIZE, page*MIST_PAGE_SIZE);
+  const isCared = kind === 'cared';
+  const body = slice.length
+    ? slice.map(m => renderMistakeCard(m, isCared)).join('')
+    : `<div class="empty">${isCared ? 'Chưa có cỏ dại đã chăm sóc theo bộ lọc này.' : 'Không có cỏ dại chưa chăm sóc theo bộ lọc này.'}</div>`;
+  return `<section class="mistake-group ${kind}">
+    <div class="mistake-group-head">
+      <div class="mistake-group-title">${esc(title)}</div>
+      <span class="mistake-group-count">${items.length}</span>
+    </div>
+    ${body}
+    ${renderMistakePager(kind, page, pages)}
+  </section>`;
+}
 function mistakeLinkedActivity(m){
   return (state.activities || []).find(a => a.fromMistakeId === m.id) || null;
 }
@@ -3937,8 +4121,9 @@ function gardenInsight7Days(){
   const categoryCounts = {};
   const contentCounts = {};
   recent.forEach(m => {
-    const cat = m.category || 'Khác';
-    categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+    const tags = tagsOf(m);
+    if(tags.length) tags.forEach(t => { categoryCounts[t] = (categoryCounts[t] || 0) + 1; });
+    else categoryCounts['Chưa gắn tag'] = (categoryCounts['Chưa gắn tag'] || 0) + 1;
     const key = String(m.content || '').trim().toLowerCase();
     if(key){
       if(!contentCounts[key]) contentCounts[key] = {n:0,label:m.content};
@@ -3962,7 +4147,7 @@ function renderMistakeCard(m, cared){
   const actionDone = linked ? isCompleted(linked) : false;
   return `<div class="mist-card ${cared?'cared':''}" data-mistake-id="${m.id}">
     <div class="row" style="gap:8px;margin-bottom:6px">
-      <span class="chip chip-cat">${esc(m.category)}</span>
+      ${tagChipsMarkup(m, '<span class="chip chip-mut">Chưa gắn tag</span>')}
       <span class="chip">${m.date.split('-').reverse().join('/')}</span>
       ${m.activityTitle ? `<span class="chip">${esc(m.activityTitle)}</span>` : ''}
       <span class="chip mist-status ${cared?'cared':'pending'}">${cared ? (actionDone ? '✓ Đã hoàn thành chăm sóc' : '🌱 Đã có hành động') : 'Chưa chăm sóc'}</span>
@@ -3980,33 +4165,44 @@ function renderMistakeCard(m, cared){
   </div>`;
 }
 function renderMistakes(){
-  const filtered = (state.mistakes || [])
-    .filter(m => mistakeFilter === 'Tất cả' || m.category === mistakeFilter)
-    .sort((a,b)=> b.date.localeCompare(a.date));
+  const filtered = mistakesMatchingFilter();
   const pending = filtered.filter(m => !isMistakeCared(m));
   const cared = filtered.filter(isMistakeCared);
 
-  const categoryOptions = ['Tất cả', ...MISTAKE_CATS].map(c =>
-    `<option value="${esc(c)}" ${mistakeFilter===c?'selected':''}>${c === 'Tất cả' ? 'Tất cả khu vực' : esc(c)}</option>`
-  ).join('');
+  // --- Bộ lọc: theo tag + theo trạng thái chăm sóc ---
+  const usage = tagUsage([state.mistakes]);
+  const untagged = (state.mistakes || []).filter(m => !tagsOf(m).length).length;
+  const tagOptions = ['<option value="">Tất cả tag</option>']
+    .concat(usage.map(t => `<option value="${esc(t.name)}" ${mistakeTagFilter===t.name?'selected':''}>${esc(t.name)} (${t.n})</option>`))
+    .concat(untagged ? [`<option value="__none__" ${mistakeTagFilter==='__none__'?'selected':''}>Chưa gắn tag (${untagged})</option>`] : [])
+    .join('');
+  const statuses = [['all','Tất cả'],['pending','Chưa chăm sóc'],['cared','Đã chăm sóc']];
   document.getElementById('mistakeFilters').innerHTML = `
     <div class="mistake-filter-main">
-      <label for="mistakeCategorySelect">Bộ lọc tổng hợp</label>
-      <select id="mistakeCategorySelect">${categoryOptions}</select>
+      <label for="mistakeTagSelect">Lọc theo tag</label>
+      <select id="mistakeTagSelect">${tagOptions}</select>
+    </div>
+    <div class="mistake-status-filter" role="group" aria-label="Lọc theo trạng thái chăm sóc">
+      ${statuses.map(([v,l]) => `<button type="button" class="mist-status-btn ${mistakeStatusFilter===v?'on':''}" data-mist-status="${v}">${esc(l)}</button>`).join('')}
     </div>
     <div class="mistake-filter-summary"><b>${pending.length}</b> chưa chăm sóc · <b>${cared.length}</b> đã chăm sóc</div>`;
 
+  // --- Tình trạng khu vườn: thống kê theo tag ---
   const counts = {};
-  state.mistakes.forEach(m => counts[m.category] = (counts[m.category]||0)+1);
+  (state.mistakes || []).forEach(m => {
+    const tags = tagsOf(m);
+    if(tags.length) tags.forEach(t => { counts[t] = (counts[t]||0)+1; });
+    else counts['Chưa gắn tag'] = (counts['Chưa gắn tag']||0)+1;
+  });
   const contentCount = {};
-  state.mistakes.forEach(m => {
+  (state.mistakes || []).forEach(m => {
     const k = String(m.content || '').trim().toLowerCase();
     if(!k) return;
     contentCount[k] = contentCount[k] || {n:0, label:m.content};
     contentCount[k].n++;
   });
   const topRepeat = Object.values(contentCount).sort((a,b)=>b.n-a.n)[0];
-  const withAction = state.mistakes.filter(isMistakeCared).length;
+  const withAction = (state.mistakes || []).filter(isMistakeCared).length;
   const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
   const max = sorted.length ? sorted[0][1] : 1;
 
@@ -4027,27 +4223,35 @@ function renderMistakes(){
   const insight = gardenInsight7Days();
   document.getElementById('patternAlerts').innerHTML = `<div class="garden-insight">
     <div class="garden-insight-icon">${insight.icon}</div>
-    <div class="garden-insight-copy"><b>${esc(insight.title)}</b>${esc(insight.copy)}</div>
+    <div class="garden-insight-copy"><b>${esc(insight.title)}</b>${insight.copy}</div>
   </div>`;
 
-  const pendingHtml = pending.length ? pending.map(m => renderMistakeCard(m,false)).join('') : `<div class="empty">Không có cỏ dại chưa chăm sóc trong khu vực này.</div>`;
-  const caredHtml = cared.length ? cared.map(m => renderMistakeCard(m,true)).join('') : `<div class="empty">Chưa có cỏ dại đã được chăm sóc trong khu vực này.</div>`;
-  document.getElementById('mistakeList').innerHTML = `<div class="mistake-groups">
-    <section class="mistake-group pending">
-      <div class="mistake-group-head"><div class="mistake-group-title">Cỏ dại chưa được chăm sóc</div><span class="mistake-group-count">${pending.length}</span></div>
-      ${pendingHtml}
-    </section>
-    <section class="mistake-group cared">
-      <div class="mistake-group-head"><div class="mistake-group-title">Cỏ dại đã được chăm sóc</div><span class="mistake-group-count">${cared.length}</span></div>
-      ${caredHtml}
-    </section>
-  </div>`;
+  // --- Hai mục riêng, mỗi mục phân trang 3 cỏ/trang ---
+  const blocks = [];
+  if(mistakeStatusFilter !== 'cared') blocks.push(renderMistakeSection('pending', pending, 'Cỏ dại chưa được chăm sóc'));
+  if(mistakeStatusFilter !== 'pending') blocks.push(renderMistakeSection('cared', cared, 'Cỏ dại đã được chăm sóc'));
+  document.getElementById('mistakeList').innerHTML = `<div class="mistake-groups">${blocks.join('')}</div>`;
 }
 document.getElementById('mistakeFilters').addEventListener('change', e => {
-  if(e.target.id === 'mistakeCategorySelect'){
-    mistakeFilter = e.target.value;
+  if(e.target.id === 'mistakeTagSelect'){
+    mistakeTagFilter = e.target.value;
+    mistakePage.pending = 1; mistakePage.cared = 1;
     renderMistakes();
   }
+});
+document.getElementById('mistakeFilters').addEventListener('click', e => {
+  const btn = e.target.closest('[data-mist-status]');
+  if(!btn) return;
+  mistakeStatusFilter = btn.dataset.mistStatus;
+  mistakePage.pending = 1; mistakePage.cared = 1;
+  renderMistakes();
+});
+document.getElementById('mistakeList').addEventListener('click', e => {
+  const pageBtn = e.target.closest('[data-mist-page]');
+  if(!pageBtn || pageBtn.disabled) return;
+  const [kind, n] = pageBtn.dataset.mistPage.split(':');
+  mistakePage[kind] = Number(n) || 1;
+  renderMistakes();
 });
 
 
@@ -4088,7 +4292,7 @@ function buildOnePctDraftFromMistake(m){
   return {
     date, title,
     description: descParts.join('\n'),
-    category: ACTIVITY_CATS.includes(m.category) ? m.category : 'Công việc'
+    tags: normalizeTags(tagsOf(m))
   };
 }
 
@@ -4113,7 +4317,7 @@ function createOnePctFromMistake(m){
   document.getElementById('cDesc').value = draft.description;
   document.getElementById('cTag1pct').checked = true;
   document.getElementById('cDate').value = draft.date;
-  document.getElementById('cCategory').value = draft.category;
+  setTagInput('cTags', draft.tags);
   document.getElementById('cStartTime').value = '';
   setDurationFields('c', null);
   document.getElementById('cSubDate').value = draft.date;
@@ -4779,7 +4983,7 @@ function openCreateActivity(loc='company'){
   const cLoc = document.getElementById('cLocation');
   if(cLoc) cLoc.value = loc;
   document.getElementById('cDate').value = viewDate;
-  document.getElementById('cCategory').value = 'Công việc';
+  setTagInput('cTags', []);
   document.getElementById('cDurationCustom').style.display = 'none';
   document.getElementById('cSubDate').value = viewDate;
   document.getElementById('cSubDurationCustom').style.display = 'none';
@@ -4831,7 +5035,7 @@ document.getElementById('createActivityForm').addEventListener('submit', e => {
     id:uid(), date, title, location:loc,
     description:document.getElementById('cDesc').value.trim(),
     tag1pct:isOnePct,
-    category:document.getElementById('cCategory').value || 'Công việc',
+    tags:getTagInput('cTags'),
     startTime:document.getElementById('cStartTime').value || null,
     durationMinutes:readDuration('cDuration','cDurationCustom'),
     completed:false,
@@ -4876,7 +5080,7 @@ function addActivityFromColumnForm(form){
     location:loc,
     description:'',
     tag1pct:false,
-    category:'Công việc',
+    tags:[],
     startTime:form.querySelector('.col-q-start')?.value || null,
     durationMinutes:(durVal > 0 ? durVal : null),
     completed:false,
@@ -5231,15 +5435,92 @@ document.getElementById('sortSelect').addEventListener('change', e => {
 });
 
 // ---------- Add activity ----------
-function fillCatSelect(id, cats){
-  document.getElementById(id).innerHTML = cats.map(c => `<option>${esc(c)}</option>`).join('');
+// ---------- Ô nhập tag ----------
+// Dùng chung cho mọi form: chip đã gắn + ô gõ tự do + gợi ý từ các tag đã dùng.
+const tagInputStore = new Map();
+
+function refreshTagSuggestions(){
+  const dl = document.getElementById('tagSuggestions');
+  if(dl) dl.innerHTML = allTags().map(t => `<option value="${esc(t)}"></option>`).join('');
 }
-fillCatSelect('fCategory', ACTIVITY_CATS);
-fillCatSelect('eCategory', ACTIVITY_CATS);
-fillCatSelect('qCategory', ACTIVITY_CATS);
-fillCatSelect('cCategory', ACTIVITY_CATS);
-fillCatSelect('bCategory', ACTIVITY_CATS);
-fillCatSelect('rMistakeCat', MISTAKE_CATS);
+function getTagInput(id){ return normalizeTags(tagInputStore.get(id) || []); }
+function renderTagInput(id){
+  const box = document.getElementById(id);
+  if(!box) return;
+  const tags = getTagInput(id);
+  const chips = box.querySelector('.tag-chips');
+  if(chips) chips.innerHTML = tags.map((t,i) =>
+    `<span class="tag-chip">${esc(t)}<button type="button" data-tag-remove="${i}" aria-label="Bỏ tag ${esc(t)}">×</button></span>`
+  ).join('');
+  const input = box.querySelector('input');
+  if(input) input.placeholder = tags.length ? '' : (box.dataset.placeholder || 'Thêm tag…');
+}
+function setTagInput(id, tags){
+  tagInputStore.set(id, normalizeTags(tags));
+  renderTagInput(id);
+}
+function addTagToInput(id, raw){
+  const name = normalizeTagName(raw);
+  if(!name) return false;
+  const tags = getTagInput(id);
+  if(tags.some(t => t.toLowerCase() === name.toLowerCase())) return false;
+  if(tags.length >= TAG_MAX_PER_ITEM){ toast(`Mỗi mục gắn tối đa ${TAG_MAX_PER_ITEM} tag.`); return false; }
+  tags.push(name);
+  tagInputStore.set(id, tags);
+  renderTagInput(id);
+  return true;
+}
+function commitPendingTag(box){
+  const input = box && box.querySelector('input');
+  if(!input || !input.value.trim()) return;
+  if(addTagToInput(box.id, input.value)) input.value = '';
+}
+document.addEventListener('click', e => {
+  const box = e.target.closest('[data-tag-input]');
+  if(!box) return;
+  const rm = e.target.closest('[data-tag-remove]');
+  if(rm){
+    const tags = getTagInput(box.id);
+    tags.splice(Number(rm.dataset.tagRemove), 1);
+    tagInputStore.set(box.id, tags);
+    renderTagInput(box.id);
+    return;
+  }
+  const input = box.querySelector('input');
+  if(input && e.target !== input) input.focus();
+});
+document.addEventListener('keydown', e => {
+  const input = e.target;
+  const box = input && input.closest ? input.closest('[data-tag-input]') : null;
+  if(!box || input.tagName !== 'INPUT') return;
+  if(e.key === 'Enter' || e.key === ','){
+    e.preventDefault();          // chặn submit form khi đang gõ tag
+    if(addTagToInput(box.id, input.value)) input.value = '';
+  }else if(e.key === 'Backspace' && !input.value){
+    const tags = getTagInput(box.id);
+    if(tags.length){
+      tags.pop();
+      tagInputStore.set(box.id, tags);
+      renderTagInput(box.id);
+    }
+  }
+});
+document.addEventListener('focusin', e => {
+  const box = e.target.closest ? e.target.closest('[data-tag-input]') : null;
+  if(box) box.classList.add('focus');
+});
+document.addEventListener('focusout', e => {
+  const box = e.target.closest ? e.target.closest('[data-tag-input]') : null;
+  if(!box) return;
+  box.classList.remove('focus');
+  commitPendingTag(box);        // gõ dở rồi rời ô vẫn được nhận
+});
+// Chip tag chỉ để hiển thị trên các thẻ.
+function tagChipsMarkup(item, emptyHtml){
+  const tags = tagsOf(item);
+  if(!tags.length) return emptyHtml || '';
+  return tags.map(t => `<span class="chip chip-tag">${esc(t)}</span>`).join('');
+}
 
 // Đọc thời lượng từ cặp select + input tùy chỉnh
 function readDuration(selectId, customId){
@@ -5283,7 +5564,7 @@ function quickAddActivity(){
     id:uid(), date, title, location:qLocation,
     description:document.getElementById('qDesc').value.trim(),
     tag1pct:false,
-    category:document.getElementById('qCategory').value || 'Công việc',
+    tags:getTagInput('qTags'),
     startTime:document.getElementById('qStartTime').value || null,
     durationMinutes:readDuration('qDuration','qDurationCustom'),
     completed:false, subs:[], status:'todo', reviewId:null
@@ -5291,6 +5572,7 @@ function quickAddActivity(){
   save();
   document.getElementById('qTitle').value = '';
   document.getElementById('qDesc').value = '';
+  setTagInput('qTags', []);
   document.getElementById('qStartTime').value = '';
   document.getElementById('qDuration').value = '';
   document.getElementById('qDurationCustom').style.display = 'none';
@@ -5376,7 +5658,7 @@ function renderBoardLinkedWeed(act){
   }
   box.innerHTML = `<div class="linked-weed-head">
       <div class="linked-weed-title">🌿 Cỏ dại liên kết</div>
-      <span class="chip">${esc(weed.category || 'Khác')} · ${esc(fmtShortDate(weed.date) || '')}</span>
+      <span class="chip">${tagsOf(weed).length ? esc(tagsOf(weed).join(' · ')) + ' · ' : ''}${esc(fmtShortDate(weed.date) || '')}</span>
     </div>
     <div class="linked-weed-source">Xuất hiện khi review: <b>${esc(sourceTitle || weed.activityTitle || 'Công việc nguồn')}</b></div>
     <div class="linked-weed-problem">${esc(weed.content || 'Chưa có mô tả lỗi.')}</div>
@@ -5389,7 +5671,18 @@ function renderBoardLinkedWeed(act){
 }
 function openLinkedWeed(mistakeId){
   closeModals();
-  mistakeFilter = 'Tất cả';
+  mistakeTagFilter = '';
+  mistakeStatusFilter = 'all';
+  // Có phân trang nên phải nhảy tới đúng trang chứa cỏ dại này, không thì nó nằm ở trang khác.
+  const all = mistakesMatchingFilter();
+  const target = all.find(m => m.id === mistakeId);
+  if(target){
+    const kind = isMistakeCared(target) ? 'cared' : 'pending';
+    const list = all.filter(m => (kind === 'cared') === !!isMistakeCared(m));
+    const idx = list.findIndex(m => m.id === mistakeId);
+    if(idx >= 0) mistakePage[kind] = Math.floor(idx / MIST_PAGE_SIZE) + 1;
+  }
+  renderMistakes();
   go('mistakes');
   setTimeout(() => {
     const card = document.querySelector(`[data-mistake-id="${mistakeId}"]`);
@@ -5406,7 +5699,7 @@ function openActivityBoard(act){
   renderBoardLinkedWeed(act);
   document.getElementById('bTag1pct').checked = !!act.tag1pct;
   document.getElementById('bLocation').value = act.location || 'company';
-  document.getElementById('bCategory').value = act.category || 'Công việc';
+  setTagInput('bTags', tagsOf(act));
   document.getElementById('bDate').value = act.date || todayStr();
   document.getElementById('bStartTime').value = act.startTime || '';
   setDurationFields('b', act.durationMinutes);
@@ -5441,7 +5734,7 @@ document.getElementById('boardForm').addEventListener('submit', e => {
   act.description = document.getElementById('bDesc').value.trim();
   // Không cho đổi tag 1% trong board: việc 1% chỉ sinh ra từ review/bài học của việc khác.
   // Địa điểm/cột được chỉnh ở cấp cột, không hiển thị trong board.
-  act.category = document.getElementById('bCategory').value;
+  act.tags = getTagInput('bTags');
   if(!wasOne) act.date = document.getElementById('bDate').value || act.date;
   act.startTime = document.getElementById('bStartTime').value || null;
   act.durationMinutes = readDuration('bDuration','bDurationCustom');
@@ -5671,7 +5964,7 @@ document.getElementById('addForm').addEventListener('submit', e => {
     id:uid(), date, title, location,
     description:document.getElementById('fDesc').value.trim(),
     tag1pct:document.getElementById('fTag1pct').checked,
-    category:document.getElementById('fCategory').value,
+    tags:getTagInput('fTags'),
     startTime:document.getElementById('fStartTime').value || null,
     durationMinutes:readDuration('fDuration','fDurationCustom'),
     completed:false, subs:[],
@@ -5701,7 +5994,7 @@ function openEdit(act){
   document.getElementById('eDesc').value = act.description || '';
   document.getElementById('eTag1pct').checked = !!act.tag1pct;
   document.getElementById('eTag1pct').closest('.tag1-check').style.display = 'flex';
-  document.getElementById('eCategory').value = act.category;
+  setTagInput('eTags', tagsOf(act));
   document.getElementById('eLocation').value = act.location || 'company';
   document.getElementById('eDate').value = act.date || todayStr();
   document.getElementById('eDate').disabled = !!act.tag1pct;
@@ -5734,7 +6027,7 @@ document.getElementById('editForm').addEventListener('submit', e => {
   act.description = document.getElementById('eDesc').value.trim();
   const wasOnePct = !!act.tag1pct;
   act.tag1pct = document.getElementById('eTag1pct').checked;
-  act.category = document.getElementById('eCategory').value;
+  act.tags = getTagInput('eTags');
   act.location = document.getElementById('eLocation').value;
   if(!wasOnePct) act.date = document.getElementById('eDate').value || act.date;
   act.startTime = document.getElementById('eStartTime').value || null;
@@ -5761,7 +6054,7 @@ function openReview(act, sub){
   const rv = state.reviews.find(r => r.id === rid);
   document.getElementById('rDidWell').value = rv?.didWell || '';
   document.getElementById('rDidNot').value = rv?.didNotDoWell || '';
-  document.getElementById('rMistakeCat').value = rv?.mistakeCategory || 'Khác';
+  setTagInput('rMistakeTags', tagsOf(rv ? (state.mistakes || []).find(x => x.reviewId === rv.id) : null));
   document.getElementById('rCause').value = rv?.rootCause || '';
   document.getElementById('rLesson').value = rv?.lesson || '';
   // Khối nhổ cỏ bằng việc 1% — mặc định ngày mai, gợi ý theo bài học
@@ -5784,7 +6077,7 @@ document.getElementById('reviewForm').addEventListener('submit', e => {
   const data = {
     didWell:document.getElementById('rDidWell').value.trim(),
     didNotDoWell:document.getElementById('rDidNot').value.trim(),
-    mistakeCategory:document.getElementById('rMistakeCat').value,
+    mistakeTags:getTagInput('rMistakeTags'),
     rootCause:document.getElementById('rCause').value.trim(),
     lesson:document.getElementById('rLesson').value.trim()
   };
@@ -5802,7 +6095,7 @@ document.getElementById('reviewForm').addEventListener('submit', e => {
   let linkedMistake = state.mistakes.find(x => x.reviewId === rv.id) || null;
   if(data.didNotDoWell){
     const payload = {
-      activityTitle:title, category:data.mistakeCategory,
+      activityTitle:title, tags:normalizeTags(data.mistakeTags),
       content:data.didNotDoWell, rootCause:data.rootCause,
       lesson:data.lesson, action:''
     };
@@ -5825,7 +6118,7 @@ document.getElementById('reviewForm').addEventListener('submit', e => {
       description: document.getElementById('rFuDesc').value.trim(),
       tag1pct: true,
       location: document.getElementById('rFuLoc').value,
-      category: act.category,
+      tags: tagsOf(act),
       startTime: document.getElementById('rFuTime').value || null,
       durationMinutes: fuDur ? parseInt(fuDur,10) : null,
       completed:false, subs:[], status:'todo', reviewId:null,
@@ -5956,7 +6249,9 @@ function topMistakesForRange(start,end){
   const ms = state.mistakes.filter(m => m.date >= start && m.date <= end);
   const cat = {}, content = {};
   ms.forEach(m => {
-    cat[m.category] = (cat[m.category]||0)+1;
+    const tags = tagsOf(m);
+    if(tags.length) tags.forEach(t => { cat[t] = (cat[t]||0)+1; });
+    else cat['Chưa gắn tag'] = (cat['Chưa gắn tag']||0)+1;
     const k = (m.content||'').trim().toLowerCase();
     if(k){ content[k] = content[k] || {label:m.content,n:0}; content[k].n++; }
   });
@@ -6405,5 +6700,6 @@ if(db && liveRef){
   });
 }
 </script>
+<datalist id="tagSuggestions"></datalist>
 </body>
 </html>
