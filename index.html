@@ -345,6 +345,7 @@ section[data-view].active{display:block;animation:fadein .25s ease}
   align-items:center;justify-content:center;
 }
 .ring .center .big{font-family:var(--font-display);font-weight:800;font-size:27px;color:#fff;line-height:1}
+.ring .center .big.warn{color:#FFC96B}
 .ring .center .small{font-size:10px;color:#9FC5E8;margin-top:4px;font-weight:600;letter-spacing:.08em}
 
 .focus-row{display:flex;gap:10px}
@@ -1828,7 +1829,7 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
                     <stop offset="0%" stop-color="#FFF3B0"/><stop offset="100%" stop-color="#F59E0B"/>
                   </linearGradient></defs>
                 </svg>
-                <div class="center"><div class="big" id="tbPlanned">0p</div><div class="small">KẾ HOẠCH</div></div>
+                <div class="center"><div class="big" id="tbRoom">24g</div><div class="small" id="tbRoomLabel">GIỜ CÒN TRỐNG</div></div>
               </div>
               <div class="tb-nums daypart-list">
                 <div class="daypart-row" data-daypart="morning">
@@ -1843,7 +1844,7 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
                   <div class="daypart-name"><span>🌙 Tối</span><small>18:01–23:59</small></div>
                   <div class="daypart-value"><b id="tbEveningLeft">6g</b><small id="tbEveningPlan">0p đã lên block</small></div>
                 </div>
-                <div class="daypart-summary"><span><b id="tbCount">0</b> việc có block</span><span id="tbUnscheduledWrap"><b id="tbUnscheduled">0</b> chưa đặt giờ</span></div>
+                <div class="daypart-summary"><span><b id="tbPlanned">0p</b> kế hoạch</span><span><b id="tbCount">0</b> việc có block</span><span id="tbUnscheduledWrap"><b id="tbUnscheduled">0</b> chưa đặt giờ</span></div>
               </div>
             </div>
           </div>
@@ -3136,6 +3137,22 @@ function dayItemDuration(item, date){
   }, 0);
 }
 
+// Số phút việc này còn "nợ" trong ngày: đã tick xong thì không còn chiếm quỹ giờ nữa,
+// việc cha chỉ tính các việc con chưa xong. Xong sớm => phần giờ đó được trả lại ngay.
+function dayItemRemainingMinutes(item, date){
+  if(!item) return 0;
+  if(item.__daySubtask) return isCompleted(item) ? 0 : (Number(item.sub?.durationMinutes) || 0);
+  if(isCompleted(item)) return 0;
+  const own = Number(item.durationMinutes) || 0;
+  if(own > 0) return own;
+  return (item.subs || []).reduce((sum,sub) => {
+    const subDate = sub.date || item.date;
+    if(subDate !== date) return sum;
+    const subDone = sub.completed !== undefined ? !!sub.completed : sub.status === 'done';
+    return subDone ? sum : sum + (Number(sub.durationMinutes) || 0);
+  }, 0);
+}
+
 // Chế độ sắp xếp danh sách (không đồng bộ, lưu localStorage riêng)
 let sortMode = 'manual';
 
@@ -3270,6 +3287,7 @@ function reviewStreak(){
 }
 
 // ---------- Time budget (theo từng buổi, cập nhật theo thời gian thực) ----------
+const MINUTES_PER_DAY = 1440;
 const DAYPARTS = [
   {key:'Morning', label:'Sáng', start:0, end:721},
   {key:'Afternoon', label:'Chiều', start:721, end:1081},
@@ -3293,6 +3311,15 @@ function itemPlannedOverlap(item, date, part, fromMinute=null){
   const itemEnd = Math.min(1440, start + duration);
   return Math.max(0, Math.min(itemEnd, part.end) - Math.max(itemStart, part.start));
 }
+// Như trên nhưng chỉ tính phần việc chưa xong, dùng cho các con số "còn lại".
+function itemRemainingOverlap(item, date, part, fromMinute=null){
+  const duration = dayItemRemainingMinutes(item, date);
+  const start = timeToMinutes(item.startTime);
+  if(!(duration > 0) || start === null) return 0;
+  const itemStart = fromMinute === null ? start : Math.max(start, fromMinute);
+  const itemEnd = Math.min(MINUTES_PER_DAY, start + duration);
+  return Math.max(0, Math.min(itemEnd, part.end) - Math.max(itemStart, part.start));
+}
 function renderTimeBudget(){
   const t = viewDate;
   const today = todayStr();
@@ -3302,8 +3329,41 @@ function renderTimeBudget(){
   const unscheduled = withDur.filter(item => timeToMinutes(item.startTime) === null);
   const nowMinute = currentMinuteOfDay();
 
+  // Quỹ giờ trống = số giờ còn lại của ngày trừ đi số giờ việc chưa xong.
+  // Vẫn còn 8h việc chưa tick mà đã 16h chiều (còn 8h trong ngày) => quỹ trống = 0.
+  // Tick xong một việc là phần giờ của nó được cộng ngay trở lại quỹ trống.
+  const clockLeft = t < today ? 0
+    : (t === today ? Math.max(0, MINUTES_PER_DAY - nowMinute) : MINUTES_PER_DAY);
+  const owed = items.reduce((sum,item) => sum + dayItemRemainingMinutes(item, t), 0);
+  const room = clockLeft - owed;
+  const roomEl = document.getElementById('tbRoom');
+  const roomLabelEl = document.getElementById('tbRoomLabel');
+  const ringEl = document.getElementById('tbRing');
+
+  if(t < today){
+    roomEl.textContent = '—';
+    roomEl.classList.remove('warn');
+    roomLabelEl.textContent = 'ĐÃ QUA';
+    ringEl.style.strokeDashoffset = 414.7;
+  }else if(room < 0){
+    roomEl.textContent = '-' + fmtMinsShort(-room);
+    roomEl.classList.add('warn');
+    roomLabelEl.textContent = 'QUÁ TẢI';
+    ringEl.style.strokeDashoffset = 414.7;
+  }else{
+    roomEl.textContent = fmtMinsShort(room);
+    roomEl.classList.remove('warn');
+    roomLabelEl.textContent = 'GIỜ CÒN TRỐNG';
+    ringEl.style.strokeDashoffset = 414.7 * (1 - Math.min(room / MINUTES_PER_DAY, 1));
+  }
+  const ringWrap = ringEl.closest('.ring');
+  if(ringWrap){
+    ringWrap.title = t < today
+      ? 'Ngày đã qua.'
+      : `Còn ${fmtMins(clockLeft)} trong ngày − ${fmtMins(owed)} việc chưa xong = ${room < 0 ? 'thiếu ' + fmtMins(-room) : fmtMins(room) + ' trống'}.`;
+  }
+
   document.getElementById('tbPlanned').textContent = fmtMinsShort(planned);
-  document.getElementById('tbRing').style.strokeDashoffset = 414.7 * (1 - Math.min(planned/1440, 1));
   document.getElementById('tbCount').textContent = withDur.length;
   document.getElementById('tbUnscheduled').textContent = unscheduled.length;
   document.getElementById('tbUnscheduledWrap').style.display = unscheduled.length ? '' : 'none';
@@ -3332,8 +3392,7 @@ function renderTimeBudget(){
         clockAvailable = Math.max(0, part.end - effectiveStart);
         isCurrent = nowMinute >= part.start && nowMinute < part.end;
         remainingPlan = items
-          .filter(item => !isCompleted(item))
-          .reduce((sum,item) => sum + itemPlannedOverlap(item,t,part,effectiveStart), 0);
+          .reduce((sum,item) => sum + itemRemainingOverlap(item,t,part,effectiveStart), 0);
       }
     }
 
@@ -6470,6 +6529,15 @@ if (CONFIG_OK) {
 const statusEl = document.getElementById('syncStatus');
 const setStatus = (msg) => { if(statusEl) statusEl.textContent = msg; };
 
+// Dòng trạng thái ghi cả ngày lẫn giờ: mở lại máy sau vài hôm vẫn biết bản dữ liệu
+// là của ngày nào, chứ không chỉ thấy mỗi "lúc 14:35:07".
+function fmtSyncTime(value){
+  const d = value ? new Date(value) : new Date();
+  if(Number.isNaN(d.getTime())) return '';
+  const p = n => String(n).padStart(2,'0');
+  return `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())} ngày ${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()}`;
+}
+
 // Firebase trả về mã lỗi thô ("PERMISSION_DENIED: Permission denied") không nói
 // được phải làm gì. Dịch các lỗi hay gặp thành hướng dẫn xử lý cụ thể.
 const RULES_HINT = 'Firebase từ chối truy cập (PERMISSION_DENIED). Gần như luôn là do Rules của Realtime Database đã hết hạn (rules thử nghiệm chỉ sống 30 ngày). Mở Firebase Console \u2192 Realtime Database \u2192 tab Rules, cấp quyền cho nhánh "sync", rồi tải lại trang.';
@@ -6568,7 +6636,7 @@ function applyCloudState(cloud, {announce=true, force=false}={}){
     renderAll();
     applyingCloudState = false;
 
-    const when = cloud.updatedAt ? new Date(cloud.updatedAt).toLocaleTimeString('vi-VN') : new Date().toLocaleTimeString('vi-VN');
+    const when = fmtSyncTime(cloud.updatedAt);
     setStatus('🟢 Đã nhận dữ liệu realtime lúc ' + when);
     if(announce && document.visibilityState === 'visible') toast('Đã cập nhật dữ liệu từ thiết bị khác.');
     return true;
@@ -6609,7 +6677,7 @@ function pushImmediately(){
     .then(ok => {
       if(ok){
         if(realtimePushPending <= 1) setLocalDirty(false);
-        setStatus('🟢 Đã đồng bộ realtime lúc ' + new Date().toLocaleTimeString('vi-VN'));
+        setStatus('🟢 Đã đồng bộ realtime lúc ' + fmtSyncTime());
       }
     })
     .catch(e => setStatus('❌ Lỗi đồng bộ realtime: ' + explainSyncError(e)))
@@ -6637,7 +6705,7 @@ document.getElementById('syncUpBtn').addEventListener('click', async () => {
     });
     setKnownStamp(stamp);
     setLocalDirty(false);
-    setStatus('✅ Đã đẩy lên mây lúc ' + new Date().toLocaleTimeString('vi-VN'));
+    setStatus('✅ Đã đẩy lên mây lúc ' + fmtSyncTime());
     toast('Đã đồng bộ lên mây.');
   }catch(e){
     setStatus('❌ Lỗi khi đẩy: ' + explainSyncError(e));
@@ -6657,7 +6725,7 @@ document.getElementById('syncDownBtn').addEventListener('click', async () => {
       return;
     }
     const cloud = snap.val();
-    const when = cloud.updatedAt ? new Date(cloud.updatedAt).toLocaleString('vi-VN') : '';
+    const when = cloud.updatedAt ? fmtSyncTime(cloud.updatedAt) : '';
     if(!confirm('Dữ liệu trên mây cập nhật lúc:\n' + when + '\n\nTải về sẽ thay thế toàn bộ dữ liệu trên máy này. Tiếp tục?')){
       setStatus('Đã huỷ tải về.');
       return;
