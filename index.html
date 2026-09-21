@@ -320,7 +320,25 @@ section[data-view].active{display:block;animation:fadein .25s ease}
   padding:11px 13px;border-radius:12px;
   background:rgba(0,0,0,.16);border:1px solid rgba(255,255,255,.14);
 }
-.daypart-row.current{background:rgba(0,0,0,.24);border-color:rgba(255,214,138,.55);box-shadow:0 0 0 2px rgba(255,214,138,.18)}
+.daypart-row{position:relative;overflow:hidden}
+.daypart-row.current{
+  background:rgba(0,0,0,.26);
+  border-color:rgba(255,214,138,.78);
+  box-shadow:0 0 0 3px rgba(255,214,138,.16), 0 6px 18px rgba(0,0,0,.22);
+}
+.daypart-row.current::before{                     /* vạch vàng chạy dọc mép trái */
+  content:"";position:absolute;left:0;top:0;bottom:0;width:4px;
+  background:linear-gradient(180deg,#FFE3A8,#F5B740);
+}
+.daypart-row.current .daypart-name{padding-left:7px}
+.daypart-row.current .daypart-name span::after{   /* nhãn báo buổi hiện tại */
+  content:"BÂY GIỜ";
+  margin-left:8px;padding:2px 7px;border-radius:99px;
+  background:#FFD68A;color:#33240A;
+  font-size:9px;font-weight:800;letter-spacing:.06em;vertical-align:middle;
+  white-space:nowrap;
+}
+.daypart-row.current .daypart-value b{color:#FFE9C2}
 .daypart-row.past{opacity:.58}
 .daypart-name{display:flex;flex-direction:column;min-width:0}
 .daypart-name span{font-size:13.5px;font-weight:800;color:#fff}
@@ -1449,6 +1467,9 @@ section[data-view].active{display:block;animation:fadein .25s ease}
     gap:6px;padding:6px 7px;border-radius:10px;
   }
   .hero-budget .daypart-name span{font-size:11px}
+  .hero-budget .daypart-row.current .daypart-name span::after{
+    content:"●";margin-left:6px;padding:0;background:none;color:#FFD68A;font-size:11px;
+  }
   .hero-budget .daypart-name small{display:none}
   .hero-budget .daypart-value b{font-size:14px}
   .hero-budget .daypart-value small{
@@ -1852,55 +1873,6 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
               <div class="tc-sub" id="treeStageLabel">Chờ dữ liệu chăm cây</div>
             </div>
             <div class="tree-stage" id="treeStage">
-              <svg class="tree-svg" viewBox="0 0 220 240" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cây cam trưởng thành">
-                <defs>
-                  <radialGradient id="leafG" cx="38%" cy="28%" r="78%">
-                    <stop offset="0%" stop-color="#82D89A"/>
-                    <stop offset="55%" stop-color="#3EA869"/>
-                    <stop offset="100%" stop-color="#207544"/>
-                  </radialGradient>
-                  <linearGradient id="trunkG" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0%" stop-color="#8B5A32"/>
-                    <stop offset="52%" stop-color="#6C4324"/>
-                    <stop offset="100%" stop-color="#4E2F19"/>
-                  </linearGradient>
-                  <radialGradient id="orangeG" cx="34%" cy="30%" r="78%">
-                    <stop offset="0%" stop-color="#FFD782"/>
-                    <stop offset="46%" stop-color="#FBA43A"/>
-                    <stop offset="100%" stop-color="#E36F19"/>
-                  </radialGradient>
-                </defs>
-
-                <!-- bóng đổ dưới gốc -->
-                <ellipse cx="110" cy="227" rx="66" ry="9" fill="#08152B" opacity="0.35"/>
-
-                <!-- thân + cành -->
-                <path d="M103 224 C101 200 100 176 104 150 L116 150 C120 176 119 200 117 224 Z" fill="url(#trunkG)"/>
-                <path d="M108 170 C96 158 84 152 74 142" stroke="#6C4324" stroke-width="7" stroke-linecap="round"/>
-                <path d="M112 174 C124 162 136 156 146 148" stroke="#6C4324" stroke-width="7" stroke-linecap="round"/>
-
-                <!-- tán lá -->
-                <g>
-                  <circle cx="72" cy="98" r="40" fill="url(#leafG)"/>
-                  <circle cx="150" cy="100" r="40" fill="url(#leafG)"/>
-                  <circle cx="110" cy="70" r="47" fill="url(#leafG)"/>
-                  <circle cx="110" cy="114" r="50" fill="url(#leafG)"/>
-                  <circle cx="86" cy="122" r="34" fill="url(#leafG)"/>
-                  <circle cx="136" cy="122" r="34" fill="url(#leafG)"/>
-                </g>
-                <circle cx="96" cy="58" r="19" fill="#94E2AA" opacity="0.45"/>
-
-                <!-- quả cam -->
-                <g>
-                  <circle cx="84" cy="84" r="8.5" fill="url(#orangeG)"/>
-                  <circle cx="133" cy="76" r="8.5" fill="url(#orangeG)"/>
-                  <circle cx="110" cy="104" r="9.5" fill="url(#orangeG)"/>
-                  <circle cx="151" cy="114" r="8" fill="url(#orangeG)"/>
-                  <circle cx="71" cy="120" r="8" fill="url(#orangeG)"/>
-                  <circle cx="121" cy="134" r="8.5" fill="url(#orangeG)"/>
-                  <circle cx="96" cy="130" r="7.5" fill="url(#orangeG)"/>
-                </g>
-              </svg>
             </div>
           </div>
         </div>
@@ -3373,7 +3345,9 @@ function renderTimeBudget(){
   }
 
   DAYPARTS.forEach(part => {
-    const row = document.querySelector(`[data-daypart="${part.key.toLowerCase()}"]`);
+    // Phải khoá vào .daypart-row: thẻ hero cũng mang data-daypart (để đổi nền theo buổi)
+    // và đứng trước trong DOM, nên selector trần sẽ bắt nhầm hero.
+    const row = document.querySelector(`.daypart-row[data-daypart="${part.key.toLowerCase()}"]`);
     const leftEl = document.getElementById(`tb${part.key}Left`);
     const planEl = document.getElementById(`tb${part.key}Plan`);
     const totalPlanned = items.reduce((sum,item) => sum + itemPlannedOverlap(item,t,part), 0);
@@ -3856,40 +3830,93 @@ function treeStageInfo(points, goal){
   if(pct < .82) return {key:'flower', label:'Ra hoa', note:'Cây chuẩn bị kết quả.', level:5, pct};
   return {key:'mature', label:'Trưởng thành', note:'Cây cam đã sum suê và có quả.', level:6, pct};
 }
+// Tán lá dựng từ một cụm blob chuẩn hoá quanh tâm (đơn vị = bán kính tán R).
+// Nhờ vậy mọi cấp cây đều dùng chung hình dáng, chỉ đổi tâm và R — và quan trọng
+// nhất: đáy tán (+0.83R) luôn được đặt thấp hơn ngọn thân nên tán ôm lấy thân,
+// không còn cảnh tán lơ lửng tách rời khỏi thân như bản cũ.
+const CROWN_BLOBS = [
+  [ 0.00,-0.34,0.60],[-0.56,-0.02,0.50],[ 0.56,-0.02,0.50],
+  [-0.32, 0.38,0.45],[ 0.32, 0.38,0.45],[ 0.00, 0.16,0.58]
+];
+const CROWN_FRUIT = [
+  [-0.46,-0.08],[0.44,-0.20],[0.04,0.12],[0.58,0.26],[-0.58,0.24],[0.24,0.48],[-0.22,0.44]
+];
+// Mỗi cấp: ngọn thân, bề ngang gốc/ngọn thân, tâm và bán kính tán.
+const TREE_GEOM = {
+  3:{trunkTop:166, bw:6.5,  tw:3.6, cy:150, r:38},
+  4:{trunkTop:150, bw:8.5,  tw:4.6, cy:126, r:52},
+  5:{trunkTop:140, bw:9.5,  tw:5.2, cy:114, r:58},
+  6:{trunkTop:138, bw:10.5, tw:5.6, cy:110, r:62}
+};
+const n1 = v => Math.round(v*10)/10;
+
+function trunkPath(g){
+  const {trunkTop:t, bw, tw} = g;
+  return `M ${n1(110-bw)} 224 C ${n1(110-bw+0.8)} 200 ${n1(110-tw-1.8)} ${n1(t+18)} ${n1(110-tw)} ${t}`
+       + ` L ${n1(110+tw)} ${t} C ${n1(110+tw+1.8)} ${n1(t+18)} ${n1(110+bw-0.8)} 200 ${n1(110+bw)} 224 Z`;
+}
+function crownCircles(g, id){
+  return CROWN_BLOBS.map(([x,y,r]) =>
+    `<circle cx="${n1(110+x*g.r)}" cy="${n1(g.cy+y*g.r)}" r="${n1(r*g.r)}" fill="url(#leafG_${id})"/>`
+  ).join('');
+}
+function branchPaths(g){
+  const {trunkTop:t, r} = g;
+  const sw = n1(Math.max(4, r*0.13));
+  const mk = s => `M 110 ${n1(t+26)} C ${n1(110+s*0.26*r)} ${n1(t+6)} ${n1(110+s*0.5*r)} ${n1(g.cy+0.46*r)} ${n1(110+s*0.64*r)} ${n1(g.cy+0.26*r)}`;
+  return `<path d="${mk(-1)}" stroke="#5E3A1E" stroke-width="${sw}" stroke-linecap="round"/>`
+       + `<path d="${mk(1)}" stroke="#5E3A1E" stroke-width="${sw}" stroke-linecap="round"/>`;
+}
 function orangeTreeSvg(info, id='hero'){
   const l = info.level;
-  const seed = l >= 1;
-  const sprout = l >= 2;
-  const trunk = l >= 3;
-  const branches = l >= 4;
-  const flowers = l >= 5;
-  const fruits = l >= 6;
-  const leafScale = l === 3 ? .58 : l === 4 ? .78 : l === 5 ? .9 : 1;
-  const trunkTop = l === 3 ? 164 : l === 4 ? 150 : 140;
-  return `<svg class="tree-svg" viewBox="0 0 220 240" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc(info.label)}">
+  const g = TREE_GEOM[Math.min(6, Math.max(3, l))];
+  const hasTrunk = l >= 3, hasBranches = l >= 4, hasFlowers = l >= 5, hasFruits = l >= 6;
+
+  const ground = `
+    <ellipse cx="110" cy="227" rx="63" ry="8.5" fill="#06110A" opacity="0.32"/>
+    <path d="M49 221 C70 206 150 206 171 221 C150 233 70 233 49 221Z" fill="url(#soilG_${id})"/>
+    <path d="M61 218 C85 210 135 210 159 218" stroke="#C09060" stroke-width="2.6" stroke-linecap="round" opacity="0.4"/>`;
+
+  const seed = l === 1 ? `
+    <ellipse cx="110" cy="214" rx="9.5" ry="6.5" fill="url(#orangeG_${id})"/>
+    <path d="M106 211 C109 213 112 213 115 211" stroke="#7A3F08" stroke-width="1.6" stroke-linecap="round" opacity=".55"/>` : '';
+
+  const sprout = l === 2 ? `
+    <path d="M110 220 C108 206 110 196 115 188" stroke="#2F9B5F" stroke-width="5.5" stroke-linecap="round" fill="none"/>
+    <path d="M114 194 C129 186 139 188 146 196 C132 203 121 202 114 194Z" fill="url(#leafG_${id})"/>
+    <path d="M109 203 C96 194 88 193 79 200 C92 208 102 207 109 203Z" fill="url(#leafG_${id})"/>` : '';
+
+  const crown = hasTrunk ? `
+    <g>
+      <g opacity="0.45" transform="translate(0 5)">${crownCircles(g, id).replace(/url\(#leafG_[^)]+\)/g, '#16603A')}</g>
+      ${crownCircles(g, id)}
+      <circle cx="${n1(110-0.34*g.r)}" cy="${n1(g.cy-0.46*g.r)}" r="${n1(0.20*g.r)}" fill="#9CEBB4" opacity="0.30"/>
+      <circle cx="${n1(110-0.05*g.r)}" cy="${n1(g.cy-0.58*g.r)}" r="${n1(0.12*g.r)}" fill="#B6F2C6" opacity="0.22"/>
+    </g>` : '';
+
+  const decor = (hasFlowers || hasFruits) ? CROWN_FRUIT.map(([x,y]) => {
+    const cx = n1(110+x*g.r), cy = n1(g.cy+y*g.r);
+    return hasFruits
+      ? `<circle cx="${cx}" cy="${cy}" r="${n1(0.145*g.r)}" fill="url(#orangeG_${id})"/>`
+      : `<circle cx="${cx}" cy="${cy}" r="${n1(0.075*g.r)}" fill="#FFF6D8" opacity="0.92"/>`;
+  }).join('') : '';
+
+    // viewBox siết sát nội dung (cây rộng nhất chiếm x 44-176, y 52-236) để cây
+  // không bị thu nhỏ vì khoảng trắng thừa khi nằm trong cột hẹp 20%.
+  return `<svg class="tree-svg" viewBox="36 42 148 202" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc(info.label)}">
     <defs>
-      <radialGradient id="leafG_${id}" cx="38%" cy="28%" r="78%"><stop offset="0%" stop-color="#82D89A"/><stop offset="55%" stop-color="#3EA869"/><stop offset="100%" stop-color="#207544"/></radialGradient>
-      <linearGradient id="trunkG_${id}" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#8B5A32"/><stop offset="52%" stop-color="#6C4324"/><stop offset="100%" stop-color="#4E2F19"/></linearGradient>
+      <radialGradient id="leafG_${id}" cx="36%" cy="26%" r="80%"><stop offset="0%" stop-color="#8CE0A4"/><stop offset="52%" stop-color="#3EA869"/><stop offset="100%" stop-color="#1D6E40"/></radialGradient>
+      <linearGradient id="trunkG_${id}" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#9A6538"/><stop offset="48%" stop-color="#6C4324"/><stop offset="100%" stop-color="#46290F"/></linearGradient>
       <radialGradient id="orangeG_${id}" cx="34%" cy="30%" r="78%"><stop offset="0%" stop-color="#FFD782"/><stop offset="46%" stop-color="#FBA43A"/><stop offset="100%" stop-color="#E36F19"/></radialGradient>
+      <linearGradient id="soilG_${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#9B6438"/><stop offset="100%" stop-color="#5E3A1C"/></linearGradient>
     </defs>
-    <ellipse cx="110" cy="227" rx="66" ry="9" fill="#08152B" opacity="0.35"/>
-    <path d="M48 222 C70 207 152 207 174 222 C151 235 72 235 48 222Z" fill="#8B5A32" opacity="0.9"/>
-    <path d="M58 219 C82 210 140 210 164 219" stroke="#B98A5B" stroke-width="3" stroke-linecap="round" opacity="0.45"/>
-    ${seed ? `<ellipse cx="110" cy="213" rx="10" ry="6" fill="url(#orangeG_${id})" opacity="${l===1 ? 1 : .18}"/>` : ''}
-    ${sprout && !trunk ? `<path d="M110 213 C108 199 111 190 118 182" stroke="#2F9B5F" stroke-width="5" stroke-linecap="round"/><path d="M116 190 C132 184 139 186 146 193 C132 199 123 198 116 190Z" fill="url(#leafG_${id})"/><path d="M110 199 C97 191 91 190 82 197 C95 204 104 203 110 199Z" fill="url(#leafG_${id})"/>` : ''}
-    ${trunk ? `<path d="M103 224 C101 199 101 176 105 ${trunkTop} L116 ${trunkTop} C120 176 119 200 117 224 Z" fill="url(#trunkG_${id})"/>` : ''}
-    ${branches ? `<path d="M108 171 C96 158 84 152 74 142" stroke="#6C4324" stroke-width="7" stroke-linecap="round"/><path d="M112 174 C124 162 136 156 146 148" stroke="#6C4324" stroke-width="7" stroke-linecap="round"/>` : ''}
-    ${trunk ? `<g transform="translate(110 104) scale(${leafScale}) translate(-110 -104)">
-      <circle cx="72" cy="105" r="${l===3?24:40}" fill="url(#leafG_${id})"/>
-      <circle cx="150" cy="105" r="${l===3?24:40}" fill="url(#leafG_${id})"/>
-      <circle cx="110" cy="82" r="${l===3?30:47}" fill="url(#leafG_${id})"/>
-      <circle cx="110" cy="124" r="${l===3?30:50}" fill="url(#leafG_${id})"/>
-      <circle cx="86" cy="129" r="${l===3?20:34}" fill="url(#leafG_${id})"/>
-      <circle cx="136" cy="129" r="${l===3?20:34}" fill="url(#leafG_${id})"/>
-      <circle cx="96" cy="67" r="15" fill="#94E2AA" opacity="0.42"/>
-    </g>` : ''}
-    ${flowers ? `<g fill="#FFF2B8" opacity="${fruits ? .55 : 1}"><circle cx="84" cy="84" r="4"/><circle cx="133" cy="76" r="4"/><circle cx="110" cy="104" r="4"/><circle cx="151" cy="114" r="4"/><circle cx="72" cy="120" r="4"/></g>` : ''}
-    ${fruits ? `<g><circle cx="84" cy="84" r="8.5" fill="url(#orangeG_${id})"/><circle cx="133" cy="76" r="8.5" fill="url(#orangeG_${id})"/><circle cx="110" cy="104" r="9.5" fill="url(#orangeG_${id})"/><circle cx="151" cy="114" r="8" fill="url(#orangeG_${id})"/><circle cx="71" cy="120" r="8" fill="url(#orangeG_${id})"/><circle cx="121" cy="134" r="8.5" fill="url(#orangeG_${id})"/><circle cx="96" cy="130" r="7.5" fill="url(#orangeG_${id})"/></g>` : ''}
+    ${ground}
+    ${seed}
+    ${sprout}
+    ${hasTrunk ? `<path d="${trunkPath(g)}" fill="url(#trunkG_${id})"/>` : ''}
+    ${hasBranches ? branchPaths(g) : ''}
+    ${crown}
+    ${decor}
   </svg>`;
 }
 function renderTreeProgress(){
@@ -6390,9 +6417,9 @@ function renderReport(){
   const goal = goalFor(range.goalType);
   const progress = Math.min(100, Math.round(sum.achievedDays / Math.max(1,goal) * 100));
   const year = yearOnePctSummary();
-  const treeStageCount = year.achieved > 0 ? year.achieved : (year.careActions > 0 ? 1 : 0);
-  const treeInfo = treeStageInfo(treeStageCount, year.goal);
-  const yearProgress = Math.min(100, Math.round(year.achieved / Math.max(1,year.goal) * 100));
+  // Cây ở tab Vườn cam phải lớn theo đúng thước đo của hero: điểm chăm cây.
+  const treeInfo = treeStageInfo(year.points, year.pointGoal);
+  const yearProgress = Math.min(100, Math.round(year.points / Math.max(1,year.pointGoal) * 100));
   const nextYear = Number(todayStr().slice(0,4)) + 1;
 
   out.innerHTML = `
@@ -6408,11 +6435,11 @@ function renderReport(){
       <div class="tree-mini-svg">${orangeTreeSvg(treeInfo,'report')}</div>
       <div>
         <h4>${esc(treeInfo.label)}</h4>
-        <p>${year.achieved}/${year.goal} ngày mục tiêu · ${year.careActions} lần chăm cây</p>
+        <p>${year.points}/${year.pointGoal} điểm chăm cây · ${year.achieved}/${year.goal} ngày trọn việc 1%</p>
       </div>
     </div>
 
-    <div class="garden-note">Mục tiêu cây cam ${year.year}: chăm đều từ ${year.start.split('-').reverse().join('/')} đến 31/12. Mỗi ngày chỉ được tính khi hoàn thành hết việc 1% đã plan trong ngày đó.</div>
+    <div class="garden-note">Cây cam ${year.year} lớn bằng <b>điểm chăm cây</b>: mỗi việc hoàn thành được 1 điểm, việc nhổ cỏ 1% được 2 điểm. Mốc trưởng thành ${year.pointGoal} điểm là nhịp +1% mỗi ngày trong ${year.goal} ngày của mùa trồng (${year.start.split('-').reverse().join('/')} → 31/12). Riêng "ngày trọn việc 1%" vẫn tính theo ngày hoàn thành hết việc 1% đã plan.</div>
 
     <div class="report-chart-grid">
       <div class="report-donut-wrap">
