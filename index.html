@@ -272,10 +272,22 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 /* ============ DAILY PLAN ============ */
 .hero{
   background:
-    radial-gradient(circle at 76% 34%, rgba(252,211,77,.22), transparent 32%),
-    linear-gradient(135deg,#2F8F5B 0%, #3FA869 52%, #C97818 100%);
+    radial-gradient(circle at 76% 34%, rgba(252,211,77,.14), transparent 32%),
+    linear-gradient(135deg,#1A6438 0%, #28703A 52%, #8A4710 100%);
   color:#FFF8EC;border:none;position:relative;overflow:hidden;
+  transition:background .8s ease;
 }
+/* Nền đổi theo buổi trong ngày. Ba bảng đều giữ độ sáng đủ thấp để chữ kem
+   (#FFF8EC) và chữ phụ (#F0E2C6) luôn đạt tương phản AA >= 4.5:1. */
+.hero[data-daypart="morning"]{background:
+  radial-gradient(circle at 74% 28%, rgba(255,226,150,.16), transparent 34%),
+  linear-gradient(135deg,#0D5C4B 0%, #136B4E 52%, #7A5A12 100%)}
+.hero[data-daypart="afternoon"]{background:
+  radial-gradient(circle at 76% 34%, rgba(252,211,77,.15), transparent 32%),
+  linear-gradient(135deg,#1A6438 0%, #28703A 52%, #8A4710 100%)}
+.hero[data-daypart="evening"]{background:
+  radial-gradient(circle at 80% 22%, rgba(140,180,255,.10), transparent 36%),
+  linear-gradient(135deg,#0C2A22 0%, #13382C 52%, #3A2413 100%)}
 .hero::before{
   content:"";position:absolute;inset:auto -8% -42px -8%;height:90px;
   background:radial-gradient(ellipse at center, rgba(91,58,31,.22), transparent 68%);
@@ -283,9 +295,18 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 }
 .hero > *{position:relative;z-index:1}
 [data-theme="dark"] .hero{background:
-  radial-gradient(circle at 76% 34%, rgba(252,211,77,.12), transparent 32%),
-  linear-gradient(135deg,#1D5B3A 0%, #204B32 56%, #7A4619 100%)}
-.hero .date{font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#9FC5E8;font-weight:600}
+  radial-gradient(circle at 76% 34%, rgba(252,211,77,.10), transparent 32%),
+  linear-gradient(135deg,#153F2B 0%, #1A4A31 56%, #5E340F 100%)}
+[data-theme="dark"] .hero[data-daypart="morning"]{background:
+  radial-gradient(circle at 74% 28%, rgba(255,226,150,.12), transparent 34%),
+  linear-gradient(135deg,#0A4537 0%, #0E5139 52%, #5C4410 100%)}
+[data-theme="dark"] .hero[data-daypart="afternoon"]{background:
+  radial-gradient(circle at 76% 34%, rgba(252,211,77,.11), transparent 32%),
+  linear-gradient(135deg,#144B2B 0%, #1D552C 52%, #68360C 100%)}
+[data-theme="dark"] .hero[data-daypart="evening"]{background:
+  radial-gradient(circle at 80% 22%, rgba(140,180,255,.09), transparent 36%),
+  linear-gradient(135deg,#08201A 0%, #0D2A21 52%, #2B1B0E 100%)}
+.hero .date{font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#F0E2C6;font-weight:600}
 .hero-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
 .hero-streak{font-size:12px;font-weight:600;color:#BFE3F2;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14);border-radius:99px;padding:4px 11px;white-space:nowrap}
 .tb-dash{display:flex;align-items:center;gap:26px;flex-wrap:wrap}
@@ -293,60 +314,58 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 .tb-item .tb-v{font-family:var(--font-display);font-weight:800;font-size:27px;color:#fff;line-height:1.1}
 .tb-item .tb-v.warn{color:#FFC96B}
 .tb-item .tb-l{font-size:12px;color:#9FC5E8;font-weight:500;margin-top:2px}
-.daypart-list{gap:8px!important;min-width:210px!important}
+.daypart-list{gap:10px!important;min-width:210px!important}
 .daypart-row{
   display:flex;align-items:center;justify-content:space-between;gap:12px;
-  padding:9px 10px;border-radius:12px;
-  background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.13);
+  padding:11px 13px;border-radius:12px;
+  background:rgba(0,0,0,.16);border:1px solid rgba(255,255,255,.14);
 }
-.daypart-row.current{background:rgba(255,255,255,.17);border-color:rgba(255,255,255,.28);box-shadow:0 0 0 2px rgba(252,211,77,.12)}
+.daypart-row.current{background:rgba(0,0,0,.24);border-color:rgba(255,214,138,.55);box-shadow:0 0 0 2px rgba(255,214,138,.18)}
 .daypart-row.past{opacity:.58}
 .daypart-name{display:flex;flex-direction:column;min-width:0}
-.daypart-name span{font-size:12.5px;font-weight:800;color:#fff}
-.daypart-name small,.daypart-value small{font-size:10.5px;color:#C9E2F5;font-weight:500;white-space:nowrap}
+.daypart-name span{font-size:13.5px;font-weight:800;color:#fff}
+.daypart-name small,.daypart-value small{font-size:10.5px;color:#F0E2C6;font-weight:500;white-space:nowrap}
 .daypart-value{text-align:right;display:flex;flex-direction:column;align-items:flex-end}
-.daypart-value b{font-family:var(--font-display);font-size:17px;line-height:1.1;color:#fff}
-.daypart-value b.warn{color:#FFC96B}
-.daypart-summary{
-  display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;
-  padding:2px 2px 0;color:#C9E2F5;font-size:10.5px;font-weight:600;
-}
-.daypart-summary b{color:#fff;font-size:11.5px}
+.daypart-value b{font-family:var(--font-display);font-size:19px;line-height:1.1;color:#fff}
+.daypart-value b.warn{color:#FFE0A3}
 
 
 /* ----- Hero: 2 phần (budget thời gian | cây cam) ----- */
 .hero-body{
-  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-  gap:22px;align-items:stretch;
+  display:grid;grid-template-columns:minmax(0,4fr) minmax(0,1fr);  /* 80% quản lý giờ · 20% cây */
+  gap:20px;align-items:stretch;
 }
-.hero-budget{display:flex;align-items:center;min-width:0}
-.hero-budget .tb-dash{gap:20px}
+.hero-budget{display:flex;align-items:center;min-width:0;width:100%}
+.hero-budget .tb-dash{gap:26px;flex-wrap:nowrap;flex:1 1 auto;width:100%}
 .hero-budget .tb-nums{min-width:120px}
 .hero-tree{
   display:flex;flex-direction:column;min-width:0;min-height:230px;
-  border-left:1px solid rgba(255,255,255,.1);padding-left:22px;
+  border-left:1px solid rgba(255,255,255,.12);padding-left:18px;
 }
 .tree-cap{flex:0 0 auto}                 /* text ~10-20% */
-.tree-cap .tc-title{font-family:var(--font-display);font-weight:700;font-size:14px;color:#fff}
-.tree-cap .tc-sub{font-size:12px;color:#9FC5E8;font-weight:500;margin-top:2px}
+.tree-cap .tc-title{font-family:var(--font-display);font-weight:700;font-size:12.5px;color:#fff;line-height:1.3}
+.tree-cap .tc-sub{font-size:11px;color:#F0E2C6;font-weight:500;margin-top:2px;line-height:1.35}
 .tree-stage{                              /* phần còn lại: không gian cho cây */
   flex:1 1 auto;min-height:0;margin-top:6px;
   display:flex;align-items:flex-end;justify-content:center;
 }
-.tree-svg{width:100%;height:100%;max-height:210px;display:block}
+.tree-svg{width:100%;height:100%;max-height:180px;display:block}
 .hero-quote{
-  margin-top:16px;padding-top:13px;border-top:1px solid rgba(255,255,255,.13);
-  font-size:12.5px;color:#C9E2F5;font-style:italic;line-height:1.55;
+  margin-top:18px;padding-top:14px;border-top:1px solid rgba(255,255,255,.16);
+  font-size:12.5px;line-height:1.55;
 }
-.ring{position:relative;width:150px;height:150px;flex-shrink:0}
-.ring svg{transform:rotate(-90deg)}
+.hero-quote:empty{display:none}
+.hero-quote .quote-english{display:block;color:#FFF8EC;font-style:italic;font-weight:600}
+.hero-quote .quote-source{display:block;margin-top:4px;color:#F0E2C6;font-size:11.5px;font-style:normal;font-weight:500}
+.ring{position:relative;width:168px;height:168px;flex-shrink:0}
+.ring svg{transform:rotate(-90deg);width:100%;height:100%;display:block}
 .ring .center{
   position:absolute;inset:0;display:flex;flex-direction:column;
   align-items:center;justify-content:center;
 }
-.ring .center .big{font-family:var(--font-display);font-weight:800;font-size:27px;color:#fff;line-height:1}
-.ring .center .big.warn{color:#FFC96B}
-.ring .center .small{font-size:10px;color:#9FC5E8;margin-top:4px;font-weight:600;letter-spacing:.08em}
+.ring .center .big{font-family:var(--font-display);font-weight:800;font-size:30px;color:#fff;line-height:1}
+.ring .center .big.warn{color:#FFE0A3}
+.ring .center .small{font-size:10px;color:#F0E2C6;margin-top:4px;font-weight:600;letter-spacing:.08em}
 
 .focus-row{display:flex;gap:10px}
 .focus-row input{flex:1}
@@ -368,23 +387,8 @@ section[data-view].active{display:block;animation:fadein .25s ease}
   border-radius:99px;padding:5px 9px;white-space:nowrap;
 }
 .mini-stat b{font-family:var(--font-display);font-size:13px;color:var(--blue)}
-.hero-mini-stats{margin:0;justify-content:flex-end;max-width:min(720px,100%)}
-.hero-mini-stats .mini-stat{
-  background:rgba(255,255,255,.12);
-  border-color:rgba(255,255,255,.18);
-  color:#EAF6FF;
-  box-shadow:none;
-}
-.hero-mini-stats .mini-stat b{color:#fff;font-size:13.5px}
-[data-theme="dark"] .hero-mini-stats .mini-stat{
-  background:rgba(255,248,236,.09);
-  border-color:rgba(255,248,236,.16);
-  color:#F1DEC1;
-}
 @media (max-width:760px){
   .hero-top{align-items:flex-start}
-  .hero-mini-stats{width:100%;justify-content:flex-start;gap:6px}
-  .hero-mini-stats .mini-stat{font-size:11.5px;padding:4px 8px}
 }
 
 /* Task rows: overview text is not copyable; click opens task board */
@@ -1391,7 +1395,6 @@ section[data-view].active{display:block;animation:fadein .25s ease}
   .hero-budget .daypart-name span{font-size:10.5px}
   .hero-budget .daypart-value b{font-size:13px}
   .hero-budget .daypart-value small::after{font-size:8px}
-  .hero-budget .daypart-summary{font-size:8px}
 }
 
 /* ============ MOBILE ============ */
@@ -1413,12 +1416,16 @@ section[data-view].active{display:block;animation:fadein .25s ease}
   .grid-2{grid-template-columns:1fr}
   .hero{gap:16px}
   .hero-body{grid-template-columns:1fr;gap:18px}
+  .hero-budget .tb-dash{flex-wrap:wrap}
   .hero-tree{
     border-left:none;padding-left:0;
-    border-top:1px solid rgba(255,255,255,.1);padding-top:16px;
-    min-height:200px;
+    border-top:1px solid rgba(255,255,255,.12);padding-top:14px;
+    min-height:0;
+    flex-direction:row;align-items:center;gap:12px;   /* cây đứng cạnh chữ cho gọn chiều cao */
   }
-  .tree-svg{max-height:190px}
+  .hero-tree .tree-cap{flex:1 1 auto;min-width:0}
+  .hero-tree .tree-stage{flex:0 0 96px;width:96px;margin-top:0}
+  .tree-svg{max-height:96px}
   .hero-budget{width:100%;display:block}
   .hero-budget .tb-dash{
     width:100%;
@@ -1450,12 +1457,8 @@ section[data-view].active{display:block;animation:fadein .25s ease}
   }
   .hero-budget .daypart-value small::after{
     content:attr(data-mobile-label);
-    font-size:8.5px;color:#C9E2F5;font-weight:600;white-space:nowrap;
+    font-size:8.5px;color:#F0E2C6;font-weight:600;white-space:nowrap;
   }
-  .hero-budget .daypart-summary{
-    gap:4px;padding-top:0;font-size:8.5px;line-height:1.2;
-  }
-  .hero-budget .daypart-summary b{font-size:9.5px}
   .theme-fab{
     display:flex!important;position:fixed;top:14px;right:14px;z-index:41;
     width:38px;height:38px;border-radius:99px;align-items:center;justify-content:center;
@@ -1810,12 +1813,6 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
       <div class="card hero">
         <div class="hero-top">
           <div class="date" id="todayDate"></div>
-          <div class="mini-stats hero-mini-stats" id="heroStats" aria-label="Trạng thái công việc trong ngày">
-            <span class="mini-stat">✓ <b id="stDone">0</b> hoàn thành</span>
-            <span class="mini-stat">🧠 <b id="stReviews">0</b> review</span>
-            <span class="mini-stat">🌱 <b id="stActions">0</b> lần chăm cây</span>
-            <span class="mini-stat">🔥 <b id="stStreak">0</b> streak</span>
-          </div>
         </div>
         <div class="hero-body">
           <!-- PHẦN 1 · BUDGET THỜI GIAN -->
@@ -1829,7 +1826,7 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
                     <stop offset="0%" stop-color="#FFF3B0"/><stop offset="100%" stop-color="#F59E0B"/>
                   </linearGradient></defs>
                 </svg>
-                <div class="center"><div class="big" id="tbRoom">24g</div><div class="small" id="tbRoomLabel">GIỜ CÒN TRỐNG</div></div>
+                <div class="center"><div class="big" id="tbRoom">1440p</div><div class="small" id="tbRoomLabel">PHÚT CÒN TRỐNG</div></div>
               </div>
               <div class="tb-nums daypart-list">
                 <div class="daypart-row" data-daypart="morning">
@@ -1844,7 +1841,6 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
                   <div class="daypart-name"><span>🌙 Tối</span><small>18:01–23:59</small></div>
                   <div class="daypart-value"><b id="tbEveningLeft">6g</b><small id="tbEveningPlan">0p đã lên block</small></div>
                 </div>
-                <div class="daypart-summary"><span><b id="tbPlanned">0p</b> kế hoạch</span><span><b id="tbCount">0</b> việc có block</span><span id="tbUnscheduledWrap"><b id="tbUnscheduled">0</b> chưa đặt giờ</span></div>
               </div>
             </div>
           </div>
@@ -1908,6 +1904,7 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
             </div>
           </div>
         </div>
+        <div class="hero-quote" id="heroQuote"></div>
       </div>
 
       <div class="card quick-add-card">
@@ -1987,7 +1984,6 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
 
 
 
-      <p class="quote" id="footerQuote" style="margin-top:20px"></p>
     </section>
 
 
@@ -2904,6 +2900,11 @@ function fmtMins(m){
   if(h) return `${h} giờ`;
   return `${r} phút`;
 }
+// Thời gian CÒN LẠI luôn đọc bằng phút: 565 -> "565p". Phút là đơn vị hành động,
+// "9g25" khó ước lượng còn bao nhiêu việc nhét vừa, "565p" thì thấy ngay.
+function fmtMinsOnly(m){
+  return `${Math.max(0, Math.round(m))}p`;
+}
 // Dạng ngắn cho checklist: 90 -> "1g30", 30 -> "30p"
 function fmtMinsShort(m){
   m = Math.max(0, Math.round(m));
@@ -3320,14 +3321,22 @@ function itemRemainingOverlap(item, date, part, fromMinute=null){
   const itemEnd = Math.min(MINUTES_PER_DAY, start + duration);
   return Math.max(0, Math.min(itemEnd, part.end) - Math.max(itemStart, part.start));
 }
+// Nền hero đổi theo buổi để liếc một cái là biết đang ở đâu trong ngày.
+// Khi xem ngày khác hôm nay thì giữ nguyên nền mặc định, tránh gây hiểu nhầm.
+function paintHeroByDaypart(nowMinute){
+  const hero = document.querySelector('section[data-view="today"] .hero');
+  if(!hero) return;
+  if(viewDate !== todayStr()){ hero.removeAttribute('data-daypart'); return; }
+  const part = DAYPARTS.find(p => nowMinute >= p.start && nowMinute < p.end) || DAYPARTS[DAYPARTS.length-1];
+  hero.dataset.daypart = part.key.toLowerCase();
+}
+
 function renderTimeBudget(){
   const t = viewDate;
   const today = todayStr();
   const items = dayDisplayItems(t);
-  const withDur = items.filter(item => dayItemDuration(item, t) > 0);
-  const planned = withDur.reduce((sum,item) => sum + dayItemDuration(item, t), 0);
-  const unscheduled = withDur.filter(item => timeToMinutes(item.startTime) === null);
   const nowMinute = currentMinuteOfDay();
+  paintHeroByDaypart(nowMinute);
 
   // Quỹ giờ trống = số giờ còn lại của ngày trừ đi số giờ việc chưa xong.
   // Vẫn còn 8h việc chưa tick mà đã 16h chiều (còn 8h trong ngày) => quỹ trống = 0.
@@ -3346,14 +3355,14 @@ function renderTimeBudget(){
     roomLabelEl.textContent = 'ĐÃ QUA';
     ringEl.style.strokeDashoffset = 414.7;
   }else if(room < 0){
-    roomEl.textContent = '-' + fmtMinsShort(-room);
+    roomEl.textContent = '-' + fmtMinsOnly(-room);
     roomEl.classList.add('warn');
     roomLabelEl.textContent = 'QUÁ TẢI';
     ringEl.style.strokeDashoffset = 414.7;
   }else{
-    roomEl.textContent = fmtMinsShort(room);
+    roomEl.textContent = fmtMinsOnly(room);
     roomEl.classList.remove('warn');
-    roomLabelEl.textContent = 'GIỜ CÒN TRỐNG';
+    roomLabelEl.textContent = 'PHÚT CÒN TRỐNG';
     ringEl.style.strokeDashoffset = 414.7 * (1 - Math.min(room / MINUTES_PER_DAY, 1));
   }
   const ringWrap = ringEl.closest('.ring');
@@ -3362,11 +3371,6 @@ function renderTimeBudget(){
       ? 'Ngày đã qua.'
       : `Còn ${fmtMins(clockLeft)} trong ngày − ${fmtMins(owed)} việc chưa xong = ${room < 0 ? 'thiếu ' + fmtMins(-room) : fmtMins(room) + ' trống'}.`;
   }
-
-  document.getElementById('tbPlanned').textContent = fmtMinsShort(planned);
-  document.getElementById('tbCount').textContent = withDur.length;
-  document.getElementById('tbUnscheduled').textContent = unscheduled.length;
-  document.getElementById('tbUnscheduledWrap').style.display = unscheduled.length ? '' : 'none';
 
   DAYPARTS.forEach(part => {
     const row = document.querySelector(`[data-daypart="${part.key.toLowerCase()}"]`);
@@ -3401,10 +3405,10 @@ function renderTimeBudget(){
       leftEl.textContent = '—';
       leftEl.classList.remove('warn');
     }else if(free < 0){
-      leftEl.textContent = `Thiếu ${fmtMinsShort(-free)}`;
+      leftEl.textContent = `Thiếu ${fmtMinsOnly(-free)}`;
       leftEl.classList.add('warn');
     }else{
-      leftEl.textContent = fmtMinsShort(free);
+      leftEl.textContent = fmtMinsOnly(free);
       leftEl.classList.remove('warn');
     }
 
@@ -3775,13 +3779,45 @@ function canCompleteOnePctToday(act){
 }
 
 
+// ---------- Điểm chăm cây ----------
+// Mọi việc làm xong đều nuôi cây, không chỉ việc nhổ cỏ:
+//   việc thường xong = 1 điểm, việc nhổ cỏ 1% xong = 2 điểm.
+// Việc cha có việc con chỉ là vỏ chứa nên tính theo từng việc con đã tick,
+// giống cách dayItemDuration cộng thời lượng, để không đếm trùng một lần nữa ở cha.
+const CARE_POINT_WEED = 2;
+const CARE_POINT_TASK = 1;
+function subIsDone(sub){
+  return sub.completed !== undefined ? !!sub.completed : sub.status === 'done';
+}
+function carePointsOf(act){
+  if(!act) return 0;
+  const unit = act.tag1pct ? CARE_POINT_WEED : CARE_POINT_TASK;
+  const subs = act.subs || [];
+  if(subs.length) return subs.filter(subIsDone).length * unit;
+  return isCompleted(act) ? unit : 0;
+}
+// Triết lý 1%: mỗi ngày góp 1 điểm và tổng tích luỹ lớn thêm 1% mỗi ngày.
+// Sau n ngày, tổng = (1.01^n - 1)/0.01. Cả năm 365 ngày = 3678 điểm;
+// mùa cây 2026 (từ ngày mở vườn tới 31/12) 177 ngày = 482 điểm, tức ~2.7 điểm/ngày.
+function carePointGoal(days){
+  const n = Math.max(1, Number(days) || 1);
+  return Math.round((Math.pow(1.01, n) - 1) / 0.01);
+}
+function carePointsInRange(start, end){
+  return (state?.activities || [])
+    .filter(a => a.date >= start && a.date <= end)
+    .reduce((sum,a) => sum + carePointsOf(a), 0);
+}
+
 function yearOnePctSummaryForYear(year){
   const y = Number(year);
   const start = treeYearStartDate(y);
   const end = `${y}-12-31`;
   const sum = summarizeOnePctRange(start, end);
   const careActions = state.activities.filter(a => a.tag1pct && a.date >= start && a.date <= end && isOnePctCompletedForDate(a, a.date)).length;
-  return {year:y, start, end, goal:treeYearGoalDays(y), achieved:sum.achievedDays, careActions, sum};
+  const goalDays = treeYearGoalDays(y);
+  return {year:y, start, end, goal:goalDays, achieved:sum.achievedDays, careActions, sum,
+          points:carePointsInRange(start, end), pointGoal:carePointGoal(goalDays)};
 }
 function yearOnePctSummary(){
   return yearOnePctSummaryForYear(todayStr().slice(0,4));
@@ -3798,12 +3834,11 @@ function orchardHtml(){
   const years = orchardYearList();
   const cards = years.map(y => {
     const ys = yearOnePctSummaryForYear(y);
-    const stageCount = ys.achieved > 0 ? ys.achieved : (ys.careActions > 0 ? 1 : 0);
-    const info = treeStageInfo(stageCount, ys.goal);
+    const info = treeStageInfo(ys.points, ys.pointGoal);
     const cls = y === current ? 'orchard-card active' : 'orchard-card';
     return `<div class="${cls}">
       <div class="orchard-tree">${orangeTreeSvg(info, 'orchard'+y)}</div>
-      <div><div class="oy">Cây cam ${y}</div><div class="osub">${esc(info.label)} · ${ys.achieved}/${ys.goal} ngày mục tiêu</div></div>
+      <div><div class="oy">Cây cam ${y}</div><div class="osub">${esc(info.label)} · ${ys.points}/${ys.pointGoal} điểm</div></div>
     </div>`;
   }).join('');
   return `${cards}<div class="orchard-card orchard-next">
@@ -3811,11 +3846,11 @@ function orchardHtml(){
     <div><div class="oy">Cây cam ${current+1}</div><div class="osub">Sẽ bắt đầu khi sang năm mới</div></div>
   </div>`;
 }
-function treeStageInfo(achieved, goal){
-  const pct = Math.min(1, achieved / Math.max(1, goal));
-  if(achieved <= 0) return {key:'soil', label:'Chờ gieo mầm', note:'Hoàn thành việc 1% đầu tiên để bắt đầu.', level:0, pct};
-  if(achieved === 1) return {key:'seed', label:'Gieo mầm', note:'Mầm cam đầu tiên đã được gieo.', level:1, pct};
-  if(pct < .08) return {key:'sprout', label:'Mầm non', note:'Cây bắt đầu nhú lên từ những ngày +1%.', level:2, pct};
+function treeStageInfo(points, goal){
+  const pct = Math.min(1, points / Math.max(1, goal));
+  if(points <= 0) return {key:'soil', label:'Chờ gieo mầm', note:'Hoàn thành việc đầu tiên để gieo mầm.', level:0, pct};
+  if(pct < .02) return {key:'seed', label:'Gieo mầm', note:'Mầm cam đầu tiên đã được gieo.', level:1, pct};
+  if(pct < .08) return {key:'sprout', label:'Mầm non', note:'Cây bắt đầu nhú lên từ những điểm chăm đầu tiên.', level:2, pct};
   if(pct < .25) return {key:'sapling', label:'Cây non', note:'Thân cây đang cứng dần.', level:3, pct};
   if(pct < .50) return {key:'smalltree', label:'Ra tán', note:'Tán lá bắt đầu rộng hơn.', level:4, pct};
   if(pct < .82) return {key:'flower', label:'Ra hoa', note:'Cây chuẩn bị kết quả.', level:5, pct};
@@ -3863,11 +3898,12 @@ function renderTreeProgress(){
   const title = document.getElementById('treeYearTitle');
   if(!treeStage || !label) return;
   const y = yearOnePctSummary();
-  const stageCount = y.achieved > 0 ? y.achieved : (y.careActions > 0 ? 1 : 0);
-  const info = treeStageInfo(stageCount, y.goal);
+  const info = treeStageInfo(y.points, y.pointGoal);
   treeStage.innerHTML = `<div class="tree-art">${orangeTreeSvg(info,'hero')}</div>`;
   if(title) title.textContent = `🍊 Cây cam ${y.year}`;
-  label.textContent = `${info.label} · ${y.achieved}/${y.goal} ngày mục tiêu · ${y.careActions} lần chăm`;
+  label.textContent = `${info.label} · ${y.points}/${y.pointGoal} điểm`;
+  const wrap = label.closest('.hero-tree');
+  if(wrap) wrap.title = `${info.label} — ${y.points}/${y.pointGoal} điểm chăm cây (việc thường 1 điểm, việc nhổ cỏ 1% được 2 điểm). Mốc ${y.pointGoal} điểm là nhịp +1% mỗi ngày trong ${y.goal} ngày của mùa cây ${y.year}.`;
 }
 
 function renderToday(){
@@ -3887,18 +3923,8 @@ function renderToday(){
   if(document.getElementById('quickAddTitle')) document.getElementById('quickAddTitle').textContent = `＋ Thêm nhanh công việc ${dayLabel}`;
 
   // stats: gồm việc lớn của ngày và các việc con khác ngày với việc cha nhưng có deadline đúng ngày đang xem
-  const acts = state.activities.filter(a => a.date === t);
   const dayItems = dayDisplayItems(t);
-  const completedActs = dayItems.filter(isCompleted);
-  const done = completedActs.length;
-  const planned = dayItems.length;
-  const reviewedDone = completedActs.filter(a => a.reviewId && state.reviews.find(r => r.id === a.reviewId)).length;
-  const careActionsDone = acts.filter(a => a.tag1pct && isOnePctCompletedForDate(a, t)).length;
   const streak = currentOnePctStreak();
-  document.getElementById('stDone').textContent = `${done}/${planned}`;
-  document.getElementById('stReviews').textContent = `${reviewedDone}/${done}`;
-  document.getElementById('stActions').textContent = careActionsDone;
-  document.getElementById('stStreak').textContent = streak;
 
   // hero: time budget của ngày đang xem
   renderTimeBudget();
@@ -3906,8 +3932,8 @@ function renderToday(){
   const streakCap = document.getElementById('streakCap');
   if(streakCap) streakCap.textContent = `🍊 +1% streak ${streak} ngày`;
   const qt = dailyQuote(t);
-  const footerQuote = document.getElementById('footerQuote');
-  if(footerQuote) footerQuote.innerHTML = quoteMarkup(qt);
+  const heroQuote = document.getElementById('heroQuote');
+  if(heroQuote) heroQuote.innerHTML = quoteMarkup(qt);
   renderTreeProgress();
 
   // Kéo-thả là thứ tự mặc định. Bộ chọn phía trên chỉ áp dụng một lần rồi ghi lại order.
