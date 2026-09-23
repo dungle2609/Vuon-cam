@@ -4149,9 +4149,8 @@ function renderToday(){
     timeEl.title = `${colTime} phút đã lên kế hoạch trên ${budgetMinutes} phút của buổi ${part.label.toLowerCase()}`;
     timeEl.classList.toggle('over-budget', colTime > budgetMinutes);
     const el = document.getElementById(listId);
-    el.innerHTML = colItems.length
-      ? colItems.map(item => item.__daySubtask ? renderDaySubtaskCard(item.parent,item.sub) : renderActCard(item)).join('')
-      : renderColumnAddForm(loc);
+    el.innerHTML = colItems.map(item => item.__daySubtask ? renderDaySubtaskCard(item.parent,item.sub) : renderActCard(item)).join('')
+      + renderColumnAddForm(loc);
   });
   renderBoardVisibility();
 }
