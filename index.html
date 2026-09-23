@@ -77,7 +77,7 @@ h1,h2,h3,h4{font-family:var(--font-display);color:var(--ink);line-height:1.3}
 button{font-family:inherit;cursor:pointer;-webkit-user-select:none;user-select:none}
 /* Vùng nội dung: cho phép bôi đen + copy thoải mái trên cả điện thoại */
 .act-meta,.act-meta b,.act-card h3,.sub-title,.sub-desc,.review-snippet,.m-content,.m-field,
-.a-content,.a-evi,.a-meta,.hero-quote,.timer-title{-webkit-user-select:text;user-select:text;cursor:text}
+.a-content,.a-evi,.a-meta,.daily-quote,.timer-title{-webkit-user-select:text;user-select:text;cursor:text}
 input,textarea,select{
   font-family:inherit;font-size:14px;color:var(--ink);
   background:var(--surface-2);
@@ -307,7 +307,7 @@ section[data-view].active{display:block;animation:fadein .25s ease}
   radial-gradient(circle at 80% 22%, rgba(140,180,255,.09), transparent 36%),
   linear-gradient(135deg,#08201A 0%, #0D2A21 52%, #2B1B0E 100%)}
 .hero .date{font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#F0E2C6;font-weight:600}
-.hero-top{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:18px;margin-bottom:12px}
+.hero-top{margin-bottom:12px}
 .hero-streak{font-size:12px;font-weight:600;color:#BFE3F2;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14);border-radius:99px;padding:4px 11px;white-space:nowrap}
 .tb-dash{display:flex;align-items:center;gap:26px;flex-wrap:wrap}
 .tb-nums{display:flex;flex-direction:column;gap:16px;flex:1;min-width:150px}
@@ -316,8 +316,8 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 .tb-item .tb-l{font-size:12px;color:#9FC5E8;font-weight:500;margin-top:2px}
 .daypart-list{gap:10px!important;min-width:210px!important}
 .daypart-row{
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-  padding:11px 13px;border-radius:12px;
+  display:grid;grid-template-columns:auto minmax(20px,1fr) auto;align-items:center;gap:14px;
+  min-height:54px;padding:10px 14px;border-radius:12px;
   background:rgba(0,0,0,.16);border:1px solid rgba(255,255,255,.14);
 }
 .daypart-row{position:relative;overflow:hidden}
@@ -340,11 +340,13 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 }
 .daypart-row.current .daypart-value b{color:#FFE9C2}
 .daypart-row.past{opacity:.58}
-.daypart-name{display:flex;flex-direction:column;min-width:0}
+.daypart-name{min-width:0;white-space:nowrap}
 .daypart-name span{font-size:13.5px;font-weight:800;color:#fff}
-.daypart-name small,.daypart-value small{font-size:10.5px;color:#F0E2C6;font-weight:500;white-space:nowrap}
-.daypart-value{text-align:right;display:flex;flex-direction:column;align-items:flex-end}
-.daypart-value b{font-family:var(--font-display);font-size:19px;line-height:1.1;color:#fff}
+.daypart-progress{height:7px;min-width:0;border-radius:99px;background:rgba(255,255,255,.17);overflow:hidden}
+.daypart-progress-fill{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#FFE6A7,#F6B84D);transition:width .45s ease}
+.daypart-row.over-budget .daypart-progress-fill{background:linear-gradient(90deg,#FFE0A3,#EF8E62)}
+.daypart-value{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.daypart-value b{font-family:var(--font-display);font-size:17px;line-height:1.1;color:#fff}
 .daypart-value b.warn{color:#FFE0A3}
 
 
@@ -362,22 +364,23 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 }
 .tree-cap{flex:0 0 auto}                 /* text ~10-20% */
 .tree-cap .tc-title{font-family:var(--font-display);font-weight:700;font-size:12.5px;color:#fff;line-height:1.3}
-.tree-cap .tc-sub{font-size:11px;color:#F0E2C6;font-weight:500;margin-top:2px;line-height:1.35}
 .tree-stage{                              /* phần còn lại: không gian cho cây */
   flex:1 1 auto;min-height:0;margin-top:6px;
   display:flex;align-items:flex-end;justify-content:center;
 }
 .tree-svg{width:100%;height:100%;max-height:180px;display:block}
-.hero-quote{
-  min-width:0;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-  font-size:11.5px;line-height:1.4;
-}
-.hero-quote:empty{display:none}
-.hero-quote .quote-english{display:inline;color:#FFF8EC;font-style:italic;font-weight:600}
-.hero-quote .quote-source{display:inline;margin-left:8px;color:#F0E2C6;font-size:10.5px;font-style:normal;font-weight:500}
+.hero{margin-bottom:0}
+.daily-quote{padding:12px 4px 14px;margin-bottom:8px;text-align:center;font-size:12.5px;line-height:1.5;color:var(--ink)}
+.daily-quote:empty{display:none}
+.daily-quote .quote-english{font-style:italic;font-weight:700}
+.daily-quote .quote-source{margin-left:8px;color:var(--muted);font-size:11.5px}
 .ring{position:relative;width:168px;height:168px;flex-shrink:0}
-.ring-toggle{display:block;padding:0;border:0;background:none;cursor:pointer;touch-action:manipulation}
+.ring-toggle{display:block;padding:0;border:0;background:none;cursor:pointer;touch-action:manipulation;perspective:900px}
 .ring-toggle:focus-visible{outline:3px solid #FFE096;outline-offset:4px;border-radius:50%}
+.ring-flipper{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.2,.72,.2,1)}
+.ring-toggle.is-flipped .ring-flipper{transform:rotateY(180deg)}
+.ring-face{position:absolute;inset:0;border-radius:50%;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.ring-face--back{transform:rotateY(180deg)}
 .ring svg{transform:rotate(-90deg);width:100%;height:100%;display:block}
 .ring .center{
   position:absolute;inset:0;display:flex;flex-direction:column;
@@ -385,7 +388,8 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 }
 .ring .center .big{font-family:var(--font-display);font-weight:800;font-size:30px;color:#fff;line-height:1}
 .ring .center .big.warn{color:#FFE0A3}
-.ring .center .small{font-size:10px;color:#F0E2C6;margin-top:4px;font-weight:600;letter-spacing:.08em}
+.ring .center .small{font-size:10px;color:#F0E2C6;margin-top:4px;font-weight:600;letter-spacing:.04em;line-height:1.2;text-align:center;max-width:128px}
+.ring .center .small:empty{display:none}
 
 .focus-row{display:flex;gap:10px}
 .focus-row input{flex:1}
@@ -863,14 +867,24 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 .hero .daypart-row{cursor:pointer}
 .hero .daypart-row:focus-visible,.hero-plan-btn:focus-visible{outline:3px solid #FFE096;outline-offset:3px}
 .hero .daypart-row.selected:not(.current){border-color:#F5D17D;background:rgba(255,255,255,.12)}
+.hero .daypart-row.is-clicked{animation:hero-daypart-tap .54s cubic-bezier(.22,.8,.28,1)}
+.hero .daypart-row.is-clicked::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(105deg,transparent 25%,rgba(255,235,184,.26) 50%,transparent 75%);
+  transform:translateX(-120%);animation:hero-daypart-shine .58s ease-out;
+}
+@keyframes hero-daypart-tap{
+  0%,100%{transform:translateX(0)}
+  42%{transform:translateX(6px)}
+}
+@keyframes hero-daypart-shine{to{transform:translateX(120%)}}
 @media (max-width:1100px){.daypart-board.is-planning{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:760px){.daypart-board.is-planning{grid-template-columns:1fr}.daypart-board:not(.is-planning){max-width:none}.hero-ring-stack{width:118px;flex-basis:118px}.hero-ring-stack .hero-plan-btn{font-size:10px;padding:6px 4px;white-space:normal;line-height:1.25}.plan-day-footer .plan-day-nav{width:100%}}
 @media (max-width:390px){.hero-ring-stack{width:106px;flex-basis:106px}}
 .daypart-column,.daypart-column > div{min-width:0;max-width:100%;overflow:hidden}
 .col-head{min-width:0;max-width:100%}
 .col-head{display:flex;align-items:center;gap:8px;font-family:var(--font-display);font-weight:700;font-size:15px;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid var(--line)}
-.col-head .col-count{margin-left:auto;font-size:12px;font-weight:500;color:var(--muted)}
-.col-head .col-time{font-size:11.5px;font-weight:600;color:var(--blue);background:var(--blue-soft);border-radius:99px;padding:2px 9px}
+.col-head .col-time{margin-left:auto;font-size:11.5px;font-weight:600;color:var(--blue);background:var(--blue-soft);border-radius:99px;padding:2px 9px}
 .col-home .col-head{border-bottom-color:#F0B860}
 .col-company .col-head{border-bottom-color:var(--blue)}
 .sub-desc{font-size:12.5px;color:var(--muted);margin-top:4px;padding-left:26px;white-space:pre-wrap}
@@ -920,6 +934,7 @@ section[data-view].active{display:block;animation:fadein .25s ease}
   border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:13px;
 }
 .review-snippet .rl{font-weight:600;color:var(--cyan);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.review-snippet .review-body{white-space:pre-wrap;margin-top:5px;line-height:1.5}
 
 .action-item{
   display:flex;gap:12px;align-items:flex-start;
@@ -946,7 +961,7 @@ section[data-view].active{display:block;animation:fadein .25s ease}
   background:var(--surface);border:1px solid var(--line);
   border-radius:13px;padding:15px 17px;margin-bottom:11px;box-shadow:var(--shadow);
 }
-.mist-card .m-content{font-weight:600;font-size:14.5px}
+.mist-card .m-content{font-weight:600;font-size:14.5px;white-space:pre-wrap}
 .m-field{font-size:13px;color:var(--muted);margin-top:5px}
 .m-field b{color:var(--ink);font-weight:600}
 .pattern-alert{
@@ -1029,6 +1044,12 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 }
 .modal h2{font-size:18px;margin-bottom:4px}
 .modal .m-sub{font-size:13px;color:var(--muted);margin-bottom:18px}
+.decision-back{align-items:center;padding:16px}
+.decision-back .modal{max-width:430px;min-height:auto;margin:0;padding:24px;border-radius:18px}
+.decision-back .m-sub{margin-bottom:20px;line-height:1.5}
+.decision-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap}
+#rReviewContent{min-height:170px}
+@media(max-width:460px){.decision-actions .btn{flex:1;min-width:0}}
 .f-group{margin-bottom:14px}
 .toast{
   position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(8px);
@@ -1436,8 +1457,7 @@ section[data-view].active{display:block;animation:fadein .25s ease}
   .hero-budget .ring .center .big{font-size:20px}
   .hero-budget .daypart-row{min-height:35px;padding:5px 6px}
   .hero-budget .daypart-name span{font-size:10.5px}
-  .hero-budget .daypart-value b{font-size:13px}
-  .hero-budget .daypart-value small::after{font-size:8px}
+  .hero-budget .daypart-value b{font-size:10px}
 }
 
 /* ============ MOBILE ============ */
@@ -1458,9 +1478,9 @@ section[data-view].active{display:block;animation:fadein .25s ease}
   .stats{grid-template-columns:repeat(2,1fr)}
   .grid-2{grid-template-columns:1fr}
   .hero{gap:12px}
-  .hero-top{display:flex;flex-direction:column;align-items:flex-start;gap:7px;margin-bottom:12px}
-  .hero-quote{width:100%;text-align:left;white-space:normal;overflow:visible;font-size:11.5px}
-  .hero-quote .quote-source{font-size:10.5px}
+  .hero-top{margin-bottom:12px}
+  .daily-quote{text-align:left;font-size:11.5px;padding:10px 2px 12px}
+  .daily-quote .quote-source{font-size:10.5px}
   .hero-body{display:flex;flex-direction:column;gap:12px}
   .hero-budget{padding-top:12px;border-top:1px solid rgba(255,255,255,.12)}
   .hero-budget .tb-dash{flex-wrap:wrap}
@@ -1492,23 +1512,15 @@ section[data-view].active{display:block;animation:fadein .25s ease}
     width:100%;min-width:0!important;gap:5px!important;
   }
   .hero-budget .daypart-row{
-    min-height:38px;
+    min-height:38px;grid-template-columns:auto minmax(18px,1fr) auto;
     gap:6px;padding:6px 7px;border-radius:10px;
   }
   .hero-budget .daypart-name span{font-size:11px}
   .hero-budget .daypart-row.current .daypart-name span::after{
     content:"●";margin-left:6px;padding:0;background:none;color:#FFD68A;font-size:11px;
   }
-  .hero-budget .daypart-name small{display:none}
-  .hero-budget .daypart-value b{font-size:14px}
-  .hero-budget .daypart-value small{
-    font-size:0;line-height:1.15;
-    max-width:82px;overflow:hidden;text-overflow:ellipsis;
-  }
-  .hero-budget .daypart-value small::after{
-    content:attr(data-mobile-label);
-    font-size:8.5px;color:#F0E2C6;font-weight:600;white-space:nowrap;
-  }
+  .hero-budget .daypart-value b{font-size:11px}
+  .hero-budget .daypart-progress{height:5px}
   .theme-fab{
     display:flex!important;position:fixed;top:14px;right:14px;z-index:41;
     width:38px;height:38px;border-radius:99px;align-items:center;justify-content:center;
@@ -1759,12 +1771,8 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
   .plan-today-compact{display:inline!important}
   .plan-today-btn.is-today{visibility:hidden!important;pointer-events:none!important}
 
-  /* Prevent the two time lines in each daypart from visually touching. */
-  .hero-budget .daypart-row{min-height:42px!important;padding:6px 7px!important}
-  .hero-budget .daypart-value{gap:3px!important;line-height:1!important;min-width:58px}
-  .hero-budget .daypart-value b{line-height:1!important}
-  .hero-budget .daypart-value small{display:block!important;line-height:1!important;min-height:9px!important}
-  .hero-budget .daypart-value small::after{display:block!important;line-height:1.15!important}
+  .hero-budget .daypart-row{min-height:38px!important;padding:6px 7px!important}
+  .hero-budget .daypart-value{line-height:1;min-width:52px}
 
   /* Activity board: compact two-column metadata instead of tall full-width rows. */
   #activityBoardModal .modal{
@@ -1863,37 +1871,53 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
       <div class="card hero">
         <div class="hero-top">
           <div class="date" id="todayDate"></div>
-          <div class="hero-quote" id="heroQuote"></div>
         </div>
         <div class="hero-body">
           <!-- PHẦN 1 · BUDGET THỜI GIAN -->
           <div class="hero-budget">
             <div class="tb-dash">
               <div class="hero-ring-stack">
-                <button type="button" class="ring ring-toggle" id="heroRingToggle" aria-label="Mở kế hoạch cả ngày" aria-pressed="false" aria-controls="todayActivities">
-                  <svg width="150" height="150" viewBox="0 0 150 150">
-                    <circle cx="75" cy="75" r="66" fill="none" stroke="rgba(255,255,255,.13)" stroke-width="11"/>
-                    <circle id="tbRing" cx="75" cy="75" r="66" fill="none" stroke="url(#rg)" stroke-width="11" stroke-linecap="round" stroke-dasharray="414.7" stroke-dashoffset="414.7"/>
-                    <defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0%" stop-color="#FFF3B0"/><stop offset="100%" stop-color="#F59E0B"/>
-                    </linearGradient></defs>
-                  </svg>
-                  <div class="center"><div class="big" id="tbRoom">1440'</div><div class="small" id="tbRoomLabel">PHÚT CÒN TRỐNG</div></div>
+                <button type="button" class="ring ring-toggle" id="heroRingToggle" aria-label="Xem thời gian đã lên kế hoạch" aria-pressed="false">
+                  <span class="ring-flipper" aria-hidden="true">
+                    <span class="ring-face ring-face--front">
+                      <svg width="150" height="150" viewBox="0 0 150 150">
+                        <circle cx="75" cy="75" r="66" fill="none" stroke="rgba(255,255,255,.13)" stroke-width="11"/>
+                        <circle id="tbRing" cx="75" cy="75" r="66" fill="none" stroke="url(#rg)" stroke-width="11" stroke-linecap="round" stroke-dasharray="414.7" stroke-dashoffset="414.7"/>
+                        <defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1">
+                          <stop offset="0%" stop-color="#FFF3B0"/><stop offset="100%" stop-color="#F59E0B"/>
+                        </linearGradient></defs>
+                      </svg>
+                      <span class="center"><span class="big" id="tbRoom">1440'</span><span class="small" id="tbRoomLabel">CÒN LẠI</span></span>
+                    </span>
+                    <span class="ring-face ring-face--back">
+                      <svg width="150" height="150" viewBox="0 0 150 150">
+                        <circle cx="75" cy="75" r="66" fill="none" stroke="rgba(255,255,255,.13)" stroke-width="11"/>
+                        <circle id="tbPlannedRing" cx="75" cy="75" r="66" fill="none" stroke="url(#rgPlanned)" stroke-width="11" stroke-linecap="round" stroke-dasharray="414.7" stroke-dashoffset="414.7"/>
+                        <defs><linearGradient id="rgPlanned" x1="0" y1="0" x2="1" y2="1">
+                          <stop offset="0%" stop-color="#C6F7D2"/><stop offset="100%" stop-color="#50C591"/>
+                        </linearGradient></defs>
+                      </svg>
+                      <span class="center"><span class="big" id="tbPlanned">0'</span><span class="small">ĐÃ LÊN KẾ HOẠCH</span></span>
+                    </span>
+                  </span>
                 </button>
                 <button type="button" class="hero-plan-btn" id="heroPlanBtn" aria-pressed="false" aria-controls="todayActivities">＋ Lên kế hoạch</button>
               </div>
               <div class="tb-nums daypart-list">
                 <div class="daypart-row" data-daypart="morning" role="button" tabindex="0" aria-label="Xem công việc buổi sáng">
-                  <div class="daypart-name"><span>🌤 Sáng</span><small>00:00–11:59</small></div>
-                  <div class="daypart-value"><b id="tbMorningLeft">12g</b><small id="tbMorningPlan">0' đã lên block</small></div>
+                  <div class="daypart-name"><span>🌤 Sáng</span></div>
+                  <div class="daypart-progress" aria-hidden="true"><span class="daypart-progress-fill" id="tbMorningFill"></span></div>
+                  <div class="daypart-value"><b id="tbMorningPlan">0'/720'</b></div>
                 </div>
                 <div class="daypart-row" data-daypart="afternoon" role="button" tabindex="0" aria-label="Xem công việc buổi chiều">
-                  <div class="daypart-name"><span>☀️ Chiều</span><small>12:00–17:59</small></div>
-                  <div class="daypart-value"><b id="tbAfternoonLeft">6g</b><small id="tbAfternoonPlan">0' đã lên block</small></div>
+                  <div class="daypart-name"><span>☀️ Chiều</span></div>
+                  <div class="daypart-progress" aria-hidden="true"><span class="daypart-progress-fill" id="tbAfternoonFill"></span></div>
+                  <div class="daypart-value"><b id="tbAfternoonPlan">0'/360'</b></div>
                 </div>
                 <div class="daypart-row" data-daypart="evening" role="button" tabindex="0" aria-label="Xem công việc buổi tối">
-                  <div class="daypart-name"><span>🌙 Tối</span><small>18:00–23:59</small></div>
-                  <div class="daypart-value"><b id="tbEveningLeft">6g</b><small id="tbEveningPlan">0' đã lên block</small></div>
+                  <div class="daypart-name"><span>🌙 Tối</span></div>
+                  <div class="daypart-progress" aria-hidden="true"><span class="daypart-progress-fill" id="tbEveningFill"></span></div>
+                  <div class="daypart-value"><b id="tbEveningPlan">0'/360'</b></div>
                 </div>
               </div>
             </div>
@@ -1903,13 +1927,14 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
           <div class="hero-tree">
             <div class="tree-cap">
               <div class="tc-title" id="treeYearTitle">🍊 Cây cam của năm nay</div>
-              <div class="tc-sub" id="treeStageLabel">Chờ dữ liệu chăm cây</div>
             </div>
             <div class="tree-stage" id="treeStage">
             </div>
           </div>
         </div>
       </div>
+
+      <div class="daily-quote" id="heroQuote"></div>
 
       <div class="card quick-add-card">
         <div class="quick-add-title" id="quickAddTitle">＋ Thêm nhanh công việc hôm nay</div>
@@ -1937,39 +1962,17 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
       </div>
 
       <div class="card activity-panel">
-        <div class="activity-head plan-activity-head">
-          <div class="plan-head-block">
-            <h2 id="actsHeading">Công việc trong ngày</h2>
-          </div>
-          <div class="activity-tools">
-            <div class="sort-select-wrap">
-              <label for="sortSelect" class="sort-lbl">Sắp xếp nhanh:</label>
-              <select id="sortSelect" class="sort-select" aria-label="Sắp xếp nhanh danh sách hiện tại">
-                <option value="">Chọn cách sắp xếp…</option>
-                <option value="time">🕒 Theo giờ bắt đầu</option>
-                <option value="durationDesc">⏱️ Thời lượng: dài → ngắn</option>
-                <option value="durationAsc">⏱️ Thời lượng: ngắn → dài</option>
-                <option value="incomplete">✅ Chưa xong lên trên</option>
-                <option value="needReview">📝 Chưa review lên trên</option>
-              </select>
-            </div>
-            <div class="task-search-wrap">
-              <input type="search" id="taskSearch" class="task-search" placeholder="Tìm việc theo tên hoặc tag…" aria-label="Tìm kiếm công việc theo tên hoặc tag">
-            </div>
-          </div>
-        </div>
-        <div id="taskSearchResults" hidden></div>
         <div id="todayActivities" class="daypart-board">
           <div class="daypart-column" data-column="morning">
-            <div class="col-head" id="colHeadMorning"><span>🌤 Sáng</span><span class="col-time" id="colTimeMorning">0'/720'</span><span class="col-count" id="colCountMorning">0 việc</span></div>
+            <div class="col-head" id="colHeadMorning"><span>🌤 Sáng</span><span class="col-time" id="colTimeMorning">0'/720'</span></div>
             <div id="colListMorning"></div>
           </div>
           <div class="daypart-column" data-column="afternoon">
-            <div class="col-head" id="colHeadAfternoon"><span>☀️ Chiều</span><span class="col-time" id="colTimeAfternoon">0'/360'</span><span class="col-count" id="colCountAfternoon">0 việc</span></div>
+            <div class="col-head" id="colHeadAfternoon"><span>☀️ Chiều</span><span class="col-time" id="colTimeAfternoon">0'/360'</span></div>
             <div id="colListAfternoon"></div>
           </div>
           <div class="daypart-column" data-column="evening">
-            <div class="col-head" id="colHeadEvening"><span>🌙 Tối</span><span class="col-time" id="colTimeEvening">0'/360'</span><span class="col-count" id="colCountEvening">0 việc</span></div>
+            <div class="col-head" id="colHeadEvening"><span>🌙 Tối</span><span class="col-time" id="colTimeEvening">0'/360'</span></div>
             <div id="colListEvening"></div>
           </div>
         </div>
@@ -2309,38 +2312,41 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
 </div>
 
 
+<!-- ============ REVIEW DECISION ============ -->
+<div class="modal-back decision-back" id="reviewPromptModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="reviewPromptTitle">
+    <h2 id="reviewPromptTitle">Review công việc này?</h2>
+    <p class="m-sub" id="reviewPromptTask"></p>
+    <div class="decision-actions">
+      <button type="button" class="btn btn-ghost" id="reviewPromptNo">Không, để sau</button>
+      <button type="button" class="btn btn-primary" id="reviewPromptYes">Có, review</button>
+    </div>
+  </div>
+</div>
+
 <!-- ============ REVIEW MODAL ============ -->
 <div class="modal-back" id="reviewModal">
   <div class="modal" role="dialog" aria-modal="true">
     <h2 id="rvTitle">Review hoạt động</h2>
-    <p class="m-sub">Ngày mai mình sẽ làm khác đi điều gì?</p>
     <form id="reviewForm">
-      <div class="f-group"><label>1. Tôi đã làm tốt điều gì?</label><textarea id="rDidWell"></textarea></div>
-      <div class="f-group"><label>2. Tôi chưa làm tốt điều gì?</label><textarea id="rDidNot"></textarea>
-        <p class="hint">Điền mục này sẽ tự động lưu vào Dọn vườn như một cỏ dại cần chăm sóc.</p></div>
-      <div class="f-group"><label>Tag cho cỏ dại (nếu có điểm chưa tốt)</label><div class="tag-input" id="rMistakeTags" data-tag-input data-placeholder="Thêm tag…"><span class="tag-chips"></span><input type="text" list="tagSuggestions" placeholder="Thêm tag…" autocomplete="off" aria-label="Thêm tag"></div></div>
-      <div class="f-group"><label>3. Vì sao điều đó xảy ra?</label><textarea id="rCause"></textarea></div>
-      <div class="f-group"><label>4. Bài học rút ra là gì?</label><textarea id="rLesson"></textarea></div>
-
-      <div class="fu-box">
-        <div class="fu-head">🌿 Nhổ cỏ bằng việc 1%</div>
-        <p class="hint" style="margin-bottom:10px">Biến bài học thành một việc nhỏ để xử lý cỏ dại và giúp cây cam lớn khỏe hơn.</p>
-        <div class="f-group"><label>Tên công việc</label><input id="rFuTitle" placeholder="VD: Follow-up với Viko"></div>
-        <div class="f-group"><label>Mô tả</label><textarea id="rFuDesc" placeholder="VD: Trước khi nhắn tin follow-up, brainstorm với tư duy đặt ở vị trí khách hàng, từ đó có action cụ thể."></textarea></div>
-        <input type="hidden" id="rFuLoc" value="morning">
-        <div class="f-row3 fu-review-meta">
-          <div class="f-group"><label>Ngày</label><input type="date" id="rFuDate"></div>
-          <div class="f-group"><label>Giờ thực hiện</label><input type="time" id="rFuTime"></div>
-          <div class="f-group"><label>Thời lượng</label>
-            <select id="rFuDur"><option value="">Không đặt</option><option value="15">15 phút</option><option value="30">30 phút</option><option value="45">45 phút</option><option value="60">60 phút</option><option value="90">90 phút</option></select>
-          </div>
-        </div>
-      </div>
+      <div class="f-group"><label for="rReviewTitle">Tiêu đề review *</label><input id="rReviewTitle" required placeholder="VD: Cần hỏi rõ nhu cầu trước khi làm proposal"></div>
+      <div class="f-group"><label for="rReviewContent">Nội dung review *</label><textarea id="rReviewContent" required placeholder="Tôi đã mắc lỗi gì?&#10;Tại sao tôi mắc lỗi đó?&#10;Tôi có thể làm gì để cải thiện lỗi này?"></textarea></div>
       <div class="row" style="justify-content:flex-end">
         <button type="button" class="btn btn-ghost" data-close>Huỷ</button>
         <button type="submit" class="btn btn-primary">Lưu review</button>
       </div>
     </form>
+  </div>
+</div>
+
+<div class="modal-back decision-back" id="improvePromptModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="improvePromptTitle">
+    <h2 id="improvePromptTitle">Tạo việc cải thiện 1%?</h2>
+    <p class="m-sub">Biến điều vừa review thành một việc cụ thể để làm tốt hơn lần tới.</p>
+    <div class="decision-actions">
+      <button type="button" class="btn btn-ghost" id="improvePromptNo">Không</button>
+      <button type="button" class="btn btn-primary" id="improvePromptYes">Có, tạo việc</button>
+    </div>
   </div>
 </div>
 
@@ -3291,6 +3297,23 @@ function currentDaypart(){ return daypartForMinute(currentMinuteOfDay()); }
 let planningDay = false;
 let focusedDaypart = null;
 let manualDaypart = false;
+let ringFlipped = false;
+const heroFeedbackTimers = new WeakMap();
+let heroScrollTimer;
+function playHeroClick(el){
+  el.classList.remove('is-clicked');
+  void el.offsetWidth;
+  el.classList.add('is-clicked');
+  clearTimeout(heroFeedbackTimers.get(el));
+  heroFeedbackTimers.set(el, setTimeout(() => el.classList.remove('is-clicked'), 620));
+}
+function scrollToActivities(delayMs=0){
+  clearTimeout(heroScrollTimer);
+  const delay = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : delayMs;
+  heroScrollTimer = setTimeout(() => {
+    document.getElementById('todayActivities').scrollIntoView({behavior:'smooth', block:'start'});
+  }, delay);
+}
 function renderBoardVisibility(){
   const board = document.getElementById('todayActivities');
   if(!board) return;
@@ -3304,24 +3327,34 @@ function renderBoardVisibility(){
   const btn = document.getElementById('heroPlanBtn');
   btn.textContent = planningDay ? 'Thu gọn' : '＋ Lên kế hoạch';
   btn.setAttribute('aria-pressed', String(planningDay));
+}
+function renderRingFace(){
   const ring = document.getElementById('heroRingToggle');
-  ring.setAttribute('aria-pressed', String(planningDay));
-  ring.setAttribute('aria-label', planningDay ? 'Thu gọn kế hoạch' : 'Mở kế hoạch cả ngày');
+  ring.classList.toggle('is-flipped', ringFlipped);
+  ring.setAttribute('aria-pressed', String(ringFlipped));
+  const metric = ringFlipped
+    ? `${document.getElementById('tbPlanned').textContent} đã lên kế hoạch`
+    : `${document.getElementById('tbRoom').textContent} ${document.getElementById('tbRoomLabel').textContent.toLowerCase()}`;
+  ring.setAttribute('aria-label', `${metric}. ${ringFlipped ? 'Xem thời gian còn lại' : 'Xem thời gian đã lên kế hoạch'}`);
 }
 function togglePlanningDay(){
   planningDay = !planningDay;
   renderBoardVisibility();
-  document.getElementById('todayActivities').scrollIntoView({behavior:'smooth', block:'start'});
+  scrollToActivities();
 }
-document.getElementById('heroPlanBtn').addEventListener('click', togglePlanningDay);
-document.getElementById('heroRingToggle').addEventListener('click', togglePlanningDay);
+document.getElementById('heroPlanBtn').addEventListener('click', () => togglePlanningDay());
+document.getElementById('heroRingToggle').addEventListener('click', () => {
+  ringFlipped = !ringFlipped;
+  renderRingFace();
+});
 document.querySelectorAll('.daypart-row[data-daypart]').forEach(row => {
   const select = () => {
+    playHeroClick(row);
     focusedDaypart = row.dataset.daypart;
     manualDaypart = true;
     planningDay = false;
     renderBoardVisibility();
-    document.getElementById('todayActivities').scrollIntoView({behavior:'smooth', block:'start'});
+    scrollToActivities(540);
   };
   row.addEventListener('click', select);
   row.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); select(); } });
@@ -3335,23 +3368,6 @@ function timeToMinutes(value){
 function currentMinuteOfDay(){
   const n = new Date();
   return n.getHours()*60+n.getMinutes();
-}
-function itemPlannedOverlap(item, date, part, fromMinute=null){
-  const duration = dayItemDuration(item, date);
-  const start = timeToMinutes(item.startTime);
-  if(!(duration > 0) || start === null) return 0;
-  const itemStart = fromMinute === null ? start : Math.max(start, fromMinute);
-  const itemEnd = Math.min(1440, start + duration);
-  return Math.max(0, Math.min(itemEnd, part.end) - Math.max(itemStart, part.start));
-}
-// Như trên nhưng chỉ tính phần việc chưa xong, dùng cho các con số "còn lại".
-function itemRemainingOverlap(item, date, part, fromMinute=null){
-  const duration = dayItemRemainingMinutes(item, date);
-  const start = timeToMinutes(item.startTime);
-  if(!(duration > 0) || start === null) return 0;
-  const itemStart = fromMinute === null ? start : Math.max(start, fromMinute);
-  const itemEnd = Math.min(MINUTES_PER_DAY, start + duration);
-  return Math.max(0, Math.min(itemEnd, part.end) - Math.max(itemStart, part.start));
 }
 // Nền hero đổi theo buổi để liếc một cái là biết đang ở đâu trong ngày.
 // Khi xem ngày khác hôm nay thì giữ nguyên nền mặc định, tránh gây hiểu nhầm.
@@ -3375,10 +3391,17 @@ function renderTimeBudget(){
   const clockLeft = t < today ? 0
     : (t === today ? Math.max(0, MINUTES_PER_DAY - nowMinute) : MINUTES_PER_DAY);
   const owed = items.reduce((sum,item) => sum + dayItemRemainingMinutes(item, t), 0);
+  const planned = items.reduce((sum,item) => sum + dayItemDuration(item, t), 0);
   const room = clockLeft - owed;
   const roomEl = document.getElementById('tbRoom');
   const roomLabelEl = document.getElementById('tbRoomLabel');
   const ringEl = document.getElementById('tbRing');
+  const plannedEl = document.getElementById('tbPlanned');
+  const plannedRingEl = document.getElementById('tbPlannedRing');
+
+  plannedEl.textContent = fmtMinsOnly(planned);
+  plannedEl.classList.toggle('warn', planned > MINUTES_PER_DAY);
+  plannedRingEl.style.strokeDashoffset = 414.7 * (1 - Math.min(Math.max(planned, 0) / MINUTES_PER_DAY, 1));
 
   if(t < today){
     roomEl.textContent = '—';
@@ -3393,66 +3416,33 @@ function renderTimeBudget(){
   }else{
     roomEl.textContent = fmtMinsOnly(room);
     roomEl.classList.remove('warn');
-    roomLabelEl.textContent = 'PHÚT CÒN TRỐNG';
+    roomLabelEl.textContent = 'CÒN LẠI';
     ringEl.style.strokeDashoffset = 414.7 * (1 - Math.min(room / MINUTES_PER_DAY, 1));
   }
   const ringWrap = ringEl.closest('.ring');
   if(ringWrap){
-    ringWrap.title = t < today
+    ringWrap.title = `Đã lên kế hoạch ${fmtMins(planned)}. ${t < today
       ? 'Ngày đã qua.'
-      : `Còn ${fmtMins(clockLeft)} trong ngày − ${fmtMins(owed)} việc chưa xong = ${room < 0 ? 'thiếu ' + fmtMins(-room) : fmtMins(room) + ' trống'}.`;
+      : `Còn ${fmtMins(clockLeft)} trong ngày − ${fmtMins(owed)} việc chưa xong = ${room < 0 ? 'thiếu ' + fmtMins(-room) : fmtMins(room) + ' trống'}.`}`;
   }
+  renderRingFace();
 
   DAYPARTS.forEach(part => {
-    // Phải khoá vào .daypart-row: thẻ hero cũng mang data-daypart (để đổi nền theo buổi)
-    // và đứng trước trong DOM, nên selector trần sẽ bắt nhầm hero.
-    const row = document.querySelector(`.daypart-row[data-daypart="${part.key.toLowerCase()}"]`);
-    const leftEl = document.getElementById(`tb${part.key}Left`);
+    const row = document.querySelector(`.daypart-row[data-daypart="${part.id}"]`);
     const planEl = document.getElementById(`tb${part.key}Plan`);
-    const totalPlanned = items.reduce((sum,item) => sum + itemPlannedOverlap(item,t,part), 0);
-    let clockAvailable = part.end - part.start;
-    let remainingPlan = totalPlanned;
-    let isPast = false;
-    let isCurrent = false;
-
-    if(t < today){
-      clockAvailable = 0;
-      remainingPlan = 0;
-      isPast = true;
-    }else if(t === today){
-      if(nowMinute >= part.end){
-        clockAvailable = 0;
-        remainingPlan = 0;
-        isPast = true;
-      }else{
-        const effectiveStart = Math.max(nowMinute, part.start);
-        clockAvailable = Math.max(0, part.end - effectiveStart);
-        isCurrent = nowMinute >= part.start && nowMinute < part.end;
-        remainingPlan = items
-          .reduce((sum,item) => sum + itemRemainingOverlap(item,t,part,effectiveStart), 0);
-      }
-    }
-
-    const free = clockAvailable - remainingPlan;
-    if(t < today || isPast){
-      leftEl.textContent = '—';
-      leftEl.classList.remove('warn');
-    }else if(free < 0){
-      leftEl.textContent = `Thiếu ${fmtMinsOnly(-free)}`;
-      leftEl.classList.add('warn');
-    }else{
-      leftEl.textContent = fmtMinsOnly(free);
-      leftEl.classList.remove('warn');
-    }
-
-    planEl.textContent = totalPlanned
-      ? `${fmtMinsShort(totalPlanned)} đã lên block`
-      : 'Chưa có block';
-    planEl.dataset.mobileLabel = totalPlanned
-      ? `${fmtMinsShort(totalPlanned)} block`
-      : "0' block";
-    row?.classList.toggle('past', isPast);
-    row?.classList.toggle('current', isCurrent);
+    const fillEl = document.getElementById(`tb${part.key}Fill`);
+    const partItems = items.filter(item => activityDaypart(item) === part.id);
+    const totalPlanned = partItems.reduce((sum,item) => sum + dayItemDuration(item,t), 0);
+    const budget = part.end - part.start;
+    const percent = Math.max(0, Math.round(totalPlanned / budget * 100));
+    planEl.textContent = `${fmtMinsOnly(totalPlanned)}/${fmtMinsOnly(budget)}`;
+    planEl.classList.toggle('warn', totalPlanned > budget);
+    fillEl.style.width = `${Math.min(percent, 100)}%`;
+    row.classList.toggle('over-budget', totalPlanned > budget);
+    row.classList.toggle('past', t < today || (t === today && nowMinute >= part.end));
+    row.classList.toggle('current', t === today && nowMinute >= part.start && nowMinute < part.end);
+    row.title = `${part.label} ${String(Math.floor(part.start / 60)).padStart(2,'0')}:00–${String(Math.floor((part.end - 1) / 60)).padStart(2,'0')}:59 · ${planEl.textContent} đã lên kế hoạch (${percent}%)`;
+    row.setAttribute('aria-label', `${part.label}: ${totalPlanned} trên ${budget} phút đã lên kế hoạch, ${percent}%. Xem công việc buổi ${part.label.toLowerCase()}`);
   });
 }
 
@@ -3562,7 +3552,7 @@ function calendarWeekHtml(){
       <div class="cal-day-num">${d.getDate()}</div>
       <div class="cal-day-count">${st.total?`${st.done}/${st.total} việc`:'Không có việc'}</div>
       <div class="cal-mini-track"><i style="width:${st.pct}%"></i></div>
-      <div class="cal-day-sub">${st.mins?fmtMinsShort(st.mins)+' đã lên block':'Chưa đặt block thời gian'}</div>
+      <div class="cal-day-sub">${fmtMinsOnly(st.mins)}/${fmtMinsOnly(MINUTES_PER_DAY)}</div>
       <div class="cal-flags">${st.open&&rel==='past'?`<span class="cal-flag warn">${st.open} chưa xong</span>`:''}${st.reviews?`<span class="cal-flag">${st.reviews} review</span>`:''}${st.onePct?`<span class="cal-flag ok">🌱 ${st.onePct}</span>`:''}</div>
     </button>`;
   }
@@ -3636,7 +3626,7 @@ function renderCalendarDayPanel(){
       <div class="cal-day-stat"><b>${st.total}</b><span>Tổng công việc</span></div>
       <div class="cal-day-stat"><b>${st.done}/${st.total||0}</b><span>Đã hoàn thành</span></div>
       <div class="cal-day-stat"><b>${reviewedDone}/${st.done}</b><span>Review sau khi xong</span></div>
-      <div class="cal-day-stat"><b>${fmtMinsShort(st.mins)}</b><span>Thời gian đã lên block</span></div>
+      <div class="cal-day-stat"><b>${fmtMinsShort(st.mins)}</b><span>Thời gian đã lên kế hoạch</span></div>
     </div>
     <div class="calendar-task-columns">
       ${DAYPARTS.map(part => `<div class="calendar-task-col"><div class="calendar-task-col-head"><span>${part.icon} ${part.label}</span><span>${groups[part.id].length} việc</span></div>${calendarTaskRows(groups[part.id],date)}</div>`).join('')}
@@ -3702,7 +3692,7 @@ document.getElementById('calendarModeTabs')?.addEventListener('click',e=>{
 // ---------- Renders ----------
 function renderAll(){
   renderToday(); renderCalendar(); renderActions(); renderMistakes(); renderReport(); renderDataSummary();
-  refreshTagSuggestions(); renderTaskSearch();
+  refreshTagSuggestions();
 }
 
 
@@ -4081,27 +4071,15 @@ function orangeTreeSvg(info, id='hero', fruitCount=null){
 }
 function renderTreeProgress(){
   const treeStage = document.getElementById('treeStage');
-  const label = document.getElementById('treeStageLabel');
   const title = document.getElementById('treeYearTitle');
-  if(!treeStage || !label) return;
+  if(!treeStage) return;
   const y = yearOnePctSummary();
   const info = treeStageInfo(y.growthPoints, y.growthGoal);
   treeStage.innerHTML = `<div class="tree-art">${orangeTreeSvg(info,'hero',fruitCountOf(y))}</div>`;
   if(title) title.textContent = `🍊 Cây cam ${y.year}`;
   const mo = y.momentum || {mult:1, streak:0};
   const hint = balanceHint(y);
-  const sp = Math.min(100, Math.round(mo.streak / MOMENTUM_CAP_DAYS * 100));
-  const moRow = mo.streak > 0
-    ? `<div style="display:flex;align-items:center;gap:6px;margin-top:5px">
-         <span aria-hidden="true">🔥</span>
-         <div style="flex:1;height:5px;border-radius:3px;background:rgba(255,255,255,.16)"><div style="height:100%;width:${sp}%;background:linear-gradient(90deg,#FCD34D,#F97316);border-radius:3px"></div></div>
-         <span style="font-size:10.5px;color:#FFE9C7;white-space:nowrap">×${mo.mult.toFixed(2)} · ${mo.streak}/${MOMENTUM_CAP_DAYS}${mo.streak>=MOMENTUM_CAP_DAYS?' (trần)':''}</span>
-       </div>`
-    : `<div style="margin-top:5px;font-size:10.5px;color:#E9D7B0;opacity:.85">🔥 Giữ chuỗi ngày chăm trọn để mỗi ngày +1% điểm</div>`;
-  const hintRow = hint ? `<div style="margin-top:5px;font-size:10.5px;color:#FFDFA6;line-height:1.35">${hint}</div>` : '';
-  const capRow = y.overCapToday ? `<div style="margin-top:5px;font-size:10.5px;color:#BFE3FF;line-height:1.35">🌊 Cây đã đủ nước/phân hôm nay — việc làm thêm vẫn được ghi nhận, cây chỉ hấp thụ vừa đủ mỗi ngày.</div>` : '';
-  label.innerHTML = `<div>${info.label} · 🌿${y.growthPoints}/${y.growthGoal} · 🍊${y.reproPoints}/${y.reproGoal}</div>${moRow}${hintRow}${capRow}`;
-  const wrap = label.closest('.hero-tree');
+  const wrap = treeStage.closest('.hero-tree');
   if(wrap) wrap.title = `${info.label} — Chiều cao theo việc kế hoạch: 🌿 ${y.growthPoints}/${y.growthGoal}. Quả theo việc 1%: 🍊 ${y.reproPoints}/${y.reproGoal}. Điểm đã nhân động lượng ×${mo.mult.toFixed(2)} từ chuỗi ${mo.streak} ngày chăm trọn (giữ streak → +1%/ngày, trần ×1.33 sau 30 ngày; nghỉ 1 ngày/tuần không sao). Mỗi ngày cây chỉ hấp thụ tối đa 🌿${y.dayCap?.growth ?? '–'} + 🍊${y.dayCap?.repro ?? '–'} điểm gốc — làm quá liều không giục cây lớn nhanh hơn.${hint ? '\n' + hint : ''}`;
 }
 
@@ -4118,7 +4096,6 @@ function renderToday(){
   document.getElementById('planDateLabelCompact').textContent = planDateLabelCompact(t);
   if(document.getElementById('qDate')) setQuickDate(t);
   const dayLabel = t === today ? 'hôm nay' : (t === addDays(today,1) ? 'ngày mai' : `ngày ${t.split('-').reverse().join('/')}`);
-  document.getElementById('actsHeading').textContent = 'Công việc trong ngày';
   if(document.getElementById('quickAddTitle')) document.getElementById('quickAddTitle').textContent = `＋ Thêm nhanh công việc ${dayLabel}`;
 
   // stats: gồm việc lớn của ngày và các việc con khác ngày với việc cha nhưng có deadline đúng ngày đang xem
@@ -4143,9 +4120,7 @@ function renderToday(){
   }
   renderTreeProgress();
 
-  // Kéo-thả là thứ tự mặc định. Bộ chọn phía trên chỉ áp dụng một lần rồi ghi lại order.
-  const sortSelect = document.getElementById('sortSelect');
-  if(sortSelect) sortSelect.value = '';
+  // Kéo-thả là thứ tự mặc định của các công việc trong ngày.
   const byStart = (a,b) => {
     if(a.startTime && b.startTime) return a.startTime.localeCompare(b.startTime);
     if(a.startTime) return -1;
@@ -4162,81 +4137,21 @@ function renderToday(){
   DAYPARTS.forEach(part => {
     const loc = part.id;
     const suffix = part.key;
-    const listId = `colList${suffix}`, countId = `colCount${suffix}`, timeId = `colTime${suffix}`;
+    const listId = `colList${suffix}`, timeId = `colTime${suffix}`;
     const colItems = sorter(dayItems.filter(item => activityDaypart(item) === loc));
     const colTime = colItems.reduce((sum,item) => sum + dayItemDuration(item,t), 0);
-    document.getElementById(countId).textContent = `${colItems.length} việc`;
     const timeEl = document.getElementById(timeId);
     const budgetMinutes = part.end - part.start;
     timeEl.textContent = `${colTime}'/${budgetMinutes}'`;
     timeEl.title = `${colTime} phút đã lên kế hoạch trên ${budgetMinutes} phút của buổi ${part.label.toLowerCase()}`;
     timeEl.classList.toggle('over-budget', colTime > budgetMinutes);
     const el = document.getElementById(listId);
-    const taskHtml = colItems.length
+    el.innerHTML = colItems.length
       ? colItems.map(item => item.__daySubtask ? renderDaySubtaskCard(item.parent,item.sub) : renderActCard(item)).join('')
-      : `<div class="empty" style="padding:20px 12px">Chưa có việc trong cột ${esc(getColumnSetting(loc).label)}.</div>`;
-    el.innerHTML = taskHtml + renderColumnAddForm(loc);
+      : renderColumnAddForm(loc);
   });
   renderBoardVisibility();
 }
-
-// ---------- Tìm kiếm công việc ----------
-// Tìm trên toàn bộ công việc ở mọi ngày, theo tên hoặc tag.
-let taskQuery = '';
-function taskSearchMatches(q){
-  const key = String(q || '').trim().toLowerCase();
-  if(!key) return [];
-  return (state.activities || [])
-    .filter(a => String(a.title || '').toLowerCase().includes(key)
-              || tagsOf(a).some(t => t.toLowerCase().includes(key)))
-    .sort((a,b) => String(b.date || '').localeCompare(String(a.date || ''))
-                || String(a.startTime || '').localeCompare(String(b.startTime || '')));
-}
-function renderTaskSearch(){
-  const box = document.getElementById('taskSearchResults');
-  const grid = document.getElementById('todayActivities');
-  if(!box || !grid) return;
-  const q = taskQuery.trim();
-  grid.hidden = !!q;
-  box.hidden = !q;
-  if(!q){ box.innerHTML = ''; return; }
-  const hits = taskSearchMatches(q);
-  const head = `<div class="search-head"><span>Tìm thấy <b>${hits.length}</b> việc khớp với “${esc(q)}”</span>`
-             + `<button type="button" class="btn btn-ghost btn-sm" id="taskSearchClear">Xoá tìm kiếm</button></div>`;
-  if(!hits.length){
-    box.innerHTML = head + `<div class="empty" style="padding:20px 12px">Không có công việc nào khớp tên hoặc tag này.</div>`;
-    return;
-  }
-  box.innerHTML = head + hits.map(a => {
-    const col = getColumnSetting(activityDaypart(a));
-    const done = isCompleted(a);
-    return `<button type="button" class="search-row ${done?'done':''}" data-search-act="${a.id}">
-      <span class="search-row-main">
-        <span class="search-row-title">${a.tag1pct ? '🌱 ' : ''}${esc(a.title)}</span>
-        <span class="search-row-meta">${esc(fmtShortDate(a.date) || a.date || '')} · ${col.icon} ${esc(col.label)}${a.startTime ? ' · ' + esc(a.startTime) : ''}</span>
-        <span class="search-row-tags">${tagChipsMarkup(a, '<span class="chip chip-mut">Chưa gắn tag</span>')}</span>
-      </span>
-      <span class="search-row-state">${done ? '✓' : '›'}</span>
-    </button>`;
-  }).join('');
-}
-document.getElementById('taskSearch')?.addEventListener('input', e => {
-  taskQuery = e.target.value;
-  renderTaskSearch();
-});
-document.getElementById('taskSearchResults')?.addEventListener('click', e => {
-  if(e.target.closest('#taskSearchClear')){
-    taskQuery = '';
-    const inp = document.getElementById('taskSearch');
-    if(inp) inp.value = '';
-    renderTaskSearch();
-    return;
-  }
-  const row = e.target.closest('[data-search-act]');
-  if(!row) return;
-  const act = state.activities.find(a => a.id === row.dataset.searchAct);
-  if(act) openActivityBoard(act);
-});
 
 function getColumnSetting(loc){
   const part = DAYPARTS.find(p => p.id === loc) || DAYPARTS[0];
@@ -4244,12 +4159,11 @@ function getColumnSetting(loc){
 }
 function renderColumnHeaders(){
   DAYPARTS.forEach(part => {
-    const headId = `colHead${part.key}`, timeId = `colTime${part.key}`, countId = `colCount${part.key}`;
+    const headId = `colHead${part.key}`, timeId = `colTime${part.key}`;
     const head = document.getElementById(headId); if(!head) return;
     const cfg = getColumnSetting(part.id);
     const time = document.getElementById(timeId)?.textContent || "0'";
-    const count = document.getElementById(countId)?.textContent || '0 việc';
-    head.innerHTML = `<span class="col-title-fixed">${cfg.icon} ${cfg.label}</span><span class="col-time" id="${timeId}">${esc(time)}</span><span class="col-count" id="${countId}">${esc(count)}</span>`;
+    head.innerHTML = `<span class="col-title-fixed">${cfg.icon} ${cfg.label}</span><span class="col-time" id="${timeId}">${esc(time)}</span>`;
   });
 }
 function renderColumnAddForm(loc){
@@ -4280,6 +4194,12 @@ function renderDaySubtaskCard(parent, sub){
       <button class="act-play" data-day-sub-play title="Bắt đầu tập trung việc con">▶</button>
     </div>
   </div>`;
+}
+
+function reviewSnippet(rv){
+  const content = legacyReviewContent(rv);
+  if(!content) return '';
+  return `<div class="review-snippet"><div class="rl">${esc(rv.title || 'Bài học')}</div><div class="review-body">${esc(content)}</div></div>`;
 }
 
 // Render một thẻ hoạt động (dùng cho cả 2 cột)
@@ -4326,7 +4246,7 @@ function renderActCard(a){
               <button class="btn btn-soft btn-sm" data-sub-review data-sid2="${s.id}">✎ ${srv ? 'Xem / sửa review' : 'Review'}</button>
               <button class="btn btn-ghost btn-sm" data-sub-edit data-sid2="${s.id}">Mở board việc con</button>
             </div>
-            ${srv && srv.lesson ? `<div class="review-snippet"><div class="rl">Bài học</div>${esc(srv.lesson)}</div>` : ''}
+            ${reviewSnippet(srv)}
           </div>`;
         }).join('')}
         <div class="sub-add">
@@ -4343,7 +4263,7 @@ function renderActCard(a){
         <button class="btn btn-ghost btn-sm" data-edit>Sửa</button>
         ${a.tag1pct ? '' : '<button class="btn btn-danger btn-sm" data-del>Xoá</button>'}
       </div>
-      ${rv && rv.lesson ? `<div class="review-snippet"><div class="rl">Bài học</div>${esc(rv.lesson)}</div>` : ''}
+      ${reviewSnippet(rv)}
     </div>
   </div>`;
 }
@@ -5199,21 +5119,20 @@ document.getElementById('timerDone').addEventListener('click', () => {
   const act = state.activities.find(a => a.id === timerState.actId);
   const subId = timerState.subId;
   let sub = null;
+  let wasDone = false;
   if(act){
     if(subId){
       sub = (act.subs||[]).find(s => s.id === subId);
-      if(sub) markCompleted(sub, true);
+      if(sub){ wasDone = isCompleted(sub); markCompleted(sub, true); }
       save();
     }else{
       if(act.tag1pct && !canCompleteOnePctToday(act)){ closeTimer(); renderToday(); return; }
+      wasDone = isCompleted(act);
       markCompleted(act, true); save();
     }
   }
   closeTimer(); renderToday();
-  if(act){
-    if(sub) openReview(act, sub);
-    else openReview(act);
-  }
+  if(act && !wasDone) askReviewAfterDone(act, sub);
 });
 
 // ---------- Textarea auto-grow trong modal ----------
@@ -5292,6 +5211,8 @@ function openCreateActivity(loc=currentDaypart()){
   createDraftMeta = null;
   renderCreateSubtasks();
   document.getElementById('cTag1pct').checked = false;
+  document.getElementById('cTag1pct').disabled = false;
+  document.getElementById('cTitle').placeholder = 'VD: 09:00 · Gọi khách hàng';
   const cLoc = document.getElementById('cLocation');
   if(cLoc) cLoc.value = loc;
   document.getElementById('cDate').value = viewDate;
@@ -5361,7 +5282,7 @@ document.getElementById('createActivityForm').addEventListener('submit', e => {
     act.fromMistakeId = meta.fromMistakeId || null;
   }
   state.activities.push(act);
-  if(meta?.type === 'mistakeOnePct' && meta.fromMistakeId){
+  if((meta?.type === 'mistakeOnePct' || meta?.type === 'reviewOnePct') && meta.fromMistakeId){
     const m = state.mistakes.find(x => x.id === meta.fromMistakeId);
     if(m) m.action = title;
   }
@@ -5371,13 +5292,14 @@ document.getElementById('createActivityForm').addEventListener('submit', e => {
   closeModals();
   openDayView(date);
   const locLabel = getColumnSetting(loc).label;
-  toast(meta?.type === 'mistakeOnePct'
+  toast(meta?.type === 'mistakeOnePct' || meta?.type === 'reviewOnePct'
     ? 'Đã tạo việc 1% để nhổ cỏ. Deadline đã được khóa.'
     : `Đã tạo công việc trong cột ${locLabel}.`);
   setTimeout(() => {
     const card = document.querySelector(`.act-card[data-id="${act.id}"]`);
     if(card) card.scrollIntoView({behavior:'smooth', block:'center'});
     if(meta?.type === 'mistakeOnePct') openActivityBoard(act);
+    if(meta?.type === 'reviewOnePct') finishReviewCelebration();
   }, 120);
 });
 
@@ -5435,8 +5357,10 @@ document.getElementById('todayActivities').addEventListener('click', e => {
     if(!parent || !sub) return;
     const check = e.target.closest('[data-day-sub-complete]');
     if(check){
+      const wasDone = isCompleted(sub);
       markCompleted(sub, check.checked);
       save(); renderAll();
+      if(check.checked && !wasDone) askReviewAfterDone(parent, sub);
       return;
     }
     if(e.target.closest('[data-day-sub-play]')){ startTimer(parent,sub); return; }
@@ -5474,10 +5398,11 @@ document.getElementById('todayActivities').addEventListener('click', e => {
       cb.checked = false;
       return;
     }
+    const wasDone = isCompleted(act);
     markCompleted(act, cb.checked);
     if(!cb.checked && act.tag1pct) clearCelebrationForDate(act.date);
     save(); renderToday();
-    if(cb.checked) openReview(act); // hoàn thành -> mở ngay bảng review; việc 1% sẽ chúc mừng sau khi lưu review
+    if(cb.checked && !wasDone) askReviewAfterDone(act);
     return;
   }
 
@@ -5486,7 +5411,12 @@ document.getElementById('todayActivities').addEventListener('click', e => {
   if(subRow){
     const sub = (act.subs||[]).find(s => s.id === subRow.dataset.sid);
     if(sub){
-      if(e.target.closest('[data-sub-complete]')){ markCompleted(sub, e.target.checked); save(); renderToday(); return; }
+      if(e.target.closest('[data-sub-complete]')){
+        const wasDone = isCompleted(sub);
+        markCompleted(sub, e.target.checked); save(); renderToday();
+        if(e.target.checked && !wasDone) askReviewAfterDone(act, sub);
+        return;
+      }
       if(e.target.closest('[data-sub-play]')){ startTimer(act, sub); return; }
       if(e.target.closest('[data-sub-del]')){
         if(confirm(`Xoá việc con “${sub.title}”?`)){
@@ -5566,46 +5496,6 @@ function colActsForView(loc){
 function normalizeOrderCol(loc){
   colActsForView(loc).forEach((a,i) => a.order = i);
 }
-function quickSortComparator(mode){
-  const byStart = (a,b) => {
-    if(a.startTime && b.startTime) return a.startTime.localeCompare(b.startTime);
-    if(a.startTime) return -1;
-    if(b.startTime) return 1;
-    return 0;
-  };
-  if(mode === 'durationDesc') return (a,b) => effectiveDuration(b)-effectiveDuration(a) || byStart(a,b);
-  if(mode === 'durationAsc') return (a,b) => {
-    const da=effectiveDuration(a), db=effectiveDuration(b);
-    if(!da && !db) return byStart(a,b);
-    if(!da) return 1;
-    if(!db) return -1;
-    return da-db || byStart(a,b);
-  };
-  if(mode === 'incomplete') return (a,b) => (isCompleted(a)?1:0)-(isCompleted(b)?1:0) || byStart(a,b);
-  if(mode === 'needReview'){
-    const rank = x => {
-      const done=isCompleted(x), reviewed=!!state.reviews.find(r => r.id === x.reviewId);
-      if(done && !reviewed) return 0;
-      if(!done) return 1;
-      return 2;
-    };
-    return (a,b) => rank(a)-rank(b) || byStart(a,b);
-  }
-  return byStart;
-}
-function applyQuickSort(mode){
-  if(!mode) return;
-  DAYPART_IDS.forEach(loc => {
-    const list = state.activities
-      .filter(a => a.date === viewDate && activityDaypart(a) === loc)
-      .sort(quickSortComparator(mode));
-    list.forEach((a,i) => a.order = i);
-  });
-  save();
-  renderToday();
-  toast('Đã sắp xếp danh sách. Bạn vẫn có thể kéo thả để điều chỉnh.');
-}
-
 let dragCtx = null;
 let suppressCardClickUntil = 0;
 function clearDragCandidate(){
@@ -5617,7 +5507,6 @@ function clearDragCandidate(){
   dragCtx = null;
 }
 document.getElementById('todayActivities').addEventListener('pointerdown', e => {
-  if(planCustomizing) return;
   if(e.button !== undefined && e.button !== 0) return;
   if(e.target.closest('button,input,select,textarea,a,.sub-row,.sub-details,.sub-add,.col-add-card')) return;
   const row = e.target.closest('.act-row');
@@ -5710,12 +5599,6 @@ function endPointerDrag(e){
 document.getElementById('todayActivities').addEventListener('pointerup', endPointerDrag);
 document.getElementById('todayActivities').addEventListener('pointercancel', clearDragCandidate);
 
-document.getElementById('sortSelect').addEventListener('change', e => {
-  const mode=e.target.value;
-  e.target.value='';
-  applyQuickSort(mode);
-});
-
 // Tương tác trong tab Công việc cải thiện 1%
 ['pendingActions','doneActions'].forEach(id => {
   document.getElementById(id).addEventListener('click', e => {
@@ -5728,7 +5611,7 @@ document.getElementById('sortSelect').addEventListener('change', e => {
       if(!nowDone && act.tag1pct) clearCelebrationForDate(act.date);
       save(); renderAll();
       if(nowDone){
-        openReview(act);
+        askReviewAfterDone(act);
         return;
       }
       return;
@@ -6069,7 +5952,12 @@ document.getElementById('boardSubList').addEventListener('click', e => {
   const row = e.target.closest('[data-bsid]'); if(!row) return;
   const act = state.activities.find(a => a.id === boardId); if(!act) return;
   const sub = (act.subs||[]).find(s => s.id === row.dataset.bsid); if(!sub) return;
-  if(e.target.closest('[data-board-sub-check]')){ markCompleted(sub, e.target.checked); save(); renderBoardSubtasks(act); renderToday(); renderCalendar(); return; }
+  if(e.target.closest('[data-board-sub-check]')){
+    const wasDone = isCompleted(sub);
+    markCompleted(sub, e.target.checked); save(); renderBoardSubtasks(act); renderToday(); renderCalendar();
+    if(e.target.checked && !wasDone) askReviewAfterDone(act, sub);
+    return;
+  }
   if(e.target.closest('[data-board-sub-play]')){ closeModals(); startTimer(act, sub); return; }
   if(e.target.closest('[data-board-sub-review]')){ closeModals(); openReview(act, sub); return; }
   if(e.target.closest('[data-board-sub-del]')){
@@ -6158,6 +6046,7 @@ document.getElementById('subtaskBoardForm').addEventListener('submit', e => {
   const act = state.activities.find(a => a.id === subBoardRef.actId);
   const sub = act && (act.subs||[]).find(s => s.id === subBoardRef.subId);
   if(!act || !sub) return;
+  const wasDone = isCompleted(sub);
   sub.title = document.getElementById('sbTitle').value.trim();
   sub.description = document.getElementById('sbDesc').value.trim();
   markCompleted(sub, document.getElementById('sbDone').checked);
@@ -6169,6 +6058,7 @@ document.getElementById('subtaskBoardForm').addEventListener('submit', e => {
   openActivityBoard(act);
   renderToday();
   renderCalendar();
+  if(!wasDone && isCompleted(sub)) askReviewAfterDone(act, sub);
   toast('Đã lưu board việc con.');
 });
 document.getElementById('sbReviewBtn').addEventListener('click', () => {
@@ -6314,26 +6204,52 @@ function openSubEdit(act, sub){
 
 // ---------- Review (việc lớn hoặc việc con) ----------
 let reviewTarget = null; // {actId, subId|null}
+let reviewPromptTarget = null;
+let improvePromptContext = null;
+let pendingReviewCelebrationDate = null;
+
+function askReviewAfterDone(act, sub=null){
+  const target = sub || act;
+  if(!target || !isCompleted(target)) return;
+  reviewPromptTarget = {actId:act.id, subId:sub?.id || null};
+  document.getElementById('reviewPromptTask').textContent = target.title;
+  document.getElementById('reviewPromptModal').classList.add('open');
+  document.getElementById('reviewPromptYes').focus();
+}
+document.getElementById('reviewPromptNo').addEventListener('click', () => {
+  reviewPromptTarget = null;
+  document.getElementById('reviewPromptModal').classList.remove('open');
+});
+document.getElementById('reviewPromptYes').addEventListener('click', () => {
+  const ref = reviewPromptTarget;
+  reviewPromptTarget = null;
+  closeModals();
+  const act = ref && state.activities.find(a => a.id === ref.actId);
+  const sub = act && ref.subId ? (act.subs || []).find(s => s.id === ref.subId) : null;
+  if(act && (!ref.subId || sub)) openReview(act, sub);
+});
+
+function legacyReviewContent(rv){
+  if(!rv) return '';
+  if(rv.content) return rv.content;
+  return [
+    rv.didWell && `Đã làm tốt: ${rv.didWell}`,
+    rv.didNotDoWell && `Chưa làm tốt: ${rv.didNotDoWell}`,
+    rv.rootCause && `Nguyên nhân: ${rv.rootCause}`,
+    rv.lesson && `Bài học: ${rv.lesson}`
+  ].filter(Boolean).join('\n\n');
+}
 function openReview(act, sub){
   reviewTarget = { actId:act.id, subId: sub ? sub.id : null };
   const target = sub || act;
   const rid = target.reviewId;
   document.getElementById('rvTitle').textContent = `Review: ${target.title}`;
   const rv = state.reviews.find(r => r.id === rid);
-  document.getElementById('rDidWell').value = rv?.didWell || '';
-  document.getElementById('rDidNot').value = rv?.didNotDoWell || '';
-  setTagInput('rMistakeTags', tagsOf(rv ? (state.mistakes || []).find(x => x.reviewId === rv.id) : null));
-  document.getElementById('rCause').value = rv?.rootCause || '';
-  document.getElementById('rLesson').value = rv?.lesson || '';
-  // Khối nhổ cỏ bằng việc 1% — mặc định ngày mai, gợi ý theo bài học
-  document.getElementById('rFuTitle').value = '';
-  document.getElementById('rFuDesc').value = '';
-  document.getElementById('rFuDate').value = addDays(todayStr(),1);
-  document.getElementById('rFuTime').value = '';
-  document.getElementById('rFuLoc').value = activityDaypart(act);
-  document.getElementById('rFuDur').value = '';
+  document.getElementById('rReviewTitle').value = rv?.title || (rv ? `Review: ${target.title}` : '');
+  document.getElementById('rReviewContent').value = legacyReviewContent(rv);
   document.getElementById('reviewModal').classList.add('open');
   autoGrowModal('reviewModal');
+  document.getElementById('rReviewTitle').focus();
 }
 
 document.getElementById('reviewForm').addEventListener('submit', e => {
@@ -6343,13 +6259,12 @@ document.getElementById('reviewForm').addEventListener('submit', e => {
   const target = reviewTarget.subId ? (act.subs||[]).find(s => s.id === reviewTarget.subId) : act;
   if(!target) return;
   const data = {
-    didWell:document.getElementById('rDidWell').value.trim(),
-    didNotDoWell:document.getElementById('rDidNot').value.trim(),
-    mistakeTags:getTagInput('rMistakeTags'),
-    rootCause:document.getElementById('rCause').value.trim(),
-    lesson:document.getElementById('rLesson').value.trim()
+    title:document.getElementById('rReviewTitle').value.trim(),
+    content:document.getElementById('rReviewContent').value.trim()
   };
-  const title = reviewTarget.subId ? `${act.title} › ${target.title}` : act.title;
+  if(!data.title){ document.getElementById('rReviewTitle').focus(); return; }
+  if(!data.content){ document.getElementById('rReviewContent').focus(); return; }
+  const sourceTitle = reviewTarget.subId ? `${act.title} › ${target.title}` : act.title;
   let rv = state.reviews.find(r => r.id === target.reviewId);
   const isNew = !rv;
   if(isNew){
@@ -6359,46 +6274,67 @@ document.getElementById('reviewForm').addEventListener('submit', e => {
   }
   Object.assign(rv, data);
 
-  // Chưa tốt → Dọn vườn
+  // Review mới vẫn được liên kết với Dọn vườn để tạo việc cải thiện từ bài học.
   let linkedMistake = state.mistakes.find(x => x.reviewId === rv.id) || null;
-  if(data.didNotDoWell){
-    const payload = {
-      activityTitle:title, tags:normalizeTags(data.mistakeTags),
-      content:data.didNotDoWell, rootCause:data.rootCause,
-      lesson:data.lesson, action:''
-    };
-    if(linkedMistake) Object.assign(linkedMistake, payload);
-    else {
-      linkedMistake = Object.assign({id:uid(), reviewId:rv.id, date:todayStr()}, payload);
-      state.mistakes.push(linkedMistake);
-    }
+  const payload = {
+    activityTitle:sourceTitle, tags:normalizeTags(tagsOf(act)),
+    content:data.content, rootCause:'', lesson:'', action:linkedMistake?.action || ''
+  };
+  if(linkedMistake) Object.assign(linkedMistake, payload);
+  else {
+    linkedMistake = Object.assign({id:uid(), reviewId:rv.id, date:todayStr()}, payload);
+    state.mistakes.push(linkedMistake);
   }
 
-  // Nhổ cỏ bằng việc 1% (nếu có điền tên)
-  const fuTitle = document.getElementById('rFuTitle').value.trim();
-  let createdFu = false;
-  if(fuTitle){
-    const fuDur = document.getElementById('rFuDur').value;
-    state.activities.push({
-      id:uid(),
-      date: document.getElementById('rFuDate').value || addDays(todayStr(),1),
-      title: fuTitle,
-      description: document.getElementById('rFuDesc').value.trim(),
-      tag1pct: true,
-      daypart: document.getElementById('rFuLoc').value,
-      tags: tagsOf(act),
-      startTime: document.getElementById('rFuTime').value || null,
-      durationMinutes: fuDur ? parseInt(fuDur,10) : null,
-      completed:false, subs:[], status:'todo', reviewId:null,
-      fromReviewId: rv.id, fromActivityId: act.id, fromActivityTitle: title,
-      fromMistakeId: linkedMistake?.id || null
-    });
-    createdFu = true;
-  }
-
+  pendingReviewCelebrationDate = !reviewTarget.subId && act.tag1pct && isCompleted(act) ? act.date : null;
+  improvePromptContext = {actId:act.id, reviewId:rv.id, mistakeId:linkedMistake.id, sourceTitle};
+  reviewTarget = null;
   save(); closeModals(); renderAll();
-  if(!reviewTarget.subId && act.tag1pct && isCompleted(act) && triggerOnePercentCelebration(act.date)) return;
-  toast(createdFu ? '✅ Đã lưu review và tạo việc nhổ cỏ 1%.' : (isNew ? 'Đã lưu review.' : 'Đã cập nhật review.'));
+  document.getElementById('improvePromptModal').classList.add('open');
+  document.getElementById('improvePromptYes').focus();
+  toast(isNew ? 'Đã lưu review.' : 'Đã cập nhật review.');
+});
+
+function finishReviewCelebration(){
+  const date = pendingReviewCelebrationDate;
+  pendingReviewCelebrationDate = null;
+  if(date) triggerOnePercentCelebration(date);
+}
+function openOnePctFromReview(context){
+  const act = state.activities.find(a => a.id === context.actId);
+  const rv = state.reviews.find(r => r.id === context.reviewId);
+  if(!act || !rv){ finishReviewCelebration(); return; }
+  openCreateActivity(activityDaypart(act));
+  createDraftMeta = {
+    type:'reviewOnePct', forceOnePct:true,
+    fromReviewId:rv.id, fromActivityId:act.id,
+    fromActivityTitle:context.sourceTitle, fromMistakeId:context.mistakeId
+  };
+  const tomorrow = addDays(todayStr(),1);
+  document.getElementById('createActivityTitle').textContent = '🌱 Tạo việc cải thiện 1%';
+  document.getElementById('createActivitySub').textContent = 'Chọn một hành động nhỏ, cụ thể để cải thiện điều vừa review.';
+  document.getElementById('cTitle').value = '';
+  document.getElementById('cTitle').placeholder = 'VD: Hỏi rõ pain trước khi viết proposal';
+  document.getElementById('cDesc').value = `Từ review: ${rv.title}\n${rv.content}`;
+  document.getElementById('cTag1pct').checked = true;
+  document.getElementById('cTag1pct').disabled = true;
+  document.getElementById('cDate').value = tomorrow;
+  document.getElementById('cSubDate').value = tomorrow;
+  setTagInput('cTags', tagsOf(act));
+  autoGrowModal('createActivityModal');
+  document.getElementById('cTitle').focus();
+}
+document.getElementById('improvePromptNo').addEventListener('click', () => {
+  improvePromptContext = null;
+  closeModals();
+  finishReviewCelebration();
+});
+document.getElementById('improvePromptYes').addEventListener('click', () => {
+  const context = improvePromptContext;
+  improvePromptContext = null;
+  closeModals();
+  if(context) openOnePctFromReview(context);
+  else finishReviewCelebration();
 });
 
 // ---------- Modals close ----------
@@ -6430,6 +6366,17 @@ function closeModals(){
 // User-initiated dismissal closes only the top subtask layer when a parent board
 // is still open underneath. Internal workflow calls can continue using closeModals().
 function closeTopModal(){
+  if(document.getElementById('reviewPromptModal').classList.contains('open')){
+    reviewPromptTarget = null;
+    document.getElementById('reviewPromptModal').classList.remove('open');
+    return;
+  }
+  if(document.getElementById('improvePromptModal').classList.contains('open')){
+    improvePromptContext = null;
+    closeModals();
+    finishReviewCelebration();
+    return;
+  }
   const subModal = document.getElementById('subtaskBoardModal');
   const parentModalOpen =
     document.getElementById('activityBoardModal')?.classList.contains('open') ||
@@ -6437,6 +6384,12 @@ function closeTopModal(){
 
   if(subModal?.classList.contains('open') && parentModalOpen){
     closeSubtaskLayer();
+    return;
+  }
+  if(document.getElementById('createActivityModal').classList.contains('open') && createDraftMeta?.type === 'reviewOnePct'){
+    createDraftMeta = null;
+    closeModals();
+    finishReviewCelebration();
     return;
   }
   closeModals();
