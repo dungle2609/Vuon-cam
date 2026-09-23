@@ -2204,7 +2204,7 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
 <div class="modal-back decision-back" id="timeSettingsModal">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="timeSettingsTitle">
     <h2 id="timeSettingsTitle">Cài đặt quỹ thời gian</h2>
-    <p class="m-sub">Chọn giờ bắt đầu ngày của bạn. Buổi Sáng được tính từ giờ này đến 12:00.</p>
+    <p class="m-sub" id="timeSettingsScope">Giờ bắt đầu chỉ áp dụng cho ngày đang xem. Buổi Sáng được tính đến 12:00.</p>
     <form id="timeSettingsForm">
       <div class="f-group">
         <label for="morningStartInput">Giờ bắt đầu buổi sáng</label>
@@ -3031,8 +3031,14 @@ function removeLegacyRecurringInstances(){
 function migrateActivities(){
   migrateTagSystem();
   if(!state.gardenStartDate) state.gardenStartDate = todayStr();
+  // Giữ cài đặt chung của bản cũ làm mốc mặc định; các thay đổi mới được lưu riêng theo ngày.
   const morningStart = timeToMinutes(state.morningStartTime);
   if(morningStart === null || morningStart >= 720) state.morningStartTime = DEFAULT_MORNING_START;
+  const morningByDate = state.morningStartByDate;
+  state.morningStartByDate = morningByDate && typeof morningByDate === 'object' && !Array.isArray(morningByDate)
+    ? Object.fromEntries(Object.entries(morningByDate).filter(([date, time]) =>
+        /^\d{4}-\d{2}-\d{2}$/.test(date) && timeToMinutes(time) !== null && timeToMinutes(time) < 720))
+    : {};
   // Cột theo buổi cố định; dữ liệu cũ vẫn giữ location để không mất thông tin gốc.
   (state.activities || []).forEach(a => { if(!DAYPART_IDS.includes(a.daypart)) a.daypart = activityDaypart(a); });
   const defaults = defaultGoalTargets();
@@ -3174,7 +3180,7 @@ let state = null;
 
 function defaultState(){
   const start = todayStr();
-  return { activities:[], reviews:[], actions:[], mistakes:[], focus:{}, weekly:[], gardenStartDate:start, goalTargets:defaultGoalTargets(), celebratedOnePctDays:[], morningStartTime:DEFAULT_MORNING_START, seeded:false, theme:'light' };
+  return { activities:[], reviews:[], actions:[], mistakes:[], focus:{}, weekly:[], gardenStartDate:start, goalTargets:defaultGoalTargets(), celebratedOnePctDays:[], morningStartTime:DEFAULT_MORNING_START, morningStartByDate:{}, seeded:false, theme:'light' };
 }
 
 function load(){
@@ -3314,12 +3320,14 @@ const DAYPARTS = [
   {key:'Afternoon', id:'afternoon', icon:'☀️', label:'Chiều', start:720, end:1080},
   {key:'Evening', id:'evening', icon:'🌙', label:'Tối', start:1080, end:1440}
 ];
-function morningStartMinute(){
-  const minute = timeToMinutes(state?.morningStartTime);
-  return minute !== null && minute < 720 ? minute : timeToMinutes(DEFAULT_MORNING_START);
+function morningStartMinute(date){
+  const override = timeToMinutes(state?.morningStartByDate?.[date]);
+  if(override !== null && override < 720) return override;
+  const fallback = timeToMinutes(state?.morningStartTime);
+  return fallback !== null && fallback < 720 ? fallback : timeToMinutes(DEFAULT_MORNING_START);
 }
-function daypartBudgetStart(part){ return part.id === 'morning' ? morningStartMinute() : part.start; }
-function dayCapacityMinutes(){ return MINUTES_PER_DAY - morningStartMinute(); }
+function daypartBudgetStart(part, date){ return part.id === 'morning' ? morningStartMinute(date) : part.start; }
+function dayCapacityMinutes(date){ return MINUTES_PER_DAY - morningStartMinute(date); }
 function minutesToClock(minute){ return `${String(Math.floor(minute / 60)).padStart(2,'0')}:${String(minute % 60).padStart(2,'0')}`; }
 const DAYPART_IDS = DAYPARTS.map(p => p.id);
 function daypartForMinute(minute){ return DAYPARTS.find(p => minute >= p.start && minute < p.end)?.id || 'evening'; }
@@ -3419,7 +3427,7 @@ function paintHeroByDaypart(nowMinute){
   const hero = document.querySelector('section[data-view="today"] .hero');
   if(!hero) return;
   if(viewDate !== todayStr()){ hero.removeAttribute('data-daypart'); return; }
-  if(nowMinute < morningStartMinute()){ hero.removeAttribute('data-daypart'); return; }
+  if(nowMinute < morningStartMinute(viewDate)){ hero.removeAttribute('data-daypart'); return; }
   hero.dataset.daypart = daypartForMinute(nowMinute);
 }
 
@@ -3428,14 +3436,14 @@ function renderTimeBudget(){
   const today = todayStr();
   const items = dayDisplayItems(t);
   const nowMinute = currentMinuteOfDay();
-  const dayCapacity = dayCapacityMinutes();
+  const dayCapacity = dayCapacityMinutes(t);
   paintHeroByDaypart(nowMinute);
 
   // Quỹ giờ trống = thời gian từ giờ bắt đầu ngày (hoặc hiện tại) đến 24:00 trừ việc chưa xong.
   // Vẫn còn 8h việc chưa tick mà đã 16h chiều (còn 8h trong ngày) => quỹ trống = 0.
   // Tick xong một việc là phần giờ của nó được cộng ngay trở lại quỹ trống.
   const clockLeft = t < today ? 0
-    : (t === today ? Math.max(0, MINUTES_PER_DAY - Math.max(nowMinute, morningStartMinute())) : dayCapacity);
+    : (t === today ? Math.max(0, MINUTES_PER_DAY - Math.max(nowMinute, morningStartMinute(t))) : dayCapacity);
   const owed = items.reduce((sum,item) => sum + dayItemRemainingMinutes(item, t), 0);
   const planned = items.reduce((sum,item) => sum + dayItemDuration(item, t), 0);
   const room = clockLeft - owed;
@@ -3472,7 +3480,9 @@ function renderTimeBudget(){
       : `Còn ${fmtMins(clockLeft)} trong ngày − ${fmtMins(owed)} việc chưa xong = ${room < 0 ? 'thiếu ' + fmtMins(-room) : fmtMins(room) + ' trống'}.`}`;
   }
   renderRingFace();
-  document.getElementById('morningStartDisplay').textContent = state.morningStartTime;
+  document.getElementById('morningStartDisplay').textContent = minutesToClock(morningStartMinute(t));
+  const settingsBtn = document.getElementById('morningStartBtn');
+  settingsBtn.title = `Cài đặt giờ bắt đầu buổi sáng cho ${calendarDateLabel(t)}`;
 
   DAYPARTS.forEach(part => {
     const row = document.querySelector(`.daypart-row[data-daypart="${part.id}"]`);
@@ -3480,7 +3490,7 @@ function renderTimeBudget(){
     const fillEl = document.getElementById(`tb${part.key}Fill`);
     const partItems = items.filter(item => activityDaypart(item) === part.id);
     const totalPlanned = partItems.reduce((sum,item) => sum + dayItemDuration(item,t), 0);
-    const start = daypartBudgetStart(part);
+    const start = daypartBudgetStart(part, t);
     const budget = part.end - start;
     const percent = Math.max(0, Math.round(totalPlanned / budget * 100));
     planEl.textContent = `${fmtMinsOnly(totalPlanned)}/${fmtMinsOnly(budget)}`;
@@ -3501,9 +3511,12 @@ function updateMorningBudgetPreview(){
     ? `Buổi Sáng: ${720 - minute} phút (${input.value}–12:00). Cả ngày: ${MINUTES_PER_DAY - minute} phút.`
     : 'Chọn giờ bắt đầu trước 12:00.';
 }
+let morningSettingsDate = null;
 document.getElementById('morningStartBtn').addEventListener('click', () => {
+  morningSettingsDate = viewDate;
   const input = document.getElementById('morningStartInput');
-  input.value = state.morningStartTime;
+  input.value = minutesToClock(morningStartMinute(morningSettingsDate));
+  document.getElementById('timeSettingsScope').textContent = `Chỉ áp dụng cho ${calendarDateLabel(morningSettingsDate)}. Buổi Sáng được tính từ giờ này đến 12:00.`;
   input.setCustomValidity('');
   updateMorningBudgetPreview();
   document.getElementById('timeSettingsModal').classList.add('open');
@@ -3523,11 +3536,12 @@ document.getElementById('timeSettingsForm').addEventListener('submit', e => {
     input.reportValidity();
     return;
   }
-  state.morningStartTime = input.value;
+  const date = morningSettingsDate || viewDate;
+  state.morningStartByDate[date] = input.value;
   save();
   closeModals();
   renderAll();
-  toast(`Đã đặt giờ bắt đầu buổi sáng lúc ${input.value}.`);
+  toast(`Đã đặt giờ bắt đầu buổi sáng ${calendarDateLabel(date)} lúc ${input.value}.`);
 });
 
 // Tự cập nhật mỗi phút khi đang xem hôm nay (chỉ chạm vào số liệu, không render lại form)
@@ -3636,7 +3650,7 @@ function calendarWeekHtml(){
       <div class="cal-day-num">${d.getDate()}</div>
       <div class="cal-day-count">${st.total?`${st.done}/${st.total} việc`:'Không có việc'}</div>
       <div class="cal-mini-track"><i style="width:${st.pct}%"></i></div>
-      <div class="cal-day-sub">${fmtMinsOnly(st.mins)}/${fmtMinsOnly(dayCapacityMinutes())}</div>
+      <div class="cal-day-sub">${fmtMinsOnly(st.mins)}/${fmtMinsOnly(dayCapacityMinutes(date))}</div>
       <div class="cal-flags">${st.open&&rel==='past'?`<span class="cal-flag warn">${st.open} chưa xong</span>`:''}${st.reviews?`<span class="cal-flag">${st.reviews} review</span>`:''}${st.onePct?`<span class="cal-flag ok">🌱 ${st.onePct}</span>`:''}</div>
     </button>`;
   }
@@ -4214,7 +4228,7 @@ function renderToday(){
     const colItems = dayItems.filter(item => activityDaypart(item) === loc).sort(compareDayItemsByTime);
     const colTime = colItems.reduce((sum,item) => sum + dayItemDuration(item,t), 0);
     const timeEl = document.getElementById(timeId);
-    const budgetMinutes = part.end - daypartBudgetStart(part);
+    const budgetMinutes = part.end - daypartBudgetStart(part, t);
     timeEl.textContent = `${colTime}'/${budgetMinutes}'`;
     timeEl.title = `${colTime} phút đã lên kế hoạch trên ${budgetMinutes} phút của buổi ${part.label.toLowerCase()}`;
     timeEl.classList.toggle('over-budget', colTime > budgetMinutes);
