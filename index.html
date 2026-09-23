@@ -307,7 +307,7 @@ section[data-view].active{display:block;animation:fadein .25s ease}
   radial-gradient(circle at 80% 22%, rgba(140,180,255,.09), transparent 36%),
   linear-gradient(135deg,#08201A 0%, #0D2A21 52%, #2B1B0E 100%)}
 .hero .date{font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#F0E2C6;font-weight:600}
-.hero-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.hero-top{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:18px;margin-bottom:12px}
 .hero-streak{font-size:12px;font-weight:600;color:#BFE3F2;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14);border-radius:99px;padding:4px 11px;white-space:nowrap}
 .tb-dash{display:flex;align-items:center;gap:26px;flex-wrap:wrap}
 .tb-nums{display:flex;flex-direction:column;gap:16px;flex:1;min-width:150px}
@@ -369,13 +369,15 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 }
 .tree-svg{width:100%;height:100%;max-height:180px;display:block}
 .hero-quote{
-  margin-top:18px;padding-top:14px;border-top:1px solid rgba(255,255,255,.16);
-  font-size:12.5px;line-height:1.55;
+  min-width:0;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  font-size:11.5px;line-height:1.4;
 }
 .hero-quote:empty{display:none}
-.hero-quote .quote-english{display:block;color:#FFF8EC;font-style:italic;font-weight:600}
-.hero-quote .quote-source{display:block;margin-top:4px;color:#F0E2C6;font-size:11.5px;font-style:normal;font-weight:500}
+.hero-quote .quote-english{display:inline;color:#FFF8EC;font-style:italic;font-weight:600}
+.hero-quote .quote-source{display:inline;margin-left:8px;color:#F0E2C6;font-size:10.5px;font-style:normal;font-weight:500}
 .ring{position:relative;width:168px;height:168px;flex-shrink:0}
+.ring-toggle{display:block;padding:0;border:0;background:none;cursor:pointer;touch-action:manipulation}
+.ring-toggle:focus-visible{outline:3px solid #FFE096;outline-offset:4px;border-radius:50%}
 .ring svg{transform:rotate(-90deg);width:100%;height:100%;display:block}
 .ring .center{
   position:absolute;inset:0;display:flex;flex-direction:column;
@@ -841,7 +843,30 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 @media (max-width:760px){.f-row3{grid-template-columns:1fr}}
 .two-col{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
 @media (max-width:760px){.two-col{grid-template-columns:1fr;gap:20px}}
-.col-home,.col-company,#colListHome,#colListCompany{min-width:0;max-width:100%;overflow:hidden}
+.daypart-board{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-items:start}
+.daypart-board[hidden]{display:none!important}
+.daypart-board.is-planning{grid-template-columns:repeat(3,minmax(0,1fr))}
+.daypart-board:not(.is-planning){max-width:760px}
+.daypart-board .daypart-column[hidden]{display:none!important}
+.daypart-column,.daypart-column > div{min-width:0;max-width:100%}
+.daypart-column[data-column="morning"] .col-head{border-bottom-color:#E7AB4F}
+.daypart-column[data-column="afternoon"] .col-head{border-bottom-color:#4E9A65}
+.daypart-column[data-column="evening"] .col-head{border-bottom-color:#8181B3}
+.hero-plan-btn{border:1px solid rgba(255,255,255,.46);border-radius:999px;background:rgba(255,255,255,.13);color:#FFF8EC;padding:7px 15px;font:inherit;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap}
+.hero-plan-btn:hover,.hero-plan-btn[aria-pressed="true"]{background:#FFF4D9;color:#205443;border-color:#FFF4D9}
+.hero-ring-stack{width:168px;flex:0 0 168px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.hero-ring-stack .hero-plan-btn{width:100%;min-height:36px}
+.plan-day-footer{display:flex;justify-content:center;margin-top:14px}
+.plan-day-footer .plan-day-nav{width:max-content}
+.col-head .col-time{font-variant-numeric:tabular-nums;white-space:nowrap}
+.col-head .col-time.over-budget{background:var(--warn-soft);color:var(--warn)}
+.hero .daypart-row{cursor:pointer}
+.hero .daypart-row:focus-visible,.hero-plan-btn:focus-visible{outline:3px solid #FFE096;outline-offset:3px}
+.hero .daypart-row.selected:not(.current){border-color:#F5D17D;background:rgba(255,255,255,.12)}
+@media (max-width:1100px){.daypart-board.is-planning{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){.daypart-board.is-planning{grid-template-columns:1fr}.daypart-board:not(.is-planning){max-width:none}.hero-ring-stack{width:118px;flex-basis:118px}.hero-ring-stack .hero-plan-btn{font-size:10px;padding:6px 4px;white-space:normal;line-height:1.25}.plan-day-footer .plan-day-nav{width:100%}}
+@media (max-width:390px){.hero-ring-stack{width:106px;flex-basis:106px}}
+.daypart-column,.daypart-column > div{min-width:0;max-width:100%;overflow:hidden}
 .col-head{min-width:0;max-width:100%}
 .col-head{display:flex;align-items:center;gap:8px;font-family:var(--font-display);font-weight:700;font-size:15px;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid var(--line)}
 .col-head .col-count{margin-left:auto;font-size:12px;font-weight:500;color:var(--muted)}
@@ -1261,7 +1286,7 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 .cal-day-stat{border:1px solid var(--line);background:var(--surface-2);border-radius:12px;padding:11px}
 .cal-day-stat b{display:block;font-family:var(--font-display);font-size:18px;color:var(--blue)}
 .cal-day-stat span{font-size:10.8px;color:var(--muted)}
-.calendar-task-columns{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.calendar-task-columns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 .calendar-task-col{min-width:0}
 .calendar-task-col-head{display:flex;align-items:center;justify-content:space-between;gap:8px;border-bottom:2px solid var(--line);padding:0 2px 7px;margin-bottom:8px;font-size:12.5px;font-weight:800}
 .calendar-task-row{
@@ -1432,12 +1457,16 @@ section[data-view].active{display:block;animation:fadein .25s ease}
   .main{padding:20px 16px 110px}
   .stats{grid-template-columns:repeat(2,1fr)}
   .grid-2{grid-template-columns:1fr}
-  .hero{gap:16px}
-  .hero-body{grid-template-columns:1fr;gap:18px}
+  .hero{gap:12px}
+  .hero-top{display:flex;flex-direction:column;align-items:flex-start;gap:7px;margin-bottom:12px}
+  .hero-quote{width:100%;text-align:left;white-space:normal;overflow:visible;font-size:11.5px}
+  .hero-quote .quote-source{font-size:10.5px}
+  .hero-body{display:flex;flex-direction:column;gap:12px}
+  .hero-budget{padding-top:12px;border-top:1px solid rgba(255,255,255,.12)}
   .hero-budget .tb-dash{flex-wrap:wrap}
   .hero-tree{
     border-left:none;padding-left:0;
-    border-top:1px solid rgba(255,255,255,.12);padding-top:14px;
+    border-top:none;padding-top:0;
     min-height:0;
     flex-direction:row;align-items:center;gap:12px;   /* cây đứng cạnh chữ cho gọn chiều cao */
   }
@@ -1834,33 +1863,37 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
       <div class="card hero">
         <div class="hero-top">
           <div class="date" id="todayDate"></div>
+          <div class="hero-quote" id="heroQuote"></div>
         </div>
         <div class="hero-body">
           <!-- PHẦN 1 · BUDGET THỜI GIAN -->
           <div class="hero-budget">
             <div class="tb-dash">
-              <div class="ring">
-                <svg width="150" height="150" viewBox="0 0 150 150">
-                  <circle cx="75" cy="75" r="66" fill="none" stroke="rgba(255,255,255,.13)" stroke-width="11"/>
-                  <circle id="tbRing" cx="75" cy="75" r="66" fill="none" stroke="url(#rg)" stroke-width="11" stroke-linecap="round" stroke-dasharray="414.7" stroke-dashoffset="414.7"/>
-                  <defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stop-color="#FFF3B0"/><stop offset="100%" stop-color="#F59E0B"/>
-                  </linearGradient></defs>
-                </svg>
-                <div class="center"><div class="big" id="tbRoom">1440p</div><div class="small" id="tbRoomLabel">PHÚT CÒN TRỐNG</div></div>
+              <div class="hero-ring-stack">
+                <button type="button" class="ring ring-toggle" id="heroRingToggle" aria-label="Mở kế hoạch cả ngày" aria-pressed="false" aria-controls="todayActivities">
+                  <svg width="150" height="150" viewBox="0 0 150 150">
+                    <circle cx="75" cy="75" r="66" fill="none" stroke="rgba(255,255,255,.13)" stroke-width="11"/>
+                    <circle id="tbRing" cx="75" cy="75" r="66" fill="none" stroke="url(#rg)" stroke-width="11" stroke-linecap="round" stroke-dasharray="414.7" stroke-dashoffset="414.7"/>
+                    <defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stop-color="#FFF3B0"/><stop offset="100%" stop-color="#F59E0B"/>
+                    </linearGradient></defs>
+                  </svg>
+                  <div class="center"><div class="big" id="tbRoom">1440'</div><div class="small" id="tbRoomLabel">PHÚT CÒN TRỐNG</div></div>
+                </button>
+                <button type="button" class="hero-plan-btn" id="heroPlanBtn" aria-pressed="false" aria-controls="todayActivities">＋ Lên kế hoạch</button>
               </div>
               <div class="tb-nums daypart-list">
-                <div class="daypart-row" data-daypart="morning">
-                  <div class="daypart-name"><span>🌤 Sáng</span><small>00:00–12:00</small></div>
-                  <div class="daypart-value"><b id="tbMorningLeft">12g</b><small id="tbMorningPlan">0p đã lên block</small></div>
+                <div class="daypart-row" data-daypart="morning" role="button" tabindex="0" aria-label="Xem công việc buổi sáng">
+                  <div class="daypart-name"><span>🌤 Sáng</span><small>00:00–11:59</small></div>
+                  <div class="daypart-value"><b id="tbMorningLeft">12g</b><small id="tbMorningPlan">0' đã lên block</small></div>
                 </div>
-                <div class="daypart-row" data-daypart="afternoon">
-                  <div class="daypart-name"><span>☀️ Chiều</span><small>12:01–18:00</small></div>
-                  <div class="daypart-value"><b id="tbAfternoonLeft">6g</b><small id="tbAfternoonPlan">0p đã lên block</small></div>
+                <div class="daypart-row" data-daypart="afternoon" role="button" tabindex="0" aria-label="Xem công việc buổi chiều">
+                  <div class="daypart-name"><span>☀️ Chiều</span><small>12:00–17:59</small></div>
+                  <div class="daypart-value"><b id="tbAfternoonLeft">6g</b><small id="tbAfternoonPlan">0' đã lên block</small></div>
                 </div>
-                <div class="daypart-row" data-daypart="evening">
-                  <div class="daypart-name"><span>🌙 Tối</span><small>18:01–23:59</small></div>
-                  <div class="daypart-value"><b id="tbEveningLeft">6g</b><small id="tbEveningPlan">0p đã lên block</small></div>
+                <div class="daypart-row" data-daypart="evening" role="button" tabindex="0" aria-label="Xem công việc buổi tối">
+                  <div class="daypart-name"><span>🌙 Tối</span><small>18:00–23:59</small></div>
+                  <div class="daypart-value"><b id="tbEveningLeft">6g</b><small id="tbEveningPlan">0' đã lên block</small></div>
                 </div>
               </div>
             </div>
@@ -1876,7 +1909,6 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
             </div>
           </div>
         </div>
-        <div class="hero-quote" id="heroQuote"></div>
       </div>
 
       <div class="card quick-add-card">
@@ -1889,9 +1921,10 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
           </select>
           <button class="btn btn-primary btn-sm" type="submit">Thêm</button>
           <div class="quick-options">
-            <div class="location-toggle" aria-label="Địa điểm">
-              <button type="button" data-qloc="home">🏠 Nhà</button>
-              <button type="button" data-qloc="company" class="on">🏢 Cty</button>
+            <div class="location-toggle" aria-label="Buổi">
+              <button type="button" data-qloc="morning" class="on">🌤 Sáng</button>
+              <button type="button" data-qloc="afternoon">☀️ Chiều</button>
+              <button type="button" data-qloc="evening">🌙 Tối</button>
             </div>
             <button type="button" class="quick-chip quick-date-hidden" id="qTodayBtn">Hôm nay</button>
             <button type="button" class="quick-chip quick-date-hidden" id="qTomorrowBtn">Ngày mai</button>
@@ -1907,21 +1940,6 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
         <div class="activity-head plan-activity-head">
           <div class="plan-head-block">
             <h2 id="actsHeading">Công việc trong ngày</h2>
-            <div class="plan-day-nav" aria-label="Điều hướng ngày">
-              <button type="button" class="plan-day-arrow" id="dayPrevBtn" aria-label="Ngày trước" title="Ngày trước">‹</button>
-              <div class="plan-date-picker" id="planDatePickerTrigger" role="button" tabindex="0" aria-label="Chọn một ngày khác" title="Chọn một ngày khác">
-                <span class="plan-date-main">
-                  <span class="plan-date-full" id="planDateLabel">Hôm nay</span>
-                  <span class="plan-date-compact" id="planDateLabelCompact">HN · 13/07</span>
-                </span>
-                <span class="plan-date-icon" aria-hidden="true">📅</span>
-                <input type="date" id="dayPick" aria-label="Chọn ngày" tabindex="-1">
-              </div>
-              <button type="button" class="plan-day-arrow" id="dayNextBtn" aria-label="Ngày sau" title="Ngày sau">›</button>
-              <button type="button" class="plan-today-btn" id="dayTodayBtn" aria-label="Về hôm nay" title="Về hôm nay">
-                <span class="plan-today-full">Hôm nay</span><span class="plan-today-compact">Nay</span>
-              </button>
-            </div>
           </div>
           <div class="activity-tools">
             <div class="sort-select-wrap">
@@ -1941,15 +1959,36 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
           </div>
         </div>
         <div id="taskSearchResults" hidden></div>
-        <div id="todayActivities" class="two-col">
-          <div class="col-home">
-            <div class="col-head" id="colHeadHome">🏠 Ở nhà <span class="col-time" id="colTimeHome">0p</span><span class="col-count" id="colCountHome">0 việc</span></div>
-            <div id="colListHome"></div>
+        <div id="todayActivities" class="daypart-board">
+          <div class="daypart-column" data-column="morning">
+            <div class="col-head" id="colHeadMorning"><span>🌤 Sáng</span><span class="col-time" id="colTimeMorning">0'/720'</span><span class="col-count" id="colCountMorning">0 việc</span></div>
+            <div id="colListMorning"></div>
           </div>
-          <div class="col-company">
-            <div class="col-head" id="colHeadCompany">🏢 Công ty <span class="col-time" id="colTimeCompany">0p</span><span class="col-count" id="colCountCompany">0 việc</span></div>
-            <div id="colListCompany"></div>
+          <div class="daypart-column" data-column="afternoon">
+            <div class="col-head" id="colHeadAfternoon"><span>☀️ Chiều</span><span class="col-time" id="colTimeAfternoon">0'/360'</span><span class="col-count" id="colCountAfternoon">0 việc</span></div>
+            <div id="colListAfternoon"></div>
           </div>
+          <div class="daypart-column" data-column="evening">
+            <div class="col-head" id="colHeadEvening"><span>🌙 Tối</span><span class="col-time" id="colTimeEvening">0'/360'</span><span class="col-count" id="colCountEvening">0 việc</span></div>
+            <div id="colListEvening"></div>
+          </div>
+        </div>
+      </div>
+      <div class="plan-day-footer">
+        <div class="plan-day-nav" aria-label="Điều hướng ngày">
+          <button type="button" class="plan-day-arrow" id="dayPrevBtn" aria-label="Ngày trước" title="Ngày trước">‹</button>
+          <div class="plan-date-picker" id="planDatePickerTrigger" role="button" tabindex="0" aria-label="Chọn một ngày khác" title="Chọn một ngày khác">
+            <span class="plan-date-main">
+              <span class="plan-date-full" id="planDateLabel">Hôm nay</span>
+              <span class="plan-date-compact" id="planDateLabelCompact">HN · 13/07</span>
+            </span>
+            <span class="plan-date-icon" aria-hidden="true">📅</span>
+            <input type="date" id="dayPick" aria-label="Chọn ngày" tabindex="-1">
+          </div>
+          <button type="button" class="plan-day-arrow" id="dayNextBtn" aria-label="Ngày sau" title="Ngày sau">›</button>
+          <button type="button" class="plan-today-btn" id="dayTodayBtn" aria-label="Về hôm nay" title="Về hôm nay">
+            <span class="plan-today-full">Hôm nay</span><span class="plan-today-compact">Nay</span>
+          </button>
         </div>
       </div>
 
@@ -2012,10 +2051,11 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
           <label class="tag1-check"><input type="checkbox" id="fTag1pct"> <span>🌱 Đây là việc chăm cây 1% — sinh ra từ bài học lần trước</span></label>
           <div class="f-row3">
             <div class="f-group">
-              <label for="fLocation">Địa điểm</label>
+              <label for="fLocation">Buổi</label>
               <select id="fLocation">
-                <option value="home">🏠 Ở nhà</option>
-                <option value="company">🏢 Công ty</option>
+                <option value="morning">🌤 Sáng</option>
+                <option value="afternoon">☀️ Chiều</option>
+                <option value="evening">🌙 Tối</option>
               </select>
             </div>
             <div class="f-group">
@@ -2117,7 +2157,7 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
       <div class="page-head">
         <div class="eyebrow">System</div>
         <h1>Dữ liệu</h1>
-        <p class="sub">Toàn bộ dữ liệu được lưu trên trình duyệt của bạn (localStorage). Không có máy chủ, không có tài khoản.</p>
+        <p class="sub">Bản xem trước lưu dữ liệu thử nghiệm riêng trên trình duyệt này và không đồng bộ Firebase.</p>
       </div>
       <div class="card">
         <div class="row" style="gap:12px">
@@ -2127,7 +2167,7 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
         </div>
         <p class="hint" style="margin-top:10px">Export định kỳ để sao lưu. Import sẽ thay thế toàn bộ dữ liệu hiện tại.</p>
       </div>
-      <div class="card">
+      <div class="card" hidden>
         <h3 style="font-size:15px;margin-bottom:8px">☁️ Đồng bộ đám mây (Firebase)</h3>
         <p class="hint" style="margin-bottom:12px"><b>Đồng bộ realtime hai chiều:</b> mỗi thao tác được gửi lên Firebase ngay và các thiết bị khác tự nhận dữ liệu mới, không cần bấm Tải về máy. Nút tải thủ công chỉ dùng để khôi phục khi cần.</p>
         <div class="row" style="gap:12px">
@@ -2269,35 +2309,6 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
 </div>
 
 
-<!-- ============ COLUMN SETTINGS MODAL ============ -->
-<div class="modal-back" id="columnEditModal">
-  <div class="modal column-edit-modal" role="dialog" aria-modal="true">
-    <div class="spread" style="margin-bottom:14px">
-      <div>
-        <h2>Chỉnh sửa cột</h2>
-        <p class="m-sub">Đổi tên và icon hiển thị cho cột công việc.</p>
-      </div>
-      <button type="button" class="btn btn-ghost btn-sm" data-close>Đóng</button>
-    </div>
-    <form id="columnEditForm">
-      <div class="f-group"><label>Tên cột</label><input id="colEditLabel" required placeholder="VD: Ở nhà"></div>
-      <div class="f-group">
-        <label>Icon</label>
-        <div class="icon-picker" id="colIconPicker" aria-label="Chọn icon cho cột"></div>
-        <input id="colEditIcon" placeholder="Hoặc nhập emoji/icon tuỳ chỉnh" style="margin-top:10px">
-      </div>
-      <div class="row" style="justify-content:flex-end">
-        <button type="button" class="btn btn-ghost" id="columnResetBtn">Về mặc định</button>
-        <button type="submit" class="btn btn-primary">Lưu cột</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-
-
-
-
 <!-- ============ REVIEW MODAL ============ -->
 <div class="modal-back" id="reviewModal">
   <div class="modal" role="dialog" aria-modal="true">
@@ -2316,7 +2327,7 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
         <p class="hint" style="margin-bottom:10px">Biến bài học thành một việc nhỏ để xử lý cỏ dại và giúp cây cam lớn khỏe hơn.</p>
         <div class="f-group"><label>Tên công việc</label><input id="rFuTitle" placeholder="VD: Follow-up với Viko"></div>
         <div class="f-group"><label>Mô tả</label><textarea id="rFuDesc" placeholder="VD: Trước khi nhắn tin follow-up, brainstorm với tư duy đặt ở vị trí khách hàng, từ đó có action cụ thể."></textarea></div>
-        <input type="hidden" id="rFuLoc" value="company">
+        <input type="hidden" id="rFuLoc" value="morning">
         <div class="f-row3 fu-review-meta">
           <div class="f-group"><label>Ngày</label><input type="date" id="rFuDate"></div>
           <div class="f-group"><label>Giờ thực hiện</label><input type="time" id="rFuTime"></div>
@@ -2343,10 +2354,11 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
       <div class="f-group"><label>Mô tả</label><textarea id="eDesc"></textarea></div>
       <label class="tag1-check"><input type="checkbox" id="eTag1pct"> <span>🌱 Việc chăm cây (1%)</span></label>
       <div class="f-row3">
-        <div class="f-group"><label>Địa điểm</label>
+        <div class="f-group"><label>Buổi</label>
           <select id="eLocation">
-            <option value="home">🏠 Ở nhà</option>
-            <option value="company">🏢 Công ty</option>
+            <option value="morning">🌤 Sáng</option>
+            <option value="afternoon">☀️ Chiều</option>
+            <option value="evening">🌙 Tối</option>
           </select>
         </div>
         <div class="f-group"><label>Tag</label><div class="tag-input" id="eTags" data-tag-input data-placeholder="Thêm tag…"><span class="tag-chips"></span><input type="text" list="tagSuggestions" placeholder="Thêm tag…" autocomplete="off" aria-label="Thêm tag"></div></div>
@@ -2441,7 +2453,7 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
    ===================================================== */
 
 // ---------- Constants ----------
-const LS_KEY = 'onePercentOS_v1';
+const LS_KEY = 'onePercentOS_preview_dayparts_v2';
 // ---------- Tag ----------
 // Nhãn tự do thay cho hệ "Nhóm hoạt động" cũ: mỗi công việc / cỏ dại gắn được
 // nhiều tag, tên do người dùng tự đặt, không có danh sách cố định.
@@ -2872,18 +2884,17 @@ function fmtMins(m){
   if(h) return `${h} giờ`;
   return `${r} phút`;
 }
-// Thời gian CÒN LẠI luôn đọc bằng phút: 565 -> "565p". Phút là đơn vị hành động,
-// "9g25" khó ước lượng còn bao nhiêu việc nhét vừa, "565p" thì thấy ngay.
+// Thời gian còn lại luôn đọc bằng phút: 565 -> "565'".
 function fmtMinsOnly(m){
-  return `${Math.max(0, Math.round(m))}p`;
+  return `${Math.max(0, Math.round(m))}'`;
 }
-// Dạng ngắn cho checklist: 90 -> "1g30", 30 -> "30p"
+// Dạng ngắn cho checklist: 90 -> "1g30", 30 -> "30'"
 function fmtMinsShort(m){
   m = Math.max(0, Math.round(m));
   const h = Math.floor(m/60), r = m%60;
   if(h && r) return `${h}g${String(r).padStart(2,'0')}`;
   if(h) return `${h}g`;
-  return `${r}p`;
+  return `${r}'`;
 }
 
 // Chuyển dữ liệu cũ sang cấu trúc mới; giữ tương thích ngược
@@ -2985,13 +2996,8 @@ function removeLegacyRecurringInstances(){
 function migrateActivities(){
   migrateTagSystem();
   if(!state.gardenStartDate) state.gardenStartDate = todayStr();
-  if(!state.columnSettings) state.columnSettings = {};
-  if(!state.columnSettings.home) state.columnSettings.home = {label:'Ở nhà', icon:'🏠'};
-  if(!state.columnSettings.company) state.columnSettings.company = {label:'Công ty', icon:'🏢'};
-  if(!state.columnSettings.home.label) state.columnSettings.home.label = 'Ở nhà';
-  if(!state.columnSettings.home.icon) state.columnSettings.home.icon = '🏠';
-  if(!state.columnSettings.company.label) state.columnSettings.company.label = 'Công ty';
-  if(!state.columnSettings.company.icon) state.columnSettings.company.icon = '🏢';
+  // Cột theo buổi cố định; dữ liệu cũ vẫn giữ location để không mất thông tin gốc.
+  (state.activities || []).forEach(a => { if(!DAYPART_IDS.includes(a.daypart)) a.daypart = activityDaypart(a); });
   const defaults = defaultGoalTargets();
   if(!state.goalTargets) state.goalTargets = defaults;
   // Chuyển mặc định cũ (5/20/240/365) sang triết lý mới: mỗi ngày tốt hơn 1%.
@@ -3010,7 +3016,7 @@ function migrateActivities(){
   (state.activities || []).forEach(a => {
     if(a.completed === undefined) a.completed = (a.status === 'done');
     if(!Array.isArray(a.subs)) a.subs = [];
-    if(!a.location) a.location = 'company'; // dữ liệu cũ mặc định vào cột Công ty
+    if(!DAYPART_IDS.includes(a.daypart)) a.daypart = activityDaypart(a);
     if(a.tag1pct === undefined) a.tag1pct = false;
     delete a.recurringId;
     delete a.generatedFromRecurring;
@@ -3084,7 +3090,7 @@ function makeDaySubtaskItem(parent, sub){
     date:sub.date || parent.date,
     title:sub.title || '',
     description:sub.description || '',
-    location:parent.location || 'company',
+    daypart:activityDaypart(parent),
     tags:tagsOf(parent),
     startTime:sub.startTime || null,
     durationMinutes:Number(sub.durationMinutes) || null,
@@ -3134,7 +3140,7 @@ let state = null;
 
 function defaultState(){
   const start = todayStr();
-  return { activities:[], reviews:[], actions:[], mistakes:[], focus:{}, weekly:[], gardenStartDate:start, goalTargets:defaultGoalTargets(), celebratedOnePctDays:[], columnSettings:{home:{label:'Ở nhà',icon:'🏠'},company:{label:'Công ty',icon:'🏢'}}, seeded:false, theme:'light' };
+  return { activities:[], reviews:[], actions:[], mistakes:[], focus:{}, weekly:[], gardenStartDate:start, goalTargets:defaultGoalTargets(), celebratedOnePctDays:[], seeded:false, theme:'light' };
 }
 
 function load(){
@@ -3156,7 +3162,7 @@ function seedDemo(){
   const t = todayStr();
   const actId = uid(), revId = uid(), m1 = uid();
   state.activities.push({
-    id:actId, date:t, location:'company', tag1pct:false,
+    id:actId, date:t, daypart:'afternoon', tag1pct:false,
     title:'Chuẩn bị proposal cho khách hàng',
     description:'Tạo proposal rõ insight, ít chữ, có key message mạnh.\nTiêu chuẩn: mỗi slide chỉ có một thông điệp chính.',
     tags:[], status:'done', completed:true, subs:[], reviewId:revId
@@ -3178,16 +3184,23 @@ function seedDemo(){
   });
   // Việc cải thiện 1% mẫu — sinh ra từ review trên, có link nguồn
   state.activities.push({
-    id:uid(), date:addDays(t,1), location:'company', tag1pct:true,
+    id:uid(), date:addDays(t,1), daypart:'afternoon', tag1pct:true,
     title:'Thiết kế lại proposal theo nguyên tắc 1 slide 1 ý',
     description:'Trước khi thiết kế mỗi slide, viết một câu: “Người xem cần nhớ điều gì sau slide này?”',
     tags:[], status:'todo', completed:false, subs:[], reviewId:null,
     fromReviewId:revId, fromActivityId:actId, fromActivityTitle:'Chuẩn bị proposal cho khách hàng'
   });
   state.activities.push({
-    id:uid(), date:t, location:'home', tag1pct:false,
+    id:uid(), date:t, daypart:'morning', tag1pct:false,
     title:'Tập trung 25 phút không điện thoại',
     description:'Hoàn thành 1 phiên deep work.\nTiêu chuẩn: điện thoại để phòng khác trong suốt 25 phút.',
+    tags:[], status:'todo', completed:false, subs:[], reviewId:null
+  });
+  state.activities.push({
+    id:uid(), date:t, daypart:'evening', tag1pct:false,
+    title:'Đọc sách 20 phút',
+    description:'Một việc mẫu để xem bố cục buổi tối.',
+    startTime:'20:00', durationMinutes:20,
     tags:[], status:'todo', completed:false, subs:[], reviewId:null
   });
 }
@@ -3262,10 +3275,57 @@ function reviewStreak(){
 // ---------- Time budget (theo từng buổi, cập nhật theo thời gian thực) ----------
 const MINUTES_PER_DAY = 1440;
 const DAYPARTS = [
-  {key:'Morning', label:'Sáng', start:0, end:721},
-  {key:'Afternoon', label:'Chiều', start:721, end:1081},
-  {key:'Evening', label:'Tối', start:1081, end:1440}
+  {key:'Morning', id:'morning', icon:'🌤', label:'Sáng', start:0, end:720},
+  {key:'Afternoon', id:'afternoon', icon:'☀️', label:'Chiều', start:720, end:1080},
+  {key:'Evening', id:'evening', icon:'🌙', label:'Tối', start:1080, end:1440}
 ];
+const DAYPART_IDS = DAYPARTS.map(p => p.id);
+function daypartForMinute(minute){ return DAYPARTS.find(p => minute >= p.start && minute < p.end)?.id || 'evening'; }
+function activityDaypart(item){
+  if(DAYPART_IDS.includes(item?.daypart)) return item.daypart;
+  const minute = timeToMinutes(item?.startTime);
+  if(minute !== null) return daypartForMinute(minute);
+  return item?.location === 'home' ? 'evening' : 'morning';
+}
+function currentDaypart(){ return daypartForMinute(currentMinuteOfDay()); }
+let planningDay = false;
+let focusedDaypart = null;
+let manualDaypart = false;
+function renderBoardVisibility(){
+  const board = document.getElementById('todayActivities');
+  if(!board) return;
+  if(!manualDaypart) focusedDaypart = currentDaypart();
+  board.classList.toggle('is-planning', planningDay);
+  board.querySelectorAll('[data-column]').forEach(col => { col.hidden = !planningDay && col.dataset.column !== focusedDaypart; });
+  document.querySelectorAll('.daypart-row[data-daypart]').forEach(row => {
+    row.classList.toggle('selected', !planningDay && row.dataset.daypart === focusedDaypart);
+    row.setAttribute('aria-pressed', String(!planningDay && row.dataset.daypart === focusedDaypart));
+  });
+  const btn = document.getElementById('heroPlanBtn');
+  btn.textContent = planningDay ? 'Thu gọn' : '＋ Lên kế hoạch';
+  btn.setAttribute('aria-pressed', String(planningDay));
+  const ring = document.getElementById('heroRingToggle');
+  ring.setAttribute('aria-pressed', String(planningDay));
+  ring.setAttribute('aria-label', planningDay ? 'Thu gọn kế hoạch' : 'Mở kế hoạch cả ngày');
+}
+function togglePlanningDay(){
+  planningDay = !planningDay;
+  renderBoardVisibility();
+  document.getElementById('todayActivities').scrollIntoView({behavior:'smooth', block:'start'});
+}
+document.getElementById('heroPlanBtn').addEventListener('click', togglePlanningDay);
+document.getElementById('heroRingToggle').addEventListener('click', togglePlanningDay);
+document.querySelectorAll('.daypart-row[data-daypart]').forEach(row => {
+  const select = () => {
+    focusedDaypart = row.dataset.daypart;
+    manualDaypart = true;
+    planningDay = false;
+    renderBoardVisibility();
+    document.getElementById('todayActivities').scrollIntoView({behavior:'smooth', block:'start'});
+  };
+  row.addEventListener('click', select);
+  row.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); select(); } });
+});
 function timeToMinutes(value){
   if(!value || !/^\d{2}:\d{2}$/.test(value)) return null;
   const [h,m] = value.split(':').map(Number);
@@ -3299,8 +3359,7 @@ function paintHeroByDaypart(nowMinute){
   const hero = document.querySelector('section[data-view="today"] .hero');
   if(!hero) return;
   if(viewDate !== todayStr()){ hero.removeAttribute('data-daypart'); return; }
-  const part = DAYPARTS.find(p => nowMinute >= p.start && nowMinute < p.end) || DAYPARTS[DAYPARTS.length-1];
-  hero.dataset.daypart = part.key.toLowerCase();
+  hero.dataset.daypart = daypartForMinute(nowMinute);
 }
 
 function renderTimeBudget(){
@@ -3391,7 +3450,7 @@ function renderTimeBudget(){
       : 'Chưa có block';
     planEl.dataset.mobileLabel = totalPlanned
       ? `${fmtMinsShort(totalPlanned)} block`
-      : '0p block';
+      : "0' block";
     row?.classList.toggle('past', isPast);
     row?.classList.toggle('current', isCurrent);
   });
@@ -3400,7 +3459,7 @@ function renderTimeBudget(){
 // Tự cập nhật mỗi phút khi đang xem hôm nay (chỉ chạm vào số liệu, không render lại form)
 setInterval(() => {
   const sec = document.querySelector('section[data-view="today"]');
-  if(sec && sec.classList.contains('active') && viewDate === todayStr()) renderTimeBudget();
+  if(sec && sec.classList.contains('active') && viewDate === todayStr()){ renderTimeBudget(); renderBoardVisibility(); }
 }, 60000);
 
 // ---------- Calendar / history ----------
@@ -3562,8 +3621,7 @@ function calendarTaskRows(list, date=calendarSelectedDate){
 function renderCalendarDayPanel(){
   const el=document.getElementById('calendarDayPanel'); if(!el) return;
   const date=calendarSelectedDate,st=calendarDayStats(date),rel=calendarRelation(date);
-  const home=st.acts.filter(a=>(a.location||'company')==='home');
-  const company=st.acts.filter(a=>(a.location||'company')==='company');
+  const groups=Object.fromEntries(DAYPART_IDS.map(id => [id, st.acts.filter(a => activityDaypart(a) === id)]));
   const reviewedDone=st.acts.filter(a=>isCompleted(a)&&a.reviewId&&state.reviews.some(r=>r.id===a.reviewId)).length;
   const context=rel==='past'
     ? 'Ngày đã qua · nhấn vào một công việc để xem lại, chỉnh sửa hoặc bổ sung review.'
@@ -3581,13 +3639,12 @@ function renderCalendarDayPanel(){
       <div class="cal-day-stat"><b>${fmtMinsShort(st.mins)}</b><span>Thời gian đã lên block</span></div>
     </div>
     <div class="calendar-task-columns">
-      <div class="calendar-task-col"><div class="calendar-task-col-head"><span>${esc(getColumnSetting('home').icon)} ${esc(getColumnSetting('home').label)}</span><span>${home.length} việc</span></div>${calendarTaskRows(home,date)}</div>
-      <div class="calendar-task-col"><div class="calendar-task-col-head"><span>${esc(getColumnSetting('company').icon)} ${esc(getColumnSetting('company').label)}</span><span>${company.length} việc</span></div>${calendarTaskRows(company,date)}</div>
+      ${DAYPARTS.map(part => `<div class="calendar-task-col"><div class="calendar-task-col-head"><span>${part.icon} ${part.label}</span><span>${groups[part.id].length} việc</span></div>${calendarTaskRows(groups[part.id],date)}</div>`).join('')}
     </div>
     ${rel==='past'&&st.open?`<div class="calendar-history-note">⚠️ Có ${st.open} công việc của ngày này chưa hoàn thành. Đây là dữ liệu lịch sử; bạn có thể mở từng việc để đóng, đổi ngày hoặc bổ sung review.</div>`:''}`;
   document.getElementById('calendarOpenDay')?.addEventListener('click',()=>openDayView(date));
   document.getElementById('calendarAddTask')?.addEventListener('click',()=>{
-    openCreateActivity('company');
+    openCreateActivity(currentDaypart());
     document.getElementById('cDate').value=date;
     document.getElementById('cSubDate').value=date;
     document.getElementById('createActivitySub').textContent=`Tạo công việc cho ${calendarDateLabel(date)}.`;
@@ -3760,6 +3817,27 @@ function canCompleteOnePctToday(act){
 // giống cách dayItemDuration cộng thời lượng, để không đếm trùng một lần nữa ở cha.
 const CARE_POINT_WEED = 2;
 const CARE_POINT_TASK = 1;
+// Phương án A — "compounding thật": điểm mỗi ngày được nhân theo ĐỘNG LƯỢNG streak.
+// Giữ chuỗi ngày chăm trọn → điểm ngày đó ×(1+RATE)^(streak-1), chặn trần sau CAP ngày.
+// Cho 1 ngày nghỉ trong mỗi cửa sổ trượt 7 ngày (recovery day); gãy thật thì streak tụt
+// BREAK_PENALTY bậc chứ không về 0 (dịu, đúng guardrail §7.3). Xem momentumWalk() bên dưới.
+const MOMENTUM_RATE = 0.01;          // +1% mỗi ngày giữ streak
+const MOMENTUM_CAP_DAYS = 30;        // trần: 1.01^29 ≈ ×1.33
+const MOMENTUM_RECOVERY_WINDOW = 7;  // 1 ngày nghỉ được tha trong mỗi 7 ngày
+const MOMENTUM_BREAK_PENALTY = 5;    // gãy thật → tụt 5 bậc streak
+// §5 HAI TRỤC: chia mốc mùa thành trục SINH TRƯỞNG (chiều cao ← việc kế hoạch) và
+// trục SINH SẢN (quả ← việc 1%). Việc kế hoạch là phần lớn công sức nên chiếm ~65%.
+const GROWTH_GOAL_SHARE = 0.65;
+// §1 "không úng không khô kiệt": mỗi ngày cây chỉ HẤP THỤ được một lượng — tưới/bón quá
+// liều không giục cây lớn nhanh hơn. Trần điểm gốc/ngày = DAY_CAP_SLACK × nhịp trung bình
+// của mùa (auto co giãn theo độ dài mùa), tính riêng cho từng trục. Việc làm thêm vẫn được
+// ghi nhận (streak, danh sách) nhưng không cộng thêm điểm vào cây.
+const DAY_CAP_SLACK = 1.25;
+function momentumMultiplier(streak){
+  if(!(streak > 0)) return 1;
+  const eff = Math.min(streak, MOMENTUM_CAP_DAYS);
+  return Math.pow(1 + MOMENTUM_RATE, eff - 1);
+}
 function subIsDone(sub){
   return sub.completed !== undefined ? !!sub.completed : sub.status === 'done';
 }
@@ -3770,17 +3848,70 @@ function carePointsOf(act){
   if(subs.length) return subs.filter(subIsDone).length * unit;
   return isCompleted(act) ? unit : 0;
 }
-// Triết lý 1%: mỗi ngày góp 1 điểm và tổng tích luỹ lớn thêm 1% mỗi ngày.
-// Sau n ngày, tổng = (1.01^n - 1)/0.01. Cả năm 365 ngày = 3678 điểm;
-// mùa cây 2026 (từ ngày mở vườn tới 31/12) 177 ngày = 482 điểm, tức ~2.7 điểm/ngày.
+// MỐC của mùa cây (mẫu số) = (1.01^n - 1)/0.01: cả năm 365 ngày = 3678 điểm;
+// mùa cây 2026 (từ ngày mở vườn tới 31/12) 177 ngày = 482 điểm.
+// Lưu ý: đây chỉ là ĐÍCH cố định. Việc "1% mỗi ngày" nay là cơ chế SỐNG ở tử số —
+// điểm kiếm được nhân theo hệ số động lượng streak (momentumWalk), nên người bền bỉ
+// chạm mốc sớm hơn (cây tăng tốc), đúng ẩn dụ compounding ở §0.
 function carePointGoal(days){
   const n = Math.max(1, Number(days) || 1);
   return Math.round((Math.pow(1.01, n) - 1) / 0.01);
 }
+// Đi TUẦN TỰ theo ngày để tính điểm CÓ nhân hệ số động lượng (path-dependent):
+// điểm gốc mỗi ngày (việc thường +1, việc 1% +2) × momentumMultiplier(streak của ngày đó).
+// "cared" ở đây = getOnePercentDayStatus(d).achieved (có việc 1% và làm xong đúng hạn) —
+// tính lại tại chỗ từ một lượt quét activities để khỏi gọi getOnePercentDayStatus 365 lần.
+function momentumWalk(start, end, caps=null){
+  const acts = (state?.activities || []).filter(a => a.date >= start && a.date <= end);
+  // Tách điểm gốc theo hai trục: việc 1% → sinh sản (quả), việc thường → sinh trưởng (chiều cao).
+  const growthByDay = {}, reproByDay = {}, planByDay = {}, onTimeByDay = {};
+  acts.forEach(a => {
+    const p = carePointsOf(a);
+    if(a.tag1pct){
+      reproByDay[a.date] = (reproByDay[a.date] || 0) + p;
+      planByDay[a.date] = (planByDay[a.date] || 0) + 1;
+      if(isOnePctCompletedForDate(a, a.date)) onTimeByDay[a.date] = (onTimeByDay[a.date] || 0) + 1;
+    } else {
+      growthByDay[a.date] = (growthByDay[a.date] || 0) + p;
+    }
+  });
+  const today = todayStr();
+  const stop = end < today ? end : today; // không đi vào tương lai: ngày chưa tới thì chưa có điểm, chưa "đạt"
+  let streak = 0, growthPoints = 0, reproPoints = 0, overCapToday = false;
+  const restDates = [];   // các ngày đã tiêu quyền nghỉ, để giới hạn 1 lần / cửa sổ 7 ngày
+  const days = [];
+  for(let d = start; d && d <= stop; d = addDays(d, 1)){
+    const planned = planByDay[d] || 0;
+    const cared = planned > 0 && (onTimeByDay[d] || 0) === planned;
+    if(cared){
+      streak = Math.min(streak + 1, MOMENTUM_CAP_DAYS);
+    } else if(streak > 0){
+      const windowStart = addDays(d, -(MOMENTUM_RECOVERY_WINDOW - 1));
+      const usedInWindow = restDates.filter(rd => rd >= windowStart).length;
+      if(usedInWindow < 1) restDates.push(d);                       // ngày nghỉ được tha → streak giữ nguyên
+      else streak = Math.max(0, streak - MOMENTUM_BREAK_PENALTY);   // gãy thật → tụt vài bậc
+    }
+    const mult = momentumMultiplier(streak);
+    // Trần hấp thụ/ngày ÁP TRƯỚC momentum: quá liều không được cộng thêm (§1 "không úng").
+    const gRaw = growthByDay[d] || 0, rRaw = reproByDay[d] || 0;
+    const gBase = caps ? Math.min(gRaw, caps.growth) : gRaw;
+    const rBase = caps ? Math.min(rRaw, caps.repro)  : rRaw;
+    if(caps && d === today && (gRaw > caps.growth || rRaw > caps.repro)) overCapToday = true;
+    const g = gBase * mult, r = rBase * mult;
+    growthPoints += g; reproPoints += r;
+    days.push({ date:d, growth:g, repro:r, cared, streak, mult });
+  }
+  return { points:growthPoints + reproPoints, growthPoints, reproPoints,
+           days, streakEnd:streak, multEnd:momentumMultiplier(streak), overCapToday };
+}
 function carePointsInRange(start, end){
-  return (state?.activities || [])
-    .filter(a => a.date >= start && a.date <= end)
-    .reduce((sum,a) => sum + carePointsOf(a), 0);
+  return Math.round(momentumWalk(start, end).points);
+}
+// Động lượng hiện tại của cây mùa này — để hiển thị "ngọn lửa 1%".
+function currentMomentum(){
+  const y = Number(todayStr().slice(0,4));
+  const walk = momentumWalk(treeYearStartDate(y), `${y}-12-31`);
+  return { streak: walk.streakEnd, mult: walk.multEnd };
 }
 
 function yearOnePctSummaryForYear(year){
@@ -3790,8 +3921,20 @@ function yearOnePctSummaryForYear(year){
   const sum = summarizeOnePctRange(start, end);
   const careActions = state.activities.filter(a => a.tag1pct && a.date >= start && a.date <= end && isOnePctCompletedForDate(a, a.date)).length;
   const goalDays = treeYearGoalDays(y);
+  const pointGoal = carePointGoal(goalDays);
+  const growthGoal = Math.max(1, Math.round(pointGoal * GROWTH_GOAL_SHARE));
+  const reproGoal = Math.max(1, pointGoal - growthGoal);
+  // Sàn = 2 để một "ngày chăm trọn" tối thiểu (≥1 tưới + 1 bón, §3) luôn được tính đủ —
+  // 1 việc 1% đáng +2 nên trần repro không được nhỏ hơn 2.
+  const dayCap = { growth: Math.max(2, Math.round(DAY_CAP_SLACK * growthGoal / Math.max(1, goalDays))),
+                   repro:  Math.max(2, Math.round(DAY_CAP_SLACK * reproGoal  / Math.max(1, goalDays))) };
+  const walk = momentumWalk(start, end, dayCap);
   return {year:y, start, end, goal:goalDays, achieved:sum.achievedDays, careActions, sum,
-          points:carePointsInRange(start, end), pointGoal:carePointGoal(goalDays)};
+          points:Math.round(walk.points), pointGoal,
+          growthPoints:Math.round(walk.growthPoints), growthGoal,
+          reproPoints:Math.round(walk.reproPoints), reproGoal,
+          dayCap, overCapToday:walk.overCapToday,
+          momentum:{streak:walk.streakEnd, mult:walk.multEnd}};
 }
 function yearOnePctSummary(){
   return yearOnePctSummaryForYear(todayStr().slice(0,4));
@@ -3808,11 +3951,11 @@ function orchardHtml(){
   const years = orchardYearList();
   const cards = years.map(y => {
     const ys = yearOnePctSummaryForYear(y);
-    const info = treeStageInfo(ys.points, ys.pointGoal);
+    const info = treeStageInfo(ys.growthPoints, ys.growthGoal);
     const cls = y === current ? 'orchard-card active' : 'orchard-card';
     return `<div class="${cls}">
-      <div class="orchard-tree">${orangeTreeSvg(info, 'orchard'+y)}</div>
-      <div><div class="oy">Cây cam ${y}</div><div class="osub">${esc(info.label)} · ${ys.points}/${ys.pointGoal} điểm</div></div>
+      <div class="orchard-tree">${orangeTreeSvg(info, 'orchard'+y, fruitCountOf(ys))}</div>
+      <div><div class="oy">Cây cam ${y}</div><div class="osub">${esc(info.label)} · 🌿${ys.growthPoints}/${ys.growthGoal} · 🍊${ys.reproPoints}/${ys.reproGoal}</div></div>
     </div>`;
   }).join('');
   return `${cards}<div class="orchard-card orchard-next">
@@ -3829,6 +3972,21 @@ function treeStageInfo(points, goal){
   if(pct < .50) return {key:'smalltree', label:'Ra tán', note:'Tán lá bắt đầu rộng hơn.', level:4, pct};
   if(pct < .82) return {key:'flower', label:'Ra hoa', note:'Cây chuẩn bị kết quả.', level:5, pct};
   return {key:'mature', label:'Trưởng thành', note:'Cây cam đã sum suê và có quả.', level:6, pct};
+}
+// Số quả/hoa hiện trên cây = theo tiến độ trục SINH SẢN (việc 1%), 0..số vị trí quả.
+// Trả null khi thiếu dữ liệu repro để orangeTreeSvg dùng hành vi cũ (đầy quả).
+function fruitCountOf(y){
+  if(!y || !y.reproGoal) return null;
+  const rpct = Math.max(0, Math.min(1, y.reproPoints / y.reproGoal));
+  return Math.round(rpct * CROWN_FRUIT.length);
+}
+// Nudge cân bằng HAI trục (§1): cảnh báo lệch cả hai chiều, so theo tiến độ tương đối.
+function balanceHint(y){
+  if(!y || !y.growthGoal || !y.reproGoal) return '';
+  const g = y.growthPoints / y.growthGoal, r = y.reproPoints / y.reproGoal;
+  if(g >= .50 && r < g * 0.5) return '🍃 Cây tốt lá mà thưa quả — thêm việc 1% (mở review/Dọn vườn) để nuôi quả.';
+  if(r >= .40 && g < r * 0.5) return '🌱 Nhiều việc 1% mà thân còn non — thêm việc kế hoạch để cây đủ sức đỡ quả.';
+  return '';
 }
 // Tán lá dựng từ một cụm blob chuẩn hoá quanh tâm (đơn vị = bán kính tán R).
 // Nhờ vậy mọi cấp cây đều dùng chung hình dáng, chỉ đổi tâm và R — và quan trọng
@@ -3867,7 +4025,7 @@ function branchPaths(g){
   return `<path d="${mk(-1)}" stroke="#5E3A1E" stroke-width="${sw}" stroke-linecap="round"/>`
        + `<path d="${mk(1)}" stroke="#5E3A1E" stroke-width="${sw}" stroke-linecap="round"/>`;
 }
-function orangeTreeSvg(info, id='hero'){
+function orangeTreeSvg(info, id='hero', fruitCount=null){
   const l = info.level;
   const g = TREE_GEOM[Math.min(6, Math.max(3, l))];
   const hasTrunk = l >= 3, hasBranches = l >= 4, hasFlowers = l >= 5, hasFruits = l >= 6;
@@ -3894,7 +4052,9 @@ function orangeTreeSvg(info, id='hero'){
       <circle cx="${n1(110-0.05*g.r)}" cy="${n1(g.cy-0.58*g.r)}" r="${n1(0.12*g.r)}" fill="#B6F2C6" opacity="0.22"/>
     </g>` : '';
 
-  const decor = (hasFlowers || hasFruits) ? CROWN_FRUIT.map(([x,y]) => {
+  // Số quả/hoa vẽ ra = fruitCount (theo trục sinh sản); null = đầy (hành vi cũ).
+  const slots = (fruitCount == null) ? CROWN_FRUIT.length : Math.max(0, Math.min(CROWN_FRUIT.length, fruitCount));
+  const decor = (hasFlowers || hasFruits) ? CROWN_FRUIT.slice(0, slots).map(([x,y]) => {
     const cx = n1(110+x*g.r), cy = n1(g.cy+y*g.r);
     return hasFruits
       ? `<circle cx="${cx}" cy="${cy}" r="${n1(0.145*g.r)}" fill="url(#orangeG_${id})"/>`
@@ -3925,12 +4085,24 @@ function renderTreeProgress(){
   const title = document.getElementById('treeYearTitle');
   if(!treeStage || !label) return;
   const y = yearOnePctSummary();
-  const info = treeStageInfo(y.points, y.pointGoal);
-  treeStage.innerHTML = `<div class="tree-art">${orangeTreeSvg(info,'hero')}</div>`;
+  const info = treeStageInfo(y.growthPoints, y.growthGoal);
+  treeStage.innerHTML = `<div class="tree-art">${orangeTreeSvg(info,'hero',fruitCountOf(y))}</div>`;
   if(title) title.textContent = `🍊 Cây cam ${y.year}`;
-  label.textContent = `${info.label} · ${y.points}/${y.pointGoal} điểm`;
+  const mo = y.momentum || {mult:1, streak:0};
+  const hint = balanceHint(y);
+  const sp = Math.min(100, Math.round(mo.streak / MOMENTUM_CAP_DAYS * 100));
+  const moRow = mo.streak > 0
+    ? `<div style="display:flex;align-items:center;gap:6px;margin-top:5px">
+         <span aria-hidden="true">🔥</span>
+         <div style="flex:1;height:5px;border-radius:3px;background:rgba(255,255,255,.16)"><div style="height:100%;width:${sp}%;background:linear-gradient(90deg,#FCD34D,#F97316);border-radius:3px"></div></div>
+         <span style="font-size:10.5px;color:#FFE9C7;white-space:nowrap">×${mo.mult.toFixed(2)} · ${mo.streak}/${MOMENTUM_CAP_DAYS}${mo.streak>=MOMENTUM_CAP_DAYS?' (trần)':''}</span>
+       </div>`
+    : `<div style="margin-top:5px;font-size:10.5px;color:#E9D7B0;opacity:.85">🔥 Giữ chuỗi ngày chăm trọn để mỗi ngày +1% điểm</div>`;
+  const hintRow = hint ? `<div style="margin-top:5px;font-size:10.5px;color:#FFDFA6;line-height:1.35">${hint}</div>` : '';
+  const capRow = y.overCapToday ? `<div style="margin-top:5px;font-size:10.5px;color:#BFE3FF;line-height:1.35">🌊 Cây đã đủ nước/phân hôm nay — việc làm thêm vẫn được ghi nhận, cây chỉ hấp thụ vừa đủ mỗi ngày.</div>` : '';
+  label.innerHTML = `<div>${info.label} · 🌿${y.growthPoints}/${y.growthGoal} · 🍊${y.reproPoints}/${y.reproGoal}</div>${moRow}${hintRow}${capRow}`;
   const wrap = label.closest('.hero-tree');
-  if(wrap) wrap.title = `${info.label} — ${y.points}/${y.pointGoal} điểm chăm cây (việc thường 1 điểm, việc nhổ cỏ 1% được 2 điểm). Mốc ${y.pointGoal} điểm là nhịp +1% mỗi ngày trong ${y.goal} ngày của mùa cây ${y.year}.`;
+  if(wrap) wrap.title = `${info.label} — Chiều cao theo việc kế hoạch: 🌿 ${y.growthPoints}/${y.growthGoal}. Quả theo việc 1%: 🍊 ${y.reproPoints}/${y.reproGoal}. Điểm đã nhân động lượng ×${mo.mult.toFixed(2)} từ chuỗi ${mo.streak} ngày chăm trọn (giữ streak → +1%/ngày, trần ×1.33 sau 30 ngày; nghỉ 1 ngày/tuần không sao). Mỗi ngày cây chỉ hấp thụ tối đa 🌿${y.dayCap?.growth ?? '–'} + 🍊${y.dayCap?.repro ?? '–'} điểm gốc — làm quá liều không giục cây lớn nhanh hơn.${hint ? '\n' + hint : ''}`;
 }
 
 function renderToday(){
@@ -3957,10 +4129,18 @@ function renderToday(){
   renderTimeBudget();
   renderOnePercentStatus(t);
   const streakCap = document.getElementById('streakCap');
-  if(streakCap) streakCap.textContent = `🍊 +1% streak ${streak} ngày`;
+  if(streakCap){
+    const mo = currentMomentum();
+    streakCap.textContent = mo.mult > 1.005
+      ? `🍊 Động lượng ×${mo.mult.toFixed(2)} · streak ${streak} ngày`
+      : `🍊 +1% streak ${streak} ngày`;
+  }
   const qt = dailyQuote(t);
   const heroQuote = document.getElementById('heroQuote');
-  if(heroQuote) heroQuote.innerHTML = quoteMarkup(qt);
+  if(heroQuote){
+    heroQuote.innerHTML = quoteMarkup(qt);
+    heroQuote.title = `${qt.q} — ${qt.a || ''}`;
+  }
   renderTreeProgress();
 
   // Kéo-thả là thứ tự mặc định. Bộ chọn phía trên chỉ áp dụng một lần rồi ghi lại order.
@@ -3978,19 +4158,26 @@ function renderToday(){
 
   renderColumnHeaders();
 
-  // chia 2 cột theo địa điểm. Việc con kế thừa cột của công việc cha.
-  [['home','colListHome','colCountHome','colTimeHome'],
-   ['company','colListCompany','colCountCompany','colTimeCompany']].forEach(([loc, listId, countId, timeId]) => {
-    const colItems = sorter(dayItems.filter(item => (item.location||'company') === loc));
+  // Ba cột theo buổi; việc con khác ngày kế thừa buổi của việc cha.
+  DAYPARTS.forEach(part => {
+    const loc = part.id;
+    const suffix = part.key;
+    const listId = `colList${suffix}`, countId = `colCount${suffix}`, timeId = `colTime${suffix}`;
+    const colItems = sorter(dayItems.filter(item => activityDaypart(item) === loc));
     const colTime = colItems.reduce((sum,item) => sum + dayItemDuration(item,t), 0);
     document.getElementById(countId).textContent = `${colItems.length} việc`;
-    document.getElementById(timeId).textContent = fmtMinsShort(colTime);
+    const timeEl = document.getElementById(timeId);
+    const budgetMinutes = part.end - part.start;
+    timeEl.textContent = `${colTime}'/${budgetMinutes}'`;
+    timeEl.title = `${colTime} phút đã lên kế hoạch trên ${budgetMinutes} phút của buổi ${part.label.toLowerCase()}`;
+    timeEl.classList.toggle('over-budget', colTime > budgetMinutes);
     const el = document.getElementById(listId);
     const taskHtml = colItems.length
       ? colItems.map(item => item.__daySubtask ? renderDaySubtaskCard(item.parent,item.sub) : renderActCard(item)).join('')
       : `<div class="empty" style="padding:20px 12px">Chưa có việc trong cột ${esc(getColumnSetting(loc).label)}.</div>`;
     el.innerHTML = taskHtml + renderColumnAddForm(loc);
   });
+  renderBoardVisibility();
 }
 
 // ---------- Tìm kiếm công việc ----------
@@ -4021,7 +4208,7 @@ function renderTaskSearch(){
     return;
   }
   box.innerHTML = head + hits.map(a => {
-    const col = getColumnSetting(a.location || 'company');
+    const col = getColumnSetting(activityDaypart(a));
     const done = isCompleted(a);
     return `<button type="button" class="search-row ${done?'done':''}" data-search-act="${a.id}">
       <span class="search-row-main">
@@ -4052,18 +4239,17 @@ document.getElementById('taskSearchResults')?.addEventListener('click', e => {
 });
 
 function getColumnSetting(loc){
-  const fallback = loc === 'home' ? {label:'Ở nhà', icon:'🏠'} : {label:'Công ty', icon:'🏢'};
-  const cfg = (state.columnSettings && state.columnSettings[loc]) || {};
-  return {label: cfg.label || fallback.label, icon: cfg.icon || fallback.icon};
+  const part = DAYPARTS.find(p => p.id === loc) || DAYPARTS[0];
+  return {label:part.label, icon:part.icon};
 }
 function renderColumnHeaders(){
-  const map = {home:['colHeadHome','colTimeHome','colCountHome'], company:['colHeadCompany','colTimeCompany','colCountCompany']};
-  Object.entries(map).forEach(([loc,[headId,timeId,countId]]) => {
+  DAYPARTS.forEach(part => {
+    const headId = `colHead${part.key}`, timeId = `colTime${part.key}`, countId = `colCount${part.key}`;
     const head = document.getElementById(headId); if(!head) return;
-    const cfg = getColumnSetting(loc);
-    const time = document.getElementById(timeId)?.textContent || '0p';
+    const cfg = getColumnSetting(part.id);
+    const time = document.getElementById(timeId)?.textContent || "0'";
     const count = document.getElementById(countId)?.textContent || '0 việc';
-    head.innerHTML = `<button type="button" class="col-title-edit" data-edit-column="${loc}" title="Đổi tên/icon cột"><span class="col-icon">${esc(cfg.icon)}</span><span class="col-label">${esc(cfg.label)}</span><span class="col-edit-gear">⚙</span></button><span class="col-time" id="${timeId}">${esc(time)}</span><span class="col-count" id="${countId}">${esc(count)}</span>`;
+    head.innerHTML = `<span class="col-title-fixed">${cfg.icon} ${cfg.label}</span><span class="col-time" id="${timeId}">${esc(time)}</span><span class="col-count" id="${countId}">${esc(count)}</span>`;
   });
 }
 function renderColumnAddForm(loc){
@@ -4164,7 +4350,8 @@ function renderActCard(a){
 
 function oneP_itemHTML(a){
   const done = isCompleted(a);
-  const locLabel = (a.location||'company') === 'home' ? '🏠 Ở nhà' : '🏢 Công ty';
+  const part = getColumnSetting(activityDaypart(a));
+  const locLabel = `${part.icon} ${part.label}`;
   return `<div class="action-item ${done?'done':''}" data-goid="${a.id}" data-godate="${a.date}">
     <button class="a-check ${done?'on':''}" data-optoggle aria-label="Đánh dấu hoàn thành">${done?'✓':''}</button>
     <div class="a-body">
@@ -4427,7 +4614,7 @@ function createOnePctFromMistake(m){
 
   // Dùng board tạo công việc để người dùng chỉnh deadline trước khi chốt.
   // Sau khi submit, việc 1% sẽ được khóa ngày hẹn và không thể xoá.
-  openCreateActivity('company');
+  openCreateActivity(currentDaypart());
   createDraftMeta = {
     type:'mistakeOnePct',
     forceOnePct:true,
@@ -5045,7 +5232,6 @@ function setViewDate(d){
   if(!d) return;
   viewDate = d;
   renderToday();
-  window.scrollTo({top:0, behavior:'smooth'});
 }
 document.getElementById('dayPrevBtn').addEventListener('click', () => setViewDate(addDays(viewDate,-1)));
 document.getElementById('dayNextBtn').addEventListener('click', () => setViewDate(addDays(viewDate,1)));
@@ -5072,7 +5258,7 @@ document.getElementById('dayPick').addEventListener('change', e => {
   if(e.target.value) setViewDate(e.target.value);
 });
 
-let creatingLocation = 'company';
+let creatingLocation = 'morning';
 let createDraftSubs = [];
 let createDraftMeta = null;
 function renderCreateSubtasks(){
@@ -5093,7 +5279,7 @@ function renderCreateSubtasks(){
       </div>
     </div>`).join('');
 }
-function openCreateActivity(loc='company'){
+function openCreateActivity(loc=currentDaypart()){
   creatingLocation = loc;
   const colCfg = getColumnSetting(loc);
   const locLabel = colCfg.label;
@@ -5152,13 +5338,13 @@ document.getElementById('createActivityForm').addEventListener('submit', e => {
   e.preventDefault();
   const title = document.getElementById('cTitle').value.trim();
   if(!title){ document.getElementById('cTitle').focus(); return; }
-  const loc = creatingLocation || 'company';
+  const loc = creatingLocation || currentDaypart();
   const requestedDate = document.getElementById('cDate').value || viewDate;
   const meta = createDraftMeta;
   const isOnePct = meta?.forceOnePct ? true : document.getElementById('cTag1pct').checked;
   const date = requestedDate;
   const act = {
-    id:uid(), date, title, location:loc,
+    id:uid(), date, title, daypart:loc,
     description:document.getElementById('cDesc').value.trim(),
     tag1pct:isOnePct,
     tags:getTagInput('cTags'),
@@ -5196,14 +5382,14 @@ document.getElementById('createActivityForm').addEventListener('submit', e => {
 });
 
 function addActivityFromColumnForm(form){
-  const loc = form.dataset.colAdd || 'company';
+  const loc = form.dataset.colAdd || currentDaypart();
   const titleEl = form.querySelector('.col-q-title');
   const title = titleEl.value.trim();
   if(!title){ titleEl.focus(); return; }
   const durVal = parseInt(form.querySelector('.col-q-duration')?.value || '', 10);
   const act = {
     id:uid(), date:viewDate, title,
-    location:loc,
+    daypart:loc,
     description:'',
     tag1pct:false,
     tags:[],
@@ -5218,7 +5404,7 @@ function addActivityFromColumnForm(form){
   save();
   openActs.add(act.id);
   renderAll();
-  toast(`Đã thêm công việc ${loc === 'home' ? 'ở nhà' : 'ở công ty'}.`);
+  toast(`Đã thêm công việc buổi ${getColumnSetting(loc).label.toLowerCase()}.`);
   setTimeout(() => {
     const card = document.querySelector(`.act-card[data-id="${act.id}"]`);
     if(card) card.scrollIntoView({behavior:'smooth', block:'center'});
@@ -5235,11 +5421,9 @@ document.getElementById('todayActivities').addEventListener('submit', e => {
 
 document.getElementById('todayActivities').addEventListener('click', e => {
   if(Date.now() < suppressCardClickUntil){ e.preventDefault(); e.stopPropagation(); return; }
-  const editColumnBtn = e.target.closest('[data-edit-column]');
-  if(editColumnBtn){ openColumnEdit(editColumnBtn.dataset.editColumn); return; }
   const addCard = e.target.closest('[data-col-add-card]');
   if(addCard){
-    openCreateActivity(addCard.dataset.colAddCard || 'company');
+    openCreateActivity(addCard.dataset.colAddCard || currentDaypart());
     return;
   }
 
@@ -5376,7 +5560,7 @@ document.getElementById('todayActivities').addEventListener('keydown', e => {
 // ----- Thứ tự kéo-thả mặc định (chuột + cảm ứng) -----
 function colActsForView(loc){
   return state.activities
-    .filter(a => a.date === viewDate && (a.location||'company') === loc)
+    .filter(a => a.date === viewDate && activityDaypart(a) === loc)
     .sort((a,b) => (a.order ?? 1e9) - (b.order ?? 1e9) || (a.startTime||'99:99').localeCompare(b.startTime||'99:99'));
 }
 function normalizeOrderCol(loc){
@@ -5411,9 +5595,9 @@ function quickSortComparator(mode){
 }
 function applyQuickSort(mode){
   if(!mode) return;
-  ['home','company'].forEach(loc => {
+  DAYPART_IDS.forEach(loc => {
     const list = state.activities
-      .filter(a => a.date === viewDate && (a.location||'company') === loc)
+      .filter(a => a.date === viewDate && activityDaypart(a) === loc)
       .sort(quickSortComparator(mode));
     list.forEach((a,i) => a.order = i);
   });
@@ -5433,6 +5617,7 @@ function clearDragCandidate(){
   dragCtx = null;
 }
 document.getElementById('todayActivities').addEventListener('pointerdown', e => {
+  if(planCustomizing) return;
   if(e.button !== undefined && e.button !== 0) return;
   if(e.target.closest('button,input,select,textarea,a,.sub-row,.sub-details,.sub-add,.col-add-card')) return;
   const row = e.target.closest('.act-row');
@@ -5485,8 +5670,8 @@ document.getElementById('todayActivities').addEventListener('pointermove', e => 
   const overCard=under && under.closest('.act-card[data-id]');
   if(overCard && overCard.dataset.id !== dragCtx.id) overCard.classList.add('drag-over');
   dragCtx.overId=overCard && overCard.dataset.id !== dragCtx.id ? overCard.dataset.id : null;
-  const overCol=under && under.closest('.col-home,.col-company');
-  dragCtx.overLoc=overCol ? (overCol.classList.contains('col-home')?'home':'company') : null;
+  const overCol=under && under.closest('.daypart-column');
+  dragCtx.overLoc=overCol?.dataset.column || null;
 });
 function endPointerDrag(e){
   if(!dragCtx || (e && dragCtx.pointerId !== e.pointerId)) return;
@@ -5500,13 +5685,13 @@ function endPointerDrag(e){
   suppressCardClickUntil=Date.now()+450;
   const from=state.activities.find(a => a.id===ctx.id);
   if(!from) return;
-  const oldLoc=from.location||'company';
+  const oldLoc=activityDaypart(from);
   normalizeOrderCol(oldLoc);
   if(ctx.overId){
     const to=state.activities.find(a => a.id===ctx.overId);
     if(!to) return;
-    const newLoc=to.location||'company';
-    from.location=newLoc;
+    const newLoc=activityDaypart(to);
+    from.daypart=newLoc;
     const list=colActsForView(newLoc).filter(a => a.id!==from.id);
     const targetIndex=Math.max(0,list.findIndex(a => a.id===to.id));
     list.splice(targetIndex,0,from);
@@ -5514,7 +5699,7 @@ function endPointerDrag(e){
     if(oldLoc!==newLoc) normalizeOrderCol(oldLoc);
     save();renderToday();
   }else if(ctx.overLoc){
-    from.location=ctx.overLoc;
+    from.daypart=ctx.overLoc;
     const list=colActsForView(ctx.overLoc).filter(a => a.id!==from.id);
     list.push(from);
     list.forEach((a,i)=>a.order=i);
@@ -5669,7 +5854,7 @@ function readDuration(selectId, customId){
 });
 
 
-let qLocation = 'company';
+let qLocation = 'morning';
 function setQuickDate(d){
   document.getElementById('qDate').value = d;
   document.getElementById('qTodayBtn').classList.toggle('on', d === todayStr());
@@ -5687,7 +5872,7 @@ function quickAddActivity(){
   if(!title){ document.getElementById('qTitle').focus(); return; }
   const date = document.getElementById('qDate').value || viewDate;
   state.activities.push({
-    id:uid(), date, title, location:qLocation,
+    id:uid(), date, title, daypart:qLocation,
     description:document.getElementById('qDesc').value.trim(),
     tag1pct:false,
     tags:getTagInput('qTags'),
@@ -6037,48 +6222,6 @@ document.getElementById('bDeleteBtn').addEventListener('click', () => {
 
 
 
-// ---------- Editable column headers ----------
-const COLUMN_ICONS = ['🏠','🏢','💼','🧠','📚','🎯','🌱','🍊','☀️','🌙','⚡','🔥','🛠️','💻','📞','✍️','🧘','🏋️','🎱','❤️','💰','🧹','📌','⭐'];
-let editingColumnLoc = null;
-function renderColumnIconPicker(selected){
-  const box = document.getElementById('colIconPicker');
-  if(!box) return;
-  box.innerHTML = COLUMN_ICONS.map(icon => `<button type="button" class="icon-choice ${icon===selected?'on':''}" data-col-icon="${esc(icon)}">${esc(icon)}</button>`).join('');
-}
-function openColumnEdit(loc){
-  editingColumnLoc = loc;
-  const cfg = getColumnSetting(loc);
-  document.getElementById('colEditLabel').value = cfg.label;
-  document.getElementById('colEditIcon').value = cfg.icon;
-  renderColumnIconPicker(cfg.icon);
-  document.getElementById('columnEditModal').classList.add('open');
-  setTimeout(() => document.getElementById('colEditLabel')?.focus(), 80);
-}
-document.getElementById('colIconPicker').addEventListener('click', e => {
-  const b = e.target.closest('[data-col-icon]');
-  if(!b) return;
-  document.getElementById('colEditIcon').value = b.dataset.colIcon;
-  renderColumnIconPicker(b.dataset.colIcon);
-});
-document.getElementById('colEditIcon').addEventListener('input', e => renderColumnIconPicker(e.target.value.trim()));
-document.getElementById('columnResetBtn').addEventListener('click', () => {
-  if(!editingColumnLoc) return;
-  const def = editingColumnLoc === 'home' ? {label:'Ở nhà', icon:'🏠'} : {label:'Công ty', icon:'🏢'};
-  document.getElementById('colEditLabel').value = def.label;
-  document.getElementById('colEditIcon').value = def.icon;
-  renderColumnIconPicker(def.icon);
-});
-document.getElementById('columnEditForm').addEventListener('submit', e => {
-  e.preventDefault();
-  if(!editingColumnLoc) return;
-  const label = document.getElementById('colEditLabel').value.trim() || (editingColumnLoc === 'home' ? 'Ở nhà' : 'Công ty');
-  const icon = document.getElementById('colEditIcon').value.trim() || (editingColumnLoc === 'home' ? '🏠' : '🏢');
-  state.columnSettings = state.columnSettings || {};
-  state.columnSettings[editingColumnLoc] = {label, icon};
-  save(); closeModals(); renderToday(); toast('Đã cập nhật cột công việc.');
-});
-
-
 document.getElementById('addForm').addEventListener('submit', e => {
   e.preventDefault();
   const title = document.getElementById('fTitle').value.trim();
@@ -6086,7 +6229,7 @@ document.getElementById('addForm').addEventListener('submit', e => {
   const date = document.getElementById('fDate').value || viewDate;
   const location = document.getElementById('fLocation').value;
   state.activities.push({
-    id:uid(), date, title, location,
+    id:uid(), date, title, daypart:location,
     description:document.getElementById('fDesc').value.trim(),
     tag1pct:document.getElementById('fTag1pct').checked,
     tags:getTagInput('fTags'),
@@ -6120,7 +6263,7 @@ function openEdit(act){
   document.getElementById('eTag1pct').checked = !!act.tag1pct;
   document.getElementById('eTag1pct').closest('.tag1-check').style.display = 'flex';
   setTagInput('eTags', tagsOf(act));
-  document.getElementById('eLocation').value = act.location || 'company';
+  document.getElementById('eLocation').value = activityDaypart(act);
   document.getElementById('eDate').value = act.date || todayStr();
   document.getElementById('eDate').disabled = !!act.tag1pct;
   document.getElementById('eDeadlineLock').style.display = act.tag1pct ? 'block' : 'none';
@@ -6153,7 +6296,7 @@ document.getElementById('editForm').addEventListener('submit', e => {
   const wasOnePct = !!act.tag1pct;
   act.tag1pct = document.getElementById('eTag1pct').checked;
   act.tags = getTagInput('eTags');
-  act.location = document.getElementById('eLocation').value;
+  act.daypart = document.getElementById('eLocation').value;
   if(!wasOnePct) act.date = document.getElementById('eDate').value || act.date;
   act.startTime = document.getElementById('eStartTime').value || null;
   act.durationMinutes = readDuration('eDuration','eDurationCustom');
@@ -6187,7 +6330,7 @@ function openReview(act, sub){
   document.getElementById('rFuDesc').value = '';
   document.getElementById('rFuDate').value = addDays(todayStr(),1);
   document.getElementById('rFuTime').value = '';
-  document.getElementById('rFuLoc').value = act.location || 'company';
+  document.getElementById('rFuLoc').value = activityDaypart(act);
   document.getElementById('rFuDur').value = '';
   document.getElementById('reviewModal').classList.add('open');
   autoGrowModal('reviewModal');
@@ -6242,7 +6385,7 @@ document.getElementById('reviewForm').addEventListener('submit', e => {
       title: fuTitle,
       description: document.getElementById('rFuDesc').value.trim(),
       tag1pct: true,
-      location: document.getElementById('rFuLoc').value,
+      daypart: document.getElementById('rFuLoc').value,
       tags: tagsOf(act),
       startTime: document.getElementById('rFuTime').value || null,
       durationMinutes: fuDur ? parseInt(fuDur,10) : null,
@@ -6417,8 +6560,8 @@ function renderReport(){
   const goal = goalFor(range.goalType);
   const progress = Math.min(100, Math.round(sum.achievedDays / Math.max(1,goal) * 100));
   const year = yearOnePctSummary();
-  // Cây ở tab Vườn cam phải lớn theo đúng thước đo của hero: điểm chăm cây.
-  const treeInfo = treeStageInfo(year.points, year.pointGoal);
+  // Cây ở tab Vườn cam phải lớn theo đúng thước đo của hero: chiều cao ← việc kế hoạch.
+  const treeInfo = treeStageInfo(year.growthPoints, year.growthGoal);
   const yearProgress = Math.min(100, Math.round(year.points / Math.max(1,year.pointGoal) * 100));
   const nextYear = Number(todayStr().slice(0,4)) + 1;
 
@@ -6432,10 +6575,10 @@ function renderReport(){
     </div>
 
     <div class="report-tree-mini">
-      <div class="tree-mini-svg">${orangeTreeSvg(treeInfo,'report')}</div>
+      <div class="tree-mini-svg">${orangeTreeSvg(treeInfo,'report',fruitCountOf(year))}</div>
       <div>
         <h4>${esc(treeInfo.label)}</h4>
-        <p>${year.points}/${year.pointGoal} điểm chăm cây · ${year.achieved}/${year.goal} ngày trọn việc 1%</p>
+        <p>🌿 ${year.growthPoints}/${year.growthGoal} · 🍊 ${year.reproPoints}/${year.reproGoal} điểm · ${year.achieved}/${year.goal} ngày trọn việc 1%</p>
       </div>
     </div>
 
@@ -6548,292 +6691,7 @@ applyTheme();
 renderAll();
 syncTimerToolButtons();
 </script>
-<script type="module">
-/* =====================================================
-   CLOUD SYNC (Firebase Realtime Database)
-   Bước 1: Dán firebaseConfig của bạn vào bên dưới
-   Bước 2: Đổi SYNC_ID thành một chuỗi bí mật của riêng bạn
-   ===================================================== */
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-// ⬇️⬇️⬇️ DÁN CONFIG CỦA BẠN VÀO ĐÂY (lấy từ Firebase Console) ⬇️⬇️⬇️
-const firebaseConfig = {
-  apiKey: "AIzaSyD8PJGhbIw3Nkv5mmXYfKcOHDXtm-yLMJo",
-  authDomain: "opos-f647f.firebaseapp.com",
-  databaseURL: "https://opos-f647f-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "opos-f647f",
-  storageBucket: "opos-f647f.firebasestorage.app",
-  messagingSenderId: "24969809399",
-  appId: "1:24969809399:web:f36933bb2444f6470ff2f2"
-};
-// ⬆️⬆️⬆️ HẾT PHẦN CẦN DÁN ⬆️⬆️⬆️
-
-// Đổi thành chuỗi bí mật của riêng bạn (như mật khẩu, khó đoán)
-const SYNC_ID = "dung-le-da-poet-x9k2";
-
-const CONFIG_OK = !firebaseConfig.apiKey.startsWith("DAN_");
-let db = null;
-if (CONFIG_OK) {
-  try { db = getDatabase(initializeApp(firebaseConfig)); }
-  catch(e){ console.error("Firebase init error:", e); }
-}
-
-const statusEl = document.getElementById('syncStatus');
-const setStatus = (msg) => { if(statusEl) statusEl.textContent = msg; };
-
-// Dòng trạng thái ghi cả ngày lẫn giờ: mở lại máy sau vài hôm vẫn biết bản dữ liệu
-// là của ngày nào, chứ không chỉ thấy mỗi "lúc 14:35:07".
-function fmtSyncTime(value){
-  const d = value ? new Date(value) : new Date();
-  if(Number.isNaN(d.getTime())) return '';
-  const p = n => String(n).padStart(2,'0');
-  return `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())} ngày ${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()}`;
-}
-
-// Firebase trả về mã lỗi thô ("PERMISSION_DENIED: Permission denied") không nói
-// được phải làm gì. Dịch các lỗi hay gặp thành hướng dẫn xử lý cụ thể.
-const RULES_HINT = 'Firebase từ chối truy cập (PERMISSION_DENIED). Gần như luôn là do Rules của Realtime Database đã hết hạn (rules thử nghiệm chỉ sống 30 ngày). Mở Firebase Console \u2192 Realtime Database \u2192 tab Rules, cấp quyền cho nhánh "sync", rồi tải lại trang.';
-function explainSyncError(e){
-  const msg = (e && (e.message || e.code)) ? String(e.message || e.code) : String(e || '');
-  if(/permission[_ ]denied/i.test(msg)) return RULES_HINT;
-  if(/network|offline|failed to fetch|unavailable/i.test(msg)) return 'Không kết nối được tới Firebase. Kiểm tra mạng rồi thử lại.';
-  return msg;
-}
-function shortSyncError(e){
-  const msg = (e && (e.message || e.code)) ? String(e.message || e.code) : String(e || '');
-  if(/permission[_ ]denied/i.test(msg)) return 'Firebase chặn truy cập \u2014 Rules đã hết hạn. Xem hướng dẫn ở dòng trạng thái bên dưới.';
-  return 'Lỗi đồng bộ. Kiểm tra mạng hoặc Rules trên Firebase.';
-}
-
-function requireConfig(){
-  if (!db) {
-    toast('Chưa cấu hình Firebase. Mở file HTML, tìm "firebaseConfig" và dán config của bạn vào.');
-    return false;
-  }
-  return true;
-}
-
-// ID riêng của thiết bị này (phân biệt bản mình vừa đẩy với bản máy khác đẩy)
-let DEVICE_ID = localStorage.getItem('opos_device_id');
-if(!DEVICE_ID){ DEVICE_ID = Math.random().toString(36).slice(2,10); localStorage.setItem('opos_device_id', DEVICE_ID); }
-
-// stamp của bản trên mây mà thiết bị này đã "biết" (đã đẩy lên hoặc đã tải về).
-// Dùng để phát hiện: mây có mới hơn không (tức máy khác vừa sửa).
-let knownStamp = Number(localStorage.getItem('opos_known_stamp') || 0);
-function setKnownStamp(s){
-  knownStamp = Number(s) || 0;
-  localStorage.setItem('opos_known_stamp', String(knownStamp));
-}
-
-// Máy này có thay đổi đã lưu ở local nhưng chưa đẩy lên mây được (mất mạng, hoặc
-// Firebase từ chối ghi). Cờ này sống qua các lần tải lại trang, nên sau khi kết
-// nối trở lại ta biết bản local mới hơn bản trên mây và không được để bị đè.
-let localDirty = localStorage.getItem('opos_local_dirty') === '1';
-function setLocalDirty(v){
-  localDirty = !!v;
-  if(localDirty) localStorage.setItem('opos_local_dirty', '1');
-  else localStorage.removeItem('opos_local_dirty');
-}
-
-let realtimePushChain = Promise.resolve();
-let realtimePushPending = 0;
-let realtimePushSequence = 0;
-let applyingCloudState = false;
-let remoteRefreshQueued = false;
-let realtimeReady = false;
-const liveRef = db ? ref(db, 'sync/' + SYNC_ID) : null;
-
-function localStateSnapshot(){ return JSON.stringify(state); }
-
-function applyCloudState(cloud, {announce=true, force=false}={}){
-  if(!cloud || !cloud.state) return false;
-  const cloudStamp = Number(cloud.stamp) || 0;
-  const currentSnapshot = localStateSnapshot();
-
-  // The local state already matches this exact cloud payload.
-  if(cloud.state === currentSnapshot){
-    if(cloudStamp >= knownStamp) setKnownStamp(cloudStamp);
-    setLocalDirty(false);
-    return false;
-  }
-
-  // Do not roll back to a genuinely older cloud version.
-  if(cloudStamp && cloudStamp < knownStamp) return false;
-
-  // Máy này còn thay đổi chưa đẩy lên. Nếu bản trên mây không tiến xa hơn mốc đã
-  // biết thì không thiết bị nào khác sửa cả -> bản local mới hơn, đẩy nó lên
-  // thay vì để bản mây cũ đè mất dữ liệu vừa làm offline.
-  if(!force && localDirty && cloudStamp <= knownStamp){
-    setStatus('\u26a0\ufe0f Máy này có thay đổi chưa đẩy lên. Đang gửi bản trên máy lên mây…');
-    pushImmediately();
-    return false;
-  }
-
-  // Cả hai phía đều đã đổi -> không tự chọn hộ, để người dùng quyết định.
-  if(!force && localDirty && cloudStamp > knownStamp){
-    setStatus('\u26a0\ufe0f Xung đột: cả máy này và thiết bị khác đều có thay đổi. Bấm "Đồng bộ ngay" để giữ bản trên máy này, hoặc "Tải về máy" để lấy bản trên mây.');
-    return false;
-  }
-
-  try{
-    const data = JSON.parse(cloud.state);
-    const localTheme = state.theme;
-    applyingCloudState = true;
-    state = Object.assign(defaultState(), data, {seeded:true, theme:localTheme});
-    if(typeof migrateActivities === 'function') migrateActivities();
-    localStorage.setItem(LS_KEY, JSON.stringify(state)); // no save hook -> no echo write
-    setKnownStamp(cloudStamp || Date.now());
-    setLocalDirty(false);
-    applyTheme();
-    renderAll();
-    applyingCloudState = false;
-
-    const when = fmtSyncTime(cloud.updatedAt);
-    setStatus('🟢 Đã nhận dữ liệu realtime lúc ' + when);
-    if(announce && document.visibilityState === 'visible') toast('Đã cập nhật dữ liệu từ thiết bị khác.');
-    return true;
-  }catch(e){
-    applyingCloudState = false;
-    setStatus('❌ Không đọc được dữ liệu realtime: ' + e.message);
-    return false;
-  }
-}
-
-// Each save() creates its own Firebase write immediately. Writes are serialized
-// only to preserve action order; there is no debounce or three-second delay.
-async function pushSnapshot(snapshot, sequence){
-  if(!db || !liveRef || applyingCloudState) return false;
-  const stamp = Math.max(Date.now(), knownStamp + 1);
-  await set(liveRef, {
-    state: snapshot,
-    updatedAt: new Date().toISOString(),
-    stamp,
-    origin: DEVICE_ID,
-    device: navigator.platform || 'unknown',
-    sequence
-  });
-  setKnownStamp(stamp);
-  return true;
-}
-
-function pushImmediately(){
-  if(!db || !liveRef || applyingCloudState) return;
-  const snapshot = localStateSnapshot();
-  const sequence = ++realtimePushSequence;
-  setLocalDirty(true);
-  realtimePushPending += 1;
-  setStatus(`🔄 Đang gửi thay đổi #${sequence}…`);
-
-  realtimePushChain = realtimePushChain
-    .then(() => pushSnapshot(snapshot, sequence))
-    .then(ok => {
-      if(ok){
-        if(realtimePushPending <= 1) setLocalDirty(false);
-        setStatus('🟢 Đã đồng bộ realtime lúc ' + fmtSyncTime());
-      }
-    })
-    .catch(e => setStatus('❌ Lỗi đồng bộ realtime: ' + explainSyncError(e)))
-    .finally(() => {
-      realtimePushPending = Math.max(0, realtimePushPending - 1);
-      if(realtimePushPending > 0){
-        setStatus(`🔄 Đang gửi ${realtimePushPending} thay đổi còn lại…`);
-      }
-    });
-}
-
-if(window.__setAfterSave){ window.__setAfterSave(pushImmediately); }
-
-// Manual overwrite remains available as a recovery action.
-document.getElementById('syncUpBtn').addEventListener('click', async () => {
-  if(!requireConfig()) return;
-  setStatus('Đang đẩy lên mây…');
-  try{
-    const stamp = Math.max(Date.now(), knownStamp + 1);
-    await set(liveRef, {
-      state: localStateSnapshot(),
-      updatedAt: new Date().toISOString(),
-      stamp, origin:DEVICE_ID, device:navigator.platform || 'unknown',
-      sequence:++realtimePushSequence
-    });
-    setKnownStamp(stamp);
-    setLocalDirty(false);
-    setStatus('✅ Đã đẩy lên mây lúc ' + fmtSyncTime());
-    toast('Đã đồng bộ lên mây.');
-  }catch(e){
-    setStatus('❌ Lỗi khi đẩy: ' + explainSyncError(e));
-    toast(shortSyncError(e));
-  }
-});
-
-// Manual download is retained, but normal cross-device updates no longer need it.
-document.getElementById('syncDownBtn').addEventListener('click', async () => {
-  if(!requireConfig()) return;
-  setStatus('Đang tải về…');
-  try{
-    const snap = await get(liveRef);
-    if(!snap.exists()){
-      setStatus('Chưa có dữ liệu trên mây.');
-      toast('Chưa có dữ liệu trên mây.');
-      return;
-    }
-    const cloud = snap.val();
-    const when = cloud.updatedAt ? fmtSyncTime(cloud.updatedAt) : '';
-    if(!confirm('Dữ liệu trên mây cập nhật lúc:\n' + when + '\n\nTải về sẽ thay thế toàn bộ dữ liệu trên máy này. Tiếp tục?')){
-      setStatus('Đã huỷ tải về.');
-      return;
-    }
-    applyCloudState(cloud, {announce:false, force:true});
-    setStatus('✅ Đã tải dữ liệu về (bản trên mây lúc ' + when + ')');
-    toast('Đã tải dữ liệu từ mây về máy.');
-  }catch(e){
-    setStatus('❌ Lỗi khi tải về: ' + explainSyncError(e));
-    toast(shortSyncError(e));
-  }
-});
-
-// True realtime pull: every browser/device subscribes to the same Firebase path.
-// Foreign writes are applied automatically, including while the user is on mobile.
-if(db && liveRef){
-  setStatus('⏳ Đang kết nối realtime…');
-  onValue(liveRef, snap => {
-    if(!realtimeReady){
-      realtimeReady = true;
-      setStatus('🟢 Đồng bộ realtime hai chiều đang bật');
-    }
-    if(!snap.exists()) return;
-    const cloud = snap.val();
-    const cloudStamp = Number(cloud.stamp) || 0;
-
-    // Own acknowledgement: update the known revision without re-rendering.
-    if(cloud.origin === DEVICE_ID && cloud.state === localStateSnapshot()){
-      if(cloudStamp >= knownStamp) setKnownStamp(cloudStamp);
-      setLocalDirty(false);
-      return;
-    }
-
-    // If local writes are still in flight, re-read once the queue settles so the
-    // device applies the final cloud version rather than an intermediate event.
-    if(realtimePushPending > 0){
-      if(remoteRefreshQueued) return;
-      remoteRefreshQueued = true;
-      realtimePushChain.finally(async () => {
-        remoteRefreshQueued = false;
-        try{
-          const latest = await get(liveRef);
-          if(latest.exists()) applyCloudState(latest.val());
-        }catch(e){ setStatus('❌ Lỗi nhận dữ liệu realtime: ' + explainSyncError(e)); }
-      });
-      return;
-    }
-
-    applyCloudState(cloud);
-  }, error => {
-    realtimeReady = false;
-    setStatus('❌ Realtime không chạy: ' + explainSyncError(error));
-  });
-}
-</script>
 <datalist id="tagSuggestions"></datalist>
 </body>
 </html>
