@@ -2160,7 +2160,7 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
       <div class="page-head">
         <div class="eyebrow">System</div>
         <h1>Dữ liệu</h1>
-        <p class="sub">Bản xem trước lưu dữ liệu thử nghiệm riêng trên trình duyệt này và không đồng bộ Firebase.</p>
+        <p class="sub">Dữ liệu được lưu trên máy và đồng bộ qua Firebase khi có kết nối.</p>
       </div>
       <div class="card">
         <div class="row" style="gap:12px">
@@ -2170,7 +2170,7 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
         </div>
         <p class="hint" style="margin-top:10px">Export định kỳ để sao lưu. Import sẽ thay thế toàn bộ dữ liệu hiện tại.</p>
       </div>
-      <div class="card" hidden>
+      <div class="card">
         <h3 style="font-size:15px;margin-bottom:8px">☁️ Đồng bộ đám mây (Firebase)</h3>
         <p class="hint" style="margin-bottom:12px"><b>Đồng bộ realtime hai chiều:</b> mỗi thao tác được gửi lên Firebase ngay và các thiết bị khác tự nhận dữ liệu mới, không cần bấm Tải về máy. Nút tải thủ công chỉ dùng để khôi phục khi cần.</p>
         <div class="row" style="gap:12px">
@@ -2455,11 +2455,13 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
 <script>
 /* =====================================================
    1% OS — single-file personal improvement system
-   Data: localStorage only. No backend, no account.
+   Data: localStorage with Firebase Realtime Database sync.
    ===================================================== */
 
 // ---------- Constants ----------
 const LS_KEY = 'onePercentOS_preview_dayparts_v2';
+const LEGACY_LS_KEY = 'onePercentOS_v1';
+window.__syncHadLocalDataAtBoot = Boolean(localStorage.getItem(LS_KEY) || localStorage.getItem(LEGACY_LS_KEY));
 // ---------- Tag ----------
 // Nhãn tự do thay cho hệ "Nhóm hoạt động" cũ: mỗi công việc / cỏ dại gắn được
 // nhiều tag, tên do người dùng tự đặt, không có danh sách cố định.
@@ -3151,7 +3153,8 @@ function defaultState(){
 
 function load(){
   try{
-    const raw = localStorage.getItem(LS_KEY);
+    // Preserve data from the original Firebase version on the first launch of this layout.
+    const raw = localStorage.getItem(LS_KEY) || localStorage.getItem(LEGACY_LS_KEY);
     state = raw ? Object.assign(defaultState(), JSON.parse(raw)) : defaultState();
   }catch(e){ state = defaultState(); }
   if(!state.seeded){ seedDemo(); state.seeded = true; save(); }
@@ -6645,6 +6648,326 @@ renderAll();
 syncTimerToolButtons();
 </script>
 
+<script type="module">
+/* =====================================================
+   CLOUD SYNC (Firebase Realtime Database)
+   Bước 1: Dán firebaseConfig của bạn vào bên dưới
+   Bước 2: Đổi SYNC_ID thành một chuỗi bí mật của riêng bạn
+   ===================================================== */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+// ⬇️⬇️⬇️ DÁN CONFIG CỦA BẠN VÀO ĐÂY (lấy từ Firebase Console) ⬇️⬇️⬇️
+const firebaseConfig = {
+  apiKey: "AIzaSyD8PJGhbIw3Nkv5mmXYfKcOHDXtm-yLMJo",
+  authDomain: "opos-f647f.firebaseapp.com",
+  databaseURL: "https://opos-f647f-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "opos-f647f",
+  storageBucket: "opos-f647f.firebasestorage.app",
+  messagingSenderId: "24969809399",
+  appId: "1:24969809399:web:f36933bb2444f6470ff2f2"
+};
+// ⬆️⬆️⬆️ HẾT PHẦN CẦN DÁN ⬆️⬆️⬆️
+
+// Đổi thành chuỗi bí mật của riêng bạn (như mật khẩu, khó đoán)
+const SYNC_ID = "dung-le-da-poet-x9k2";
+
+const CONFIG_OK = !firebaseConfig.apiKey.startsWith("DAN_");
+let db = null;
+if (CONFIG_OK) {
+  try { db = getDatabase(initializeApp(firebaseConfig)); }
+  catch(e){ console.error("Firebase init error:", e); }
+}
+
+const statusEl = document.getElementById('syncStatus');
+const setStatus = (msg) => { if(statusEl) statusEl.textContent = msg; };
+
+// Dòng trạng thái ghi cả ngày lẫn giờ: mở lại máy sau vài hôm vẫn biết bản dữ liệu
+// là của ngày nào, chứ không chỉ thấy mỗi "lúc 14:35:07".
+function fmtSyncTime(value){
+  const d = value ? new Date(value) : new Date();
+  if(Number.isNaN(d.getTime())) return '';
+  const p = n => String(n).padStart(2,'0');
+  return `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())} ngày ${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()}`;
+}
+
+// Firebase trả về mã lỗi thô ("PERMISSION_DENIED: Permission denied") không nói
+// được phải làm gì. Dịch các lỗi hay gặp thành hướng dẫn xử lý cụ thể.
+const RULES_HINT = 'Firebase từ chối truy cập (PERMISSION_DENIED). Gần như luôn là do Rules của Realtime Database đã hết hạn (rules thử nghiệm chỉ sống 30 ngày). Mở Firebase Console \u2192 Realtime Database \u2192 tab Rules, cấp quyền cho nhánh "sync", rồi tải lại trang.';
+function explainSyncError(e){
+  const msg = (e && (e.message || e.code)) ? String(e.message || e.code) : String(e || '');
+  if(/permission[_ ]denied/i.test(msg)) return RULES_HINT;
+  if(/network|offline|failed to fetch|unavailable/i.test(msg)) return 'Không kết nối được tới Firebase. Kiểm tra mạng rồi thử lại.';
+  return msg;
+}
+function shortSyncError(e){
+  const msg = (e && (e.message || e.code)) ? String(e.message || e.code) : String(e || '');
+  if(/permission[_ ]denied/i.test(msg)) return 'Firebase chặn truy cập \u2014 Rules đã hết hạn. Xem hướng dẫn ở dòng trạng thái bên dưới.';
+  return 'Lỗi đồng bộ. Kiểm tra mạng hoặc Rules trên Firebase.';
+}
+
+function requireConfig(){
+  if (!db) {
+    toast('Chưa cấu hình Firebase. Mở file HTML, tìm "firebaseConfig" và dán config của bạn vào.');
+    return false;
+  }
+  return true;
+}
+
+// ID riêng của thiết bị này (phân biệt bản mình vừa đẩy với bản máy khác đẩy)
+let DEVICE_ID = localStorage.getItem('opos_device_id');
+if(!DEVICE_ID){ DEVICE_ID = Math.random().toString(36).slice(2,10); localStorage.setItem('opos_device_id', DEVICE_ID); }
+
+// stamp của bản trên mây mà thiết bị này đã "biết" (đã đẩy lên hoặc đã tải về).
+// Dùng để phát hiện: mây có mới hơn không (tức máy khác vừa sửa).
+let knownStamp = Number(localStorage.getItem('opos_known_stamp') || 0);
+function setKnownStamp(s){
+  knownStamp = Number(s) || 0;
+  localStorage.setItem('opos_known_stamp', String(knownStamp));
+}
+
+// Máy này có thay đổi đã lưu ở local nhưng chưa đẩy lên mây được (mất mạng, hoặc
+// Firebase từ chối ghi). Cờ này sống qua các lần tải lại trang, nên sau khi kết
+// nối trở lại ta biết bản local mới hơn bản trên mây và không được để bị đè.
+let localDirty = localStorage.getItem('opos_local_dirty') === '1';
+function setLocalDirty(v){
+  localDirty = !!v;
+  if(localDirty) localStorage.setItem('opos_local_dirty', '1');
+  else localStorage.removeItem('opos_local_dirty');
+}
+
+let realtimePushChain = Promise.resolve();
+let realtimePushPending = 0;
+let realtimePushSequence = 0;
+let applyingCloudState = false;
+let remoteRefreshQueued = false;
+let realtimeReady = false;
+let initialCloudCheckComplete = false;
+let syncConflict = false;
+const liveRef = db ? ref(db, 'sync/' + SYNC_ID) : null;
+
+function localStateSnapshot(){ return JSON.stringify(state); }
+
+function applyCloudState(cloud, {announce=true, force=false}={}){
+  if(!cloud || !cloud.state) return false;
+  const cloudStamp = Number(cloud.stamp) || 0;
+  const currentSnapshot = localStateSnapshot();
+
+  // The local state already matches this exact cloud payload.
+  if(cloud.state === currentSnapshot){
+    if(cloudStamp >= knownStamp) setKnownStamp(cloudStamp);
+    setLocalDirty(false);
+    return false;
+  }
+
+  // Do not roll back to a genuinely older cloud version.
+  if(!force && cloudStamp && cloudStamp < knownStamp) return false;
+
+  // Máy này còn thay đổi chưa đẩy lên. Nếu bản trên mây không tiến xa hơn mốc đã
+  // biết thì không thiết bị nào khác sửa cả -> bản local mới hơn, đẩy nó lên
+  // thay vì để bản mây cũ đè mất dữ liệu vừa làm offline.
+  if(!force && localDirty && cloudStamp <= knownStamp){
+    setStatus('\u26a0\ufe0f Máy này có thay đổi chưa đẩy lên. Đang gửi bản trên máy lên mây…');
+    pushImmediately();
+    return false;
+  }
+
+  // Cả hai phía đều đã đổi -> không tự chọn hộ, để người dùng quyết định.
+  if(!force && localDirty && cloudStamp > knownStamp){
+    setStatus('\u26a0\ufe0f Xung đột: cả máy này và thiết bị khác đều có thay đổi. Bấm "Đồng bộ ngay" để giữ bản trên máy này, hoặc "Tải về máy" để lấy bản trên mây.');
+    return false;
+  }
+
+  try{
+    const data = JSON.parse(cloud.state);
+    const localTheme = state.theme;
+    applyingCloudState = true;
+    state = Object.assign(defaultState(), data, {seeded:true, theme:localTheme});
+    if(typeof migrateActivities === 'function') migrateActivities();
+    localStorage.setItem(LS_KEY, JSON.stringify(state)); // no save hook -> no echo write
+    setKnownStamp(cloudStamp || Date.now());
+    setLocalDirty(false);
+    applyTheme();
+    renderAll();
+    applyingCloudState = false;
+
+    const when = fmtSyncTime(cloud.updatedAt);
+    setStatus('🟢 Đã nhận dữ liệu realtime lúc ' + when);
+    if(announce && document.visibilityState === 'visible') toast('Đã cập nhật dữ liệu từ thiết bị khác.');
+    return true;
+  }catch(e){
+    applyingCloudState = false;
+    setStatus('❌ Không đọc được dữ liệu realtime: ' + e.message);
+    return false;
+  }
+}
+
+// Each save() creates its own Firebase write immediately. Writes are serialized
+// only to preserve action order; there is no debounce or three-second delay.
+async function pushSnapshot(snapshot, sequence){
+  if(!db || !liveRef || applyingCloudState) return false;
+  const stamp = Math.max(Date.now(), knownStamp + 1);
+  await set(liveRef, {
+    state: snapshot,
+    updatedAt: new Date().toISOString(),
+    stamp,
+    origin: DEVICE_ID,
+    device: navigator.platform || 'unknown',
+    sequence
+  });
+  setKnownStamp(stamp);
+  return true;
+}
+
+function pushImmediately(){
+  if(!db || !liveRef || applyingCloudState) return;
+  // Never send a local snapshot before the first cloud read. A restored browser
+  // may contain different data and must not overwrite Firebase on page load.
+  if(!initialCloudCheckComplete || syncConflict){
+    setLocalDirty(true);
+    setStatus(syncConflict
+      ? '⚠️ Dữ liệu trên máy và trên mây khác nhau. Chọn "Đồng bộ ngay" hoặc "Tải về máy" trong mục Dữ liệu.'
+      : '⏳ Đang kiểm tra dữ liệu trên mây trước khi đồng bộ…');
+    return;
+  }
+  const snapshot = localStateSnapshot();
+  const sequence = ++realtimePushSequence;
+  setLocalDirty(true);
+  realtimePushPending += 1;
+  setStatus(`🔄 Đang gửi thay đổi #${sequence}…`);
+
+  realtimePushChain = realtimePushChain
+    .then(() => pushSnapshot(snapshot, sequence))
+    .then(ok => {
+      if(ok){
+        if(realtimePushPending <= 1) setLocalDirty(false);
+        setStatus('🟢 Đã đồng bộ realtime lúc ' + fmtSyncTime());
+      }
+    })
+    .catch(e => setStatus('❌ Lỗi đồng bộ realtime: ' + explainSyncError(e)))
+    .finally(() => {
+      realtimePushPending = Math.max(0, realtimePushPending - 1);
+      if(realtimePushPending > 0){
+        setStatus(`🔄 Đang gửi ${realtimePushPending} thay đổi còn lại…`);
+      }
+    });
+}
+
+if(window.__setAfterSave){ window.__setAfterSave(pushImmediately); }
+
+// Manual overwrite remains available as a recovery action.
+document.getElementById('syncUpBtn').addEventListener('click', async () => {
+  if(!requireConfig()) return;
+  if(!initialCloudCheckComplete){
+    setStatus('⏳ Đợi kiểm tra dữ liệu trên mây xong rồi hãy đồng bộ.');
+    return;
+  }
+  if(syncConflict && !confirm('Dữ liệu trên máy và trên mây khác nhau. Đẩy lên sẽ thay thế bản trên mây. Tiếp tục?')) return;
+  setStatus('Đang đẩy lên mây…');
+  try{
+    const stamp = Math.max(Date.now(), knownStamp + 1);
+    await set(liveRef, {
+      state: localStateSnapshot(),
+      updatedAt: new Date().toISOString(),
+      stamp, origin:DEVICE_ID, device:navigator.platform || 'unknown',
+      sequence:++realtimePushSequence
+    });
+    setKnownStamp(stamp);
+    setLocalDirty(false);
+    syncConflict = false;
+    setStatus('✅ Đã đẩy lên mây lúc ' + fmtSyncTime());
+    toast('Đã đồng bộ lên mây.');
+  }catch(e){
+    setStatus('❌ Lỗi khi đẩy: ' + explainSyncError(e));
+    toast(shortSyncError(e));
+  }
+});
+
+// Manual download is retained, but normal cross-device updates no longer need it.
+document.getElementById('syncDownBtn').addEventListener('click', async () => {
+  if(!requireConfig()) return;
+  setStatus('Đang tải về…');
+  try{
+    const snap = await get(liveRef);
+    if(!snap.exists()){
+      setStatus('Chưa có dữ liệu trên mây.');
+      toast('Chưa có dữ liệu trên mây.');
+      return;
+    }
+    const cloud = snap.val();
+    const when = cloud.updatedAt ? fmtSyncTime(cloud.updatedAt) : '';
+    if(!confirm('Dữ liệu trên mây cập nhật lúc:\n' + when + '\n\nTải về sẽ thay thế toàn bộ dữ liệu trên máy này. Tiếp tục?')){
+      setStatus('Đã huỷ tải về.');
+      return;
+    }
+    const applied = applyCloudState(cloud, {announce:false, force:true});
+    if(!applied && cloud.state !== localStateSnapshot()) return;
+    syncConflict = false;
+    setStatus('✅ Đã tải dữ liệu về (bản trên mây lúc ' + when + ')');
+    toast('Đã tải dữ liệu từ mây về máy.');
+  }catch(e){
+    setStatus('❌ Lỗi khi tải về: ' + explainSyncError(e));
+    toast(shortSyncError(e));
+  }
+});
+
+// True realtime pull: every browser/device subscribes to the same Firebase path.
+// Foreign writes are applied automatically, including while the user is on mobile.
+if(db && liveRef){
+  setStatus('⏳ Đang kết nối realtime…');
+  onValue(liveRef, snap => {
+    const firstSnapshot = !initialCloudCheckComplete;
+    if(!realtimeReady){
+      realtimeReady = true;
+      setStatus('🟢 Đồng bộ realtime hai chiều đang bật');
+    }
+    initialCloudCheckComplete = true;
+    if(!snap.exists()){
+      if(localDirty && !syncConflict) pushImmediately();
+      return;
+    }
+    const cloud = snap.val();
+    const cloudStamp = Number(cloud.stamp) || 0;
+
+    // A browser that was used while Firebase was absent may hold unique work.
+    // Keep both copies until the user explicitly chooses which one to retain.
+    if(firstSnapshot && cloud.state !== localStateSnapshot()
+       && (window.__syncHadLocalDataAtBoot || localDirty)){
+      syncConflict = true;
+      setStatus('⚠️ Dữ liệu trên máy và trên mây khác nhau. Chọn "Đồng bộ ngay" để giữ bản trên máy, hoặc "Tải về máy" để lấy bản trên mây.');
+      return;
+    }
+    if(syncConflict) return;
+
+    // Own acknowledgement: update the known revision without re-rendering.
+    if(cloud.origin === DEVICE_ID && cloud.state === localStateSnapshot()){
+      if(cloudStamp >= knownStamp) setKnownStamp(cloudStamp);
+      if(realtimePushPending === 0) setLocalDirty(false);
+      return;
+    }
+
+    // If local writes are still in flight, re-read once the queue settles so the
+    // device applies the final cloud version rather than an intermediate event.
+    if(realtimePushPending > 0){
+      if(remoteRefreshQueued) return;
+      remoteRefreshQueued = true;
+      realtimePushChain.finally(async () => {
+        remoteRefreshQueued = false;
+        try{
+          const latest = await get(liveRef);
+          if(latest.exists()) applyCloudState(latest.val());
+        }catch(e){ setStatus('❌ Lỗi nhận dữ liệu realtime: ' + explainSyncError(e)); }
+      });
+      return;
+    }
+
+    applyCloudState(cloud);
+  }, error => {
+    realtimeReady = false;
+    setStatus('❌ Realtime không chạy: ' + explainSyncError(error));
+  });
+}
+</script>
 <datalist id="tagSuggestions"></datalist>
 </body>
 </html>
