@@ -1417,7 +1417,7 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 .timer-done-actions-compact .timer-btn{flex:1 1 180px;max-width:240px}
 .timer-screen.finished .timer-controls{display:none}
 .timer-screen.finished .timer-done-actions{display:flex}
-/* ===== Ghim đồng hồ: tối giản, chỉ thời gian + icon điều khiển ===== */
+/* ===== Ghim đồng hồ ===== */
 .timer-mini{display:none}
 .timer-screen.pinned{
   inset:auto;left:auto;top:auto;
@@ -1432,11 +1432,15 @@ section[data-view].active{display:block;animation:fadein .25s ease}
   box-shadow:0 8px 24px rgba(0,0,0,.30);
   backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
 }
-.timer-screen.pinned .timer-title,
 .timer-screen.pinned .timer-mode,
 .timer-screen.pinned .timer-tools,
 .timer-screen.pinned .timer-controls,
 .timer-screen.pinned .timer-done-actions{display:none}
+.timer-screen.pinned .timer-title{
+  min-width:0;max-width:min(220px,calc(100vw - 185px));margin:0;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  font-size:13px;line-height:1.2;text-align:left;
+}
 .timer-screen.pinned .timer-ring-wrap{width:auto;height:auto;margin:0;flex:0 0 auto}
 .timer-screen.pinned .timer-ring-wrap svg{display:none}
 .timer-screen.pinned .timer-count{
@@ -3133,7 +3137,7 @@ function makeDaySubtaskItem(parent, sub){
     date:sub.date || parent.date,
     title:sub.title || '',
     description:sub.description || '',
-    daypart:activityDaypart(parent),
+    daypart:daypartForStartTime(sub.startTime, activityDaypart(parent)),
     tags:tagsOf(parent),
     startTime:sub.startTime || null,
     durationMinutes:Number(sub.durationMinutes) || null,
@@ -3331,6 +3335,10 @@ function dayCapacityMinutes(date){ return MINUTES_PER_DAY - morningStartMinute(d
 function minutesToClock(minute){ return `${String(Math.floor(minute / 60)).padStart(2,'0')}:${String(minute % 60).padStart(2,'0')}`; }
 const DAYPART_IDS = DAYPARTS.map(p => p.id);
 function daypartForMinute(minute){ return DAYPARTS.find(p => minute >= p.start && minute < p.end)?.id || 'evening'; }
+function daypartForStartTime(startTime, fallback){
+  const minute = timeToMinutes(startTime);
+  return minute === null ? fallback : daypartForMinute(minute);
+}
 function activityDaypart(item){
   if(DAYPART_IDS.includes(item?.daypart)) return item.daypart;
   const minute = timeToMinutes(item?.startTime);
@@ -4806,14 +4814,18 @@ function timerPiPStyles(){
       color:#fff;padding:4px;display:flex;align-items:center;justify-content:center;
     }
     .pip-card{
-      width:max-content;max-width:calc(100vw - 8px);min-width:0;
-      display:flex;align-items:center;justify-content:center;gap:4px;
+      width:100%;max-width:calc(100vw - 8px);min-width:0;
+      display:flex;align-items:center;justify-content:center;gap:6px;
       padding:5px 6px;border-radius:12px;
       background:${dark ? 'rgba(15,36,25,.76)' : 'rgba(10,31,60,.72)'};
       border:1px solid rgba(255,255,255,.16);
       box-shadow:0 6px 18px rgba(0,0,0,.26);
       backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
       overflow:hidden;
+    }
+    .pip-task{
+      min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;
+      white-space:nowrap;font-size:12px;font-weight:750;line-height:1.2;
     }
     .pip-count{
       min-width:68px;padding:0 3px;text-align:center;
@@ -4859,6 +4871,7 @@ function buildTimerPiPDocument(pipWindow){
   const doc = pipWindow.document;
   doc.head.innerHTML = `<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(timerState.title || 'Focus Timer')}</title><style id="timerPiPStyle">${timerPiPStyles()}</style>`;
   doc.body.innerHTML = `<div class="pip-card" id="pipCard" title="${esc(timerState.title || 'Focus Timer')}">
+    <div class="pip-task" id="pipTaskTitle" title="${esc(timerState.title || 'Focus Timer')}">${esc(timerState.title || 'Focus Timer')}</div>
     <div class="pip-count" id="pipTimerCount">00:00</div>
     <div class="pip-alert" id="pipTimerAlert" hidden>⏰ Hết giờ</div>
     <div class="pip-actions" id="pipRunningActions">
@@ -4900,6 +4913,7 @@ function updateTimerPiPUI(){
   if(!timerPiPWindow || timerPiPWindow.closed) return;
   const doc = timerPiPWindow.document;
   const card = doc.getElementById('pipCard');
+  const taskTitle = doc.getElementById('pipTaskTitle');
   const count = doc.getElementById('pipTimerCount');
   const alert = doc.getElementById('pipTimerAlert');
   const runningActions = doc.getElementById('pipRunningActions');
@@ -4908,6 +4922,10 @@ function updateTimerPiPUI(){
   const finishedNaturally = timerState.finished && timerState.finishReason === 'done';
 
   if(card) card.title = `${timerState.title || 'Focus Timer'} · ${timerModeText()}`;
+  if(taskTitle){
+    taskTitle.textContent = timerState.title || 'Focus Timer';
+    taskTitle.title = timerState.title || 'Focus Timer';
+  }
 
   if(count){
     count.hidden = finishedNaturally;
@@ -4946,7 +4964,7 @@ async function openGlobalTimerPiP(){
   }
   if(!supportsGlobalTimerPiP()) return false;
   try{
-    const pip = await window.documentPictureInPicture.requestWindow({width:210,height:64});
+    const pip = await window.documentPictureInPicture.requestWindow({width:360,height:72,preferInitialWindowPlacement:true});
     timerPiPWindow = pip;
     timerPinned = true;
     timerPinMode = 'pip';
@@ -5350,12 +5368,14 @@ document.getElementById('createActivityForm').addEventListener('submit', e => {
   const meta = createDraftMeta;
   const isOnePct = meta?.forceOnePct ? true : document.getElementById('cTag1pct').checked;
   const date = requestedDate;
+  const startTime = document.getElementById('cStartTime').value || null;
+  const daypart = daypartForStartTime(startTime, loc);
   const act = {
-    id:uid(), date, title, daypart:loc,
+    id:uid(), date, title, daypart,
     description:document.getElementById('cDesc').value.trim(),
     tag1pct:isOnePct,
     tags:getTagInput('cTags'),
-    startTime:document.getElementById('cStartTime').value || null,
+    startTime,
     durationMinutes:readDuration('cDuration','cDurationCustom'),
     completed:false,
     subs:createDraftSubs.map(sub => ({...sub, date:sub.date || requestedDate})),
@@ -5377,7 +5397,7 @@ document.getElementById('createActivityForm').addEventListener('submit', e => {
   save();
   closeModals();
   openDayView(date);
-  const locLabel = getColumnSetting(loc).label;
+  const locLabel = getColumnSetting(daypart).label;
   toast(meta?.type === 'mistakeOnePct' || meta?.type === 'reviewOnePct'
     ? 'Đã tạo việc 1% để nhổ cỏ. Deadline đã được khóa.'
     : `Đã tạo công việc trong cột ${locLabel}.`);
@@ -5395,13 +5415,15 @@ function addActivityFromColumnForm(form){
   const title = titleEl.value.trim();
   if(!title){ titleEl.focus(); return; }
   const durVal = parseInt(form.querySelector('.col-q-duration')?.value || '', 10);
+  const startTime = form.querySelector('.col-q-start')?.value || null;
+  const daypart = daypartForStartTime(startTime, loc);
   const act = {
     id:uid(), date:viewDate, title,
-    daypart:loc,
+    daypart,
     description:'',
     tag1pct:false,
     tags:[],
-    startTime:form.querySelector('.col-q-start')?.value || null,
+    startTime,
     durationMinutes:(durVal > 0 ? durVal : null),
     completed:false,
     subs:[],
@@ -5412,7 +5434,7 @@ function addActivityFromColumnForm(form){
   save();
   openActs.add(act.id);
   renderAll();
-  toast(`Đã thêm công việc buổi ${getColumnSetting(loc).label.toLowerCase()}.`);
+  toast(`Đã thêm công việc buổi ${getColumnSetting(daypart).label.toLowerCase()}.`);
   setTimeout(() => {
     const card = document.querySelector(`.act-card[data-id="${act.id}"]`);
     if(card) card.scrollIntoView({behavior:'smooth', block:'center'});
@@ -5840,12 +5862,13 @@ function quickAddActivity(){
   const title = document.getElementById('qTitle').value.trim();
   if(!title){ document.getElementById('qTitle').focus(); return; }
   const date = document.getElementById('qDate').value || viewDate;
+  const startTime = document.getElementById('qStartTime').value || null;
   state.activities.push({
-    id:uid(), date, title, daypart:qLocation,
+    id:uid(), date, title, daypart:daypartForStartTime(startTime, qLocation),
     description:document.getElementById('qDesc').value.trim(),
     tag1pct:false,
     tags:getTagInput('qTags'),
-    startTime:document.getElementById('qStartTime').value || null,
+    startTime,
     durationMinutes:readDuration('qDuration','qDurationCustom'),
     completed:false, subs:[], status:'todo', reviewId:null
   });
@@ -6016,6 +6039,7 @@ document.getElementById('boardForm').addEventListener('submit', e => {
   act.tags = getTagInput('bTags');
   if(!wasOne) act.date = document.getElementById('bDate').value || act.date;
   act.startTime = document.getElementById('bStartTime').value || null;
+  act.daypart = daypartForStartTime(act.startTime, activityDaypart(act));
   act.durationMinutes = readDuration('bDuration','bDurationCustom');
   save(); closeModals(); renderAll();
   toast('Đã lưu board công việc.');
@@ -6204,12 +6228,13 @@ document.getElementById('addForm').addEventListener('submit', e => {
   if(!title) return;
   const date = document.getElementById('fDate').value || viewDate;
   const location = document.getElementById('fLocation').value;
+  const startTime = document.getElementById('fStartTime').value || null;
   state.activities.push({
-    id:uid(), date, title, daypart:location,
+    id:uid(), date, title, daypart:daypartForStartTime(startTime, location),
     description:document.getElementById('fDesc').value.trim(),
     tag1pct:document.getElementById('fTag1pct').checked,
     tags:getTagInput('fTags'),
-    startTime:document.getElementById('fStartTime').value || null,
+    startTime,
     durationMinutes:readDuration('fDuration','fDurationCustom'),
     completed:false, subs:[],
     status:'todo', reviewId:null
@@ -6272,11 +6297,12 @@ document.getElementById('editForm').addEventListener('submit', e => {
   const wasOnePct = !!act.tag1pct;
   act.tag1pct = document.getElementById('eTag1pct').checked;
   act.tags = getTagInput('eTags');
-  act.daypart = document.getElementById('eLocation').value;
+  const selectedDaypart = document.getElementById('eLocation').value;
   if(!wasOnePct) act.date = document.getElementById('eDate').value || act.date;
   act.startTime = document.getElementById('eStartTime').value || null;
+  act.daypart = daypartForStartTime(act.startTime, selectedDaypart);
   act.durationMinutes = readDuration('eDuration','eDurationCustom');
-  save(); closeModals(); renderToday(); toast('Đã cập nhật hoạt động.');
+  save(); closeModals(); renderAll(); toast('Đã cập nhật hoạt động.');
 });
 
 // ---------- Edit subtask ----------
