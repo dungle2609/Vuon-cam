@@ -348,12 +348,12 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 .daypart-value{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
 .daypart-value b{font-family:var(--font-display);font-size:17px;line-height:1.1;color:#fff}
 .daypart-value b.warn{color:#FFE0A3}
-.morning-start-btn{
+.time-budget-btn{
   align-self:flex-start;max-width:100%;border:1px solid rgba(255,255,255,.2);
   background:rgba(255,255,255,.08);border-radius:999px;padding:4px 10px;
   color:#F0E2C6;font-size:12px;font-weight:700;text-align:left;
 }
-.morning-start-btn:hover{background:rgba(255,255,255,.16);color:#fff}
+.time-budget-btn:hover{background:rgba(255,255,255,.16);color:#fff}
 
 
 /* ----- Hero: 2 phần (budget thời gian | cây cam) ----- */
@@ -768,27 +768,9 @@ section[data-view].active{display:block;animation:fadein .25s ease}
   .sort-select-wrap{margin-left:0;width:100%}.sort-select{flex:1}
   .plan-activity-head{display:block}
   .plan-head-block{width:100%}
-  .plan-day-nav{
-    display:grid;
-    grid-template-columns:30px minmax(0,1fr) 30px auto;
-    gap:4px;width:100%;align-items:center;flex-wrap:nowrap;
-  }
   .plan-day-arrow{
     width:30px;height:32px;border-radius:9px;font-size:20px;
   }
-  .plan-date-picker{
-    min-width:0;width:100%;height:32px;padding:0 8px;gap:4px;border-radius:9px;
-  }
-  .plan-date-main{font-size:11.5px;text-align:center}
-  .plan-date-full{display:none}
-  .plan-date-compact{display:inline}
-  .plan-date-icon{display:none}
-  .plan-today-btn{
-    width:auto;min-width:38px;height:32px;padding:0 7px;
-    border-radius:9px;font-size:10.5px;white-space:nowrap;
-  }
-  .plan-today-full{display:none}
-  .plan-today-compact{display:inline}
   .activity-tools{width:100%;margin-top:10px}
 }
 .day-picker{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
@@ -800,9 +782,6 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 .plan-activity-head{align-items:flex-start}
 .plan-head-block{display:flex;flex-direction:column;gap:9px;min-width:0}
 .plan-head-block h2{margin:0}
-.plan-day-nav{
-  display:flex;align-items:center;gap:6px;flex-wrap:nowrap;max-width:100%;
-}
 .plan-day-arrow{
   width:34px;height:34px;display:grid;place-items:center;
   border:1px solid var(--line);background:var(--surface-2);color:var(--ink);
@@ -811,43 +790,9 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 }
 .plan-day-arrow:hover{background:var(--blue-soft);color:var(--blue);border-color:transparent}
 .plan-day-arrow:active{transform:scale(.96)}
-.plan-date-picker{
-  position:relative;display:flex;align-items:center;gap:8px;
-  min-width:190px;height:36px;margin:0;padding:0 11px;
-  border:1px solid var(--line);border-radius:11px;
-  background:var(--surface-2);cursor:pointer;overflow:hidden;
-}
-.plan-date-picker:hover{border-color:color-mix(in srgb,var(--blue) 45%,var(--line));background:var(--surface)}
-.plan-date-main{
-  flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  font-family:var(--font-display);font-size:12.5px;font-weight:800;color:var(--ink);
-}
-.plan-date-full{display:inline}
-.plan-date-compact{display:none}
-.plan-today-full{display:inline}
-.plan-today-compact{display:none}
-.plan-date-icon{font-size:13px;flex:0 0 auto}
-.plan-date-picker input{
-  position:absolute;width:1px;height:1px;opacity:0;
-  pointer-events:none;padding:0;border:0;
-}
-.plan-date-picker:focus-visible{
-  outline:2px solid var(--cyan);outline-offset:2px;
-}
-.plan-date-picker:active{transform:scale(.985)}
-.plan-today-btn{
-  height:34px;padding:0 11px;border:1px solid var(--line);
-  border-radius:10px;background:transparent;color:var(--blue);
-  font-size:12px;font-weight:800;
-}
-.plan-today-btn:hover{background:var(--blue-soft);border-color:transparent}
-.plan-today-btn.is-today{display:none}
-[data-theme="dark"] .plan-day-arrow,
-[data-theme="dark"] .plan-date-picker{
+[data-theme="dark"] .plan-day-arrow{
   background:#2E2318;border-color:#755532;color:#FFF3E0;
 }
-[data-theme="dark"] .plan-date-picker:hover{background:#352414;border-color:#78D08B}
-[data-theme="dark"] .plan-today-btn{border-color:#755532;color:#8BE39D}
 
 .f-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
 @media (max-width:760px){.f-row3{grid-template-columns:1fr}}
@@ -867,7 +812,38 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 .hero-ring-stack{width:168px;flex:0 0 168px;display:flex;flex-direction:column;align-items:center;gap:12px}
 .hero-ring-stack .hero-plan-btn{width:100%;min-height:36px}
 .plan-day-footer{display:flex;justify-content:center;margin-top:14px}
-.plan-day-footer .plan-day-nav{width:max-content}
+.plan-daypart-nav{display:flex;align-items:center;gap:6px;width:max-content;max-width:100%}
+.plan-daypart-picker{
+  min-width:190px;min-height:36px;padding:0 15px;
+  border:1px solid var(--line);border-radius:11px;
+  background:var(--surface-2);color:var(--ink);
+  font:800 12.5px var(--font-display);cursor:pointer;
+  transition:background .15s,border-color .15s,transform .1s;
+}
+.plan-daypart-picker:hover{border-color:color-mix(in srgb,var(--blue) 45%,var(--line));background:var(--surface)}
+.plan-daypart-picker:active{transform:scale(.985)}
+.plan-daypart-picker:focus-visible,.plan-day-arrow:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+[data-theme="dark"] .plan-daypart-picker{background:#2E2318;border-color:#755532;color:#FFF3E0}
+[data-theme="dark"] .plan-daypart-picker:hover{background:#352414;border-color:#78D08B}
+.hero-date-nav{display:flex;align-items:center;gap:6px;max-width:100%}
+.hero-date-arrow,.hero-today-btn{
+  flex:0 0 auto;height:32px;border:1px solid rgba(255,255,255,.3);
+  border-radius:9px;background:rgba(255,255,255,.1);color:#FFF8EC;
+  cursor:pointer;transition:background .15s,transform .1s;
+}
+.hero-date-arrow{width:32px;font-size:22px;font-weight:700;line-height:1}
+.hero-today-btn{padding:0 10px;font-size:11px;font-weight:800}
+.hero-today-btn.is-today{display:none}
+.hero-date-arrow:hover,.hero-today-btn:hover,.hero-date-picker:hover{background:rgba(255,255,255,.2)}
+.hero-date-arrow:active,.hero-today-btn:active,.hero-date-picker:active{transform:scale(.97)}
+.hero-date-picker{
+  position:relative;display:flex;align-items:center;gap:8px;min-width:0;
+  min-height:32px;padding:0 10px;border:1px solid rgba(255,255,255,.3);
+  border-radius:9px;background:rgba(255,255,255,.1);cursor:pointer;
+}
+.hero-date-picker .date{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12.5px;font-weight:800}
+.hero-date-picker input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;padding:0;border:0}
+.hero-date-arrow:focus-visible,.hero-today-btn:focus-visible,.hero-date-picker:focus-visible{outline:2px solid #FFE096;outline-offset:2px}
 .col-head .col-time{font-variant-numeric:tabular-nums;white-space:nowrap}
 .col-head .col-time.over-budget{background:var(--warn-soft);color:var(--warn)}
 .hero .daypart-row{cursor:pointer}
@@ -885,7 +861,15 @@ section[data-view].active{display:block;animation:fadein .25s ease}
 }
 @keyframes hero-daypart-shine{to{transform:translateX(120%)}}
 @media (max-width:1100px){.daypart-board.is-planning{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:760px){.daypart-board.is-planning{grid-template-columns:1fr}.daypart-board:not(.is-planning){max-width:none}.hero-ring-stack{width:118px;flex-basis:118px}.hero-ring-stack .hero-plan-btn{font-size:10px;padding:6px 4px;white-space:normal;line-height:1.25}.plan-day-footer .plan-day-nav{width:100%}}
+@media (max-width:760px){.daypart-board.is-planning{grid-template-columns:1fr}.daypart-board:not(.is-planning){max-width:none}.hero-ring-stack{width:118px;flex-basis:118px}.hero-ring-stack .hero-plan-btn{font-size:10px;padding:6px 4px;white-space:normal;line-height:1.25}.plan-daypart-nav{width:100%;display:grid;grid-template-columns:32px minmax(0,1fr) 32px}.plan-daypart-picker{min-width:0}}
+@media (max-width:520px){
+  .hero-date-nav{display:grid;grid-template-columns:30px minmax(0,1fr) 30px auto;gap:4px;width:100%}
+  .hero-date-arrow{width:30px;height:32px}
+  .hero-date-picker{padding:0 7px;gap:4px}
+  .hero-date-picker .date{font-size:10.5px}
+  .hero-date-picker span[aria-hidden="true"]{font-size:11px}
+  .hero-today-btn{height:32px;padding:0 6px;font-size:10px}
+}
 @media (max-width:390px){.hero-ring-stack{width:106px;flex-basis:106px}}
 .daypart-column,.daypart-column > div{min-width:0;max-width:100%;overflow:hidden}
 .col-head{min-width:0;max-width:100%}
@@ -1758,28 +1742,9 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
 
 
 
-/* ============ MOBILE REFINEMENT · DATE BAR / DAYPARTS / BOARD ============ */
+/* ============ MOBILE REFINEMENT · DAYPARTS / BOARD ============ */
 @media (max-width:520px){
-  /* Stable one-line date navigator. Keep the compact Today shortcut in a fixed slot. */
-  .plan-day-nav{
-    display:grid!important;
-    grid-template-columns:32px minmax(0,1fr) 32px 40px!important;
-    gap:5px!important;width:100%!important;align-items:center!important;
-  }
   .plan-day-arrow{width:32px!important;height:34px!important;font-size:20px!important;border-radius:10px!important}
-  .plan-date-picker{min-width:0!important;width:100%!important;height:34px!important;padding:0 7px!important;border-radius:10px!important}
-  .plan-date-full{display:none!important}
-  .plan-date-compact{display:inline!important}
-  .plan-date-main{font-size:11px!important;text-align:center!important}
-  .plan-date-icon{display:none!important}
-  .plan-today-btn{
-    display:grid!important;place-items:center!important;
-    width:40px!important;min-width:40px!important;height:34px!important;
-    padding:0!important;border-radius:10px!important;font-size:10px!important;
-  }
-  .plan-today-full{display:none!important}
-  .plan-today-compact{display:inline!important}
-  .plan-today-btn.is-today{visibility:hidden!important;pointer-events:none!important}
 
   .hero-budget .daypart-row{min-height:38px!important;padding:6px 7px!important}
   .hero-budget .daypart-value{line-height:1;min-width:52px}
@@ -1846,9 +1811,8 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
 }
 
 @media (max-width:380px){
-  .plan-day-nav{grid-template-columns:30px minmax(0,1fr) 30px 36px!important;gap:4px!important}
   .plan-day-arrow{width:30px!important}
-  .plan-today-btn{width:36px!important;min-width:36px!important}
+  .plan-daypart-nav{grid-template-columns:30px minmax(0,1fr) 30px}
   #activityBoardModal .board-sub-item{grid-template-columns:22px 37px 37px minmax(0,1fr) auto!important;gap:4px!important}
 }
 
@@ -1880,7 +1844,16 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
     <section data-view="today" class="active">
       <div class="card hero">
         <div class="hero-top">
-          <div class="date" id="todayDate"></div>
+          <div class="hero-date-nav" aria-label="Điều hướng ngày">
+            <button type="button" class="hero-date-arrow" id="dayPrevBtn" aria-label="Ngày trước" title="Ngày trước">‹</button>
+            <div class="hero-date-picker" id="planDatePickerTrigger" role="button" tabindex="0" aria-label="Chọn một ngày khác" title="Chọn một ngày khác">
+              <span class="date" id="todayDate"></span>
+              <span aria-hidden="true">📅</span>
+              <input type="date" id="dayPick" aria-label="Chọn ngày" tabindex="-1">
+            </div>
+            <button type="button" class="hero-date-arrow" id="dayNextBtn" aria-label="Ngày sau" title="Ngày sau">›</button>
+            <button type="button" class="hero-today-btn" id="dayTodayBtn" aria-label="Về hôm nay" title="Về hôm nay">Hôm nay</button>
+          </div>
         </div>
         <div class="hero-body">
           <!-- PHẦN 1 · BUDGET THỜI GIAN -->
@@ -1929,7 +1902,7 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
                   <div class="daypart-progress" aria-hidden="true"><span class="daypart-progress-fill" id="tbEveningFill"></span></div>
                   <div class="daypart-value"><b id="tbEveningPlan">0'/360'</b></div>
                 </div>
-                <button type="button" class="morning-start-btn" id="morningStartBtn" aria-haspopup="dialog">⚙ Bắt đầu buổi sáng: <span id="morningStartDisplay">07:00</span></button>
+                <button type="button" class="time-budget-btn" id="timeBudgetBtn" aria-haspopup="dialog" aria-controls="timeSettingsModal">⚙ Quỹ thời gian: <span id="timeBudgetRange">07:00–24:00</span></button>
               </div>
             </div>
           </div>
@@ -1989,20 +1962,10 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
         </div>
       </div>
       <div class="plan-day-footer">
-        <div class="plan-day-nav" aria-label="Điều hướng ngày">
-          <button type="button" class="plan-day-arrow" id="dayPrevBtn" aria-label="Ngày trước" title="Ngày trước">‹</button>
-          <div class="plan-date-picker" id="planDatePickerTrigger" role="button" tabindex="0" aria-label="Chọn một ngày khác" title="Chọn một ngày khác">
-            <span class="plan-date-main">
-              <span class="plan-date-full" id="planDateLabel">Hôm nay</span>
-              <span class="plan-date-compact" id="planDateLabelCompact">HN · 13/07</span>
-            </span>
-            <span class="plan-date-icon" aria-hidden="true">📅</span>
-            <input type="date" id="dayPick" aria-label="Chọn ngày" tabindex="-1">
-          </div>
-          <button type="button" class="plan-day-arrow" id="dayNextBtn" aria-label="Ngày sau" title="Ngày sau">›</button>
-          <button type="button" class="plan-today-btn" id="dayTodayBtn" aria-label="Về hôm nay" title="Về hôm nay">
-            <span class="plan-today-full">Hôm nay</span><span class="plan-today-compact">Nay</span>
-          </button>
+        <div class="plan-daypart-nav" aria-label="Điều hướng buổi">
+          <button type="button" class="plan-day-arrow" id="daypartPrevBtn" aria-label="Buổi trước" title="Buổi trước">‹</button>
+          <button type="button" class="plan-daypart-picker" id="daypartPickerBtn" aria-label="Xem buổi tiếp theo" title="Xem buổi tiếp theo"><span id="daypartNavLabel" aria-live="polite">🌤 Sáng</span></button>
+          <button type="button" class="plan-day-arrow" id="daypartNextBtn" aria-label="Buổi sau" title="Buổi sau">›</button>
         </div>
       </div>
 
@@ -2208,13 +2171,18 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
 <div class="modal-back decision-back" id="timeSettingsModal">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="timeSettingsTitle">
     <h2 id="timeSettingsTitle">Cài đặt quỹ thời gian</h2>
-    <p class="m-sub" id="timeSettingsScope">Giờ bắt đầu chỉ áp dụng cho ngày đang xem. Buổi Sáng được tính đến 12:00.</p>
+    <p class="m-sub" id="timeSettingsScope">Thiết lập này áp dụng cho ngày đang xem. Sáng kết thúc lúc 12:00, chiều kết thúc lúc 18:00.</p>
     <form id="timeSettingsForm">
       <div class="f-group">
         <label for="morningStartInput">Giờ bắt đầu buổi sáng</label>
         <input type="time" id="morningStartInput" min="00:00" max="11:59" required>
-        <p class="hint" id="morningBudgetPreview" aria-live="polite"></p>
       </div>
+      <div class="f-group">
+        <label for="eveningEndInput">Giờ kết thúc buổi tối</label>
+        <input type="time" id="eveningEndInput" required>
+        <p class="hint">Chọn 00:00 nếu kết thúc lúc nửa đêm hôm sau.</p>
+      </div>
+      <p class="hint" id="timeBudgetPreview" aria-live="polite"></p>
       <div class="decision-actions">
         <button type="button" class="btn btn-ghost" data-close>Huỷ</button>
         <button type="submit" class="btn btn-primary">Lưu cài đặt</button>
@@ -2492,6 +2460,7 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
 const LS_KEY = 'onePercentOS_preview_dayparts_v2';
 const LEGACY_LS_KEY = 'onePercentOS_v1';
 const DEFAULT_MORNING_START = '07:00';
+const DEFAULT_EVENING_END = '00:00';
 window.__syncHadLocalDataAtBoot = Boolean(localStorage.getItem(LS_KEY) || localStorage.getItem(LEGACY_LS_KEY));
 // ---------- Tag ----------
 // Nhãn tự do thay cho hệ "Nhóm hoạt động" cũ: mỗi công việc / cỏ dại gắn được
@@ -2843,31 +2812,6 @@ const fmtShortDate = (str) => {
   const [y,m,d] = parts;
   return `${String(d).padStart(2,'0')}/${String(m).padStart(2,'0')}`;
 };
-function planDateLabel(date){
-  const today = todayStr();
-  const tomorrow = addDays(today, 1);
-  const yesterday = addDays(today, -1);
-  const [y,m,d] = date.split('-').map(Number);
-  const weekdays = ['Chủ nhật','Thứ hai','Thứ ba','Thứ tư','Thứ năm','Thứ sáu','Thứ bảy'];
-  const weekday = weekdays[new Date(y, m-1, d).getDay()];
-  const short = `${String(d).padStart(2,'0')}/${String(m).padStart(2,'0')}`;
-  if(date === today) return `Hôm nay · ${short}`;
-  if(date === tomorrow) return `Ngày mai · ${short}`;
-  if(date === yesterday) return `Hôm qua · ${short}`;
-  return `${weekday} · ${short}${y !== Number(today.slice(0,4)) ? `/${y}` : ''}`;
-}
-function planDateLabelCompact(date){
-  const today = todayStr();
-  const tomorrow = addDays(today, 1);
-  const yesterday = addDays(today, -1);
-  const [y,m,d] = date.split('-').map(Number);
-  const shortDays = ['CN','T2','T3','T4','T5','T6','T7'];
-  const short = `${String(d).padStart(2,'0')}/${String(m).padStart(2,'0')}`;
-  if(date === today) return `HN · ${short}`;
-  if(date === tomorrow) return `Mai · ${short}`;
-  if(date === yesterday) return `Qua · ${short}`;
-  return `${shortDays[new Date(y, m-1, d).getDay()]} · ${short}`;
-}
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function quoteMarkup(quote){
@@ -3043,6 +2987,12 @@ function migrateActivities(){
     ? Object.fromEntries(Object.entries(morningByDate).filter(([date, time]) =>
         /^\d{4}-\d{2}-\d{2}$/.test(date) && timeToMinutes(time) !== null && timeToMinutes(time) < 720))
     : {};
+  if(!isValidEveningEndTime(state.eveningEndTime)) state.eveningEndTime = DEFAULT_EVENING_END;
+  const eveningByDate = state.eveningEndByDate;
+  state.eveningEndByDate = eveningByDate && typeof eveningByDate === 'object' && !Array.isArray(eveningByDate)
+    ? Object.fromEntries(Object.entries(eveningByDate).filter(([date, time]) =>
+        /^\d{4}-\d{2}-\d{2}$/.test(date) && isValidEveningEndTime(time)))
+    : {};
   // Cột theo buổi cố định; dữ liệu cũ vẫn giữ location để không mất thông tin gốc.
   (state.activities || []).forEach(a => { if(!DAYPART_IDS.includes(a.daypart)) a.daypart = activityDaypart(a); });
   const defaults = defaultGoalTargets();
@@ -3184,7 +3134,7 @@ let state = null;
 
 function defaultState(){
   const start = todayStr();
-  return { activities:[], reviews:[], actions:[], mistakes:[], focus:{}, weekly:[], gardenStartDate:start, goalTargets:defaultGoalTargets(), celebratedOnePctDays:[], morningStartTime:DEFAULT_MORNING_START, morningStartByDate:{}, seeded:false, theme:'light' };
+  return { activities:[], reviews:[], actions:[], mistakes:[], focus:{}, weekly:[], gardenStartDate:start, goalTargets:defaultGoalTargets(), celebratedOnePctDays:[], morningStartTime:DEFAULT_MORNING_START, morningStartByDate:{}, eveningEndTime:DEFAULT_EVENING_END, eveningEndByDate:{}, seeded:false, theme:'light' };
 }
 
 function load(){
@@ -3330,8 +3280,20 @@ function morningStartMinute(date){
   const fallback = timeToMinutes(state?.morningStartTime);
   return fallback !== null && fallback < 720 ? fallback : timeToMinutes(DEFAULT_MORNING_START);
 }
+function isValidEveningEndTime(value){
+  const minute = timeToMinutes(value);
+  return value === '00:00' || (minute !== null && minute >= 1080);
+}
+function eveningEndMinute(date){
+  const override = state?.eveningEndByDate?.[date];
+  const value = isValidEveningEndTime(override) ? override
+    : (isValidEveningEndTime(state?.eveningEndTime) ? state.eveningEndTime : DEFAULT_EVENING_END);
+  return value === '00:00' ? MINUTES_PER_DAY : timeToMinutes(value);
+}
 function daypartBudgetStart(part, date){ return part.id === 'morning' ? morningStartMinute(date) : part.start; }
-function dayCapacityMinutes(date){ return MINUTES_PER_DAY - morningStartMinute(date); }
+function daypartBudgetEnd(part, date){ return part.id === 'evening' ? eveningEndMinute(date) : part.end; }
+function daypartBudgetMinutes(part, date){ return Math.max(0, daypartBudgetEnd(part, date) - daypartBudgetStart(part, date)); }
+function dayCapacityMinutes(date){ return eveningEndMinute(date) - morningStartMinute(date); }
 function minutesToClock(minute){ return `${String(Math.floor(minute / 60)).padStart(2,'0')}:${String(minute % 60).padStart(2,'0')}`; }
 const DAYPART_IDS = DAYPARTS.map(p => p.id);
 function daypartForMinute(minute){ return DAYPARTS.find(p => minute >= p.start && minute < p.end)?.id || 'evening'; }
@@ -3372,6 +3334,13 @@ function renderBoardVisibility(){
   if(!manualDaypart) focusedDaypart = currentDaypart();
   board.classList.toggle('is-planning', planningDay);
   board.querySelectorAll('[data-column]').forEach(col => { col.hidden = !planningDay && col.dataset.column !== focusedDaypart; });
+  const focusedPart = DAYPARTS.find(part => part.id === focusedDaypart) || DAYPARTS[0];
+  document.getElementById('daypartNavLabel').textContent = planningDay ? '☰ Cả ngày' : `${focusedPart.icon} ${focusedPart.label}`;
+  const daypartPicker = document.getElementById('daypartPickerBtn');
+  const daypartPickerAction = planningDay
+    ? `Xem công việc buổi ${focusedPart.label.toLowerCase()}` : 'Chuyển sang buổi tiếp theo';
+  daypartPicker.setAttribute('aria-label', daypartPickerAction);
+  daypartPicker.title = daypartPickerAction;
   document.querySelectorAll('.daypart-row[data-daypart]').forEach(row => {
     row.classList.toggle('selected', !planningDay && row.dataset.daypart === focusedDaypart);
     row.setAttribute('aria-pressed', String(!planningDay && row.dataset.daypart === focusedDaypart));
@@ -3399,14 +3368,28 @@ document.getElementById('heroRingToggle').addEventListener('click', () => {
   ringFlipped = !ringFlipped;
   renderRingFace();
 });
+function showDaypart(partId, scrollDelay=0){
+  focusedDaypart = partId;
+  manualDaypart = true;
+  planningDay = false;
+  renderBoardVisibility();
+  scrollToActivities(scrollDelay);
+}
+function shiftDaypart(step){
+  const index = DAYPART_IDS.indexOf(focusedDaypart);
+  const next = (index + step + DAYPARTS.length) % DAYPARTS.length;
+  showDaypart(DAYPARTS[next].id);
+}
+document.getElementById('daypartPrevBtn').addEventListener('click', () => shiftDaypart(-1));
+document.getElementById('daypartNextBtn').addEventListener('click', () => shiftDaypart(1));
+document.getElementById('daypartPickerBtn').addEventListener('click', () => {
+  if(planningDay) showDaypart(focusedDaypart);
+  else shiftDaypart(1);
+});
 document.querySelectorAll('.daypart-row[data-daypart]').forEach(row => {
   const select = () => {
     playHeroClick(row);
-    focusedDaypart = row.dataset.daypart;
-    manualDaypart = true;
-    planningDay = false;
-    renderBoardVisibility();
-    scrollToActivities(540);
+    showDaypart(row.dataset.daypart, 540);
   };
   row.addEventListener('click', select);
   row.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); select(); } });
@@ -3435,7 +3418,9 @@ function paintHeroByDaypart(nowMinute){
   const hero = document.querySelector('section[data-view="today"] .hero');
   if(!hero) return;
   if(viewDate !== todayStr()){ hero.removeAttribute('data-daypart'); return; }
-  if(nowMinute < morningStartMinute(viewDate)){ hero.removeAttribute('data-daypart'); return; }
+  if(nowMinute < morningStartMinute(viewDate) || nowMinute >= eveningEndMinute(viewDate)){
+    hero.removeAttribute('data-daypart'); return;
+  }
   hero.dataset.daypart = daypartForMinute(nowMinute);
 }
 
@@ -3447,11 +3432,11 @@ function renderTimeBudget(){
   const dayCapacity = dayCapacityMinutes(t);
   paintHeroByDaypart(nowMinute);
 
-  // Quỹ giờ trống = thời gian từ giờ bắt đầu ngày (hoặc hiện tại) đến 24:00 trừ việc chưa xong.
-  // Vẫn còn 8h việc chưa tick mà đã 16h chiều (còn 8h trong ngày) => quỹ trống = 0.
+  // Quỹ giờ trống = thời gian từ giờ bắt đầu (hoặc hiện tại) đến giờ kết thúc tối trừ việc chưa xong.
+  // Vẫn còn 8h việc chưa tick mà quỹ ngày chỉ còn 4h => quỹ trống âm 4h.
   // Tick xong một việc là phần giờ của nó được cộng ngay trở lại quỹ trống.
   const clockLeft = t < today ? 0
-    : (t === today ? Math.max(0, MINUTES_PER_DAY - Math.max(nowMinute, morningStartMinute(t))) : dayCapacity);
+    : (t === today ? Math.max(0, eveningEndMinute(t) - Math.max(nowMinute, morningStartMinute(t))) : dayCapacity);
   const owed = items.reduce((sum,item) => sum + dayItemRemainingMinutes(item, t), 0);
   const planned = items.reduce((sum,item) => sum + dayItemDuration(item, t), 0);
   const room = clockLeft - owed;
@@ -3488,9 +3473,9 @@ function renderTimeBudget(){
       : `Còn ${fmtMins(clockLeft)} trong ngày − ${fmtMins(owed)} việc chưa xong = ${room < 0 ? 'thiếu ' + fmtMins(-room) : fmtMins(room) + ' trống'}.`}`;
   }
   renderRingFace();
-  document.getElementById('morningStartDisplay').textContent = minutesToClock(morningStartMinute(t));
-  const settingsBtn = document.getElementById('morningStartBtn');
-  settingsBtn.title = `Cài đặt giờ bắt đầu buổi sáng cho ${calendarDateLabel(t)}`;
+  document.getElementById('timeBudgetRange').textContent = `${minutesToClock(morningStartMinute(t))}–${minutesToClock(eveningEndMinute(t))}`;
+  const settingsBtn = document.getElementById('timeBudgetBtn');
+  settingsBtn.title = `Cài đặt quỹ thời gian cho ${calendarDateLabel(t)}`;
 
   DAYPARTS.forEach(part => {
     const row = document.querySelector(`.daypart-row[data-daypart="${part.id}"]`);
@@ -3499,57 +3484,74 @@ function renderTimeBudget(){
     const partItems = items.filter(item => activityDaypart(item) === part.id);
     const totalPlanned = partItems.reduce((sum,item) => sum + dayItemDuration(item,t), 0);
     const start = daypartBudgetStart(part, t);
-    const budget = part.end - start;
-    const percent = Math.max(0, Math.round(totalPlanned / budget * 100));
+    const end = daypartBudgetEnd(part, t);
+    const budget = daypartBudgetMinutes(part, t);
+    const percent = budget > 0 ? Math.max(0, Math.round(totalPlanned / budget * 100)) : (totalPlanned > 0 ? 100 : 0);
     planEl.textContent = `${fmtMinsOnly(totalPlanned)}/${fmtMinsOnly(budget)}`;
     planEl.classList.toggle('warn', totalPlanned > budget);
     fillEl.style.width = `${Math.min(percent, 100)}%`;
     row.classList.toggle('over-budget', totalPlanned > budget);
-    row.classList.toggle('past', t < today || (t === today && nowMinute >= part.end));
-    row.classList.toggle('current', t === today && nowMinute >= start && nowMinute < part.end);
-    row.title = `${part.label} ${minutesToClock(start)}–${minutesToClock(part.end - 1)} · ${planEl.textContent} đã lên kế hoạch (${percent}%)`;
+    row.classList.toggle('past', t < today || (t === today && nowMinute >= end));
+    row.classList.toggle('current', t === today && nowMinute >= start && nowMinute < end);
+    row.title = `${part.label} ${minutesToClock(start)}–${minutesToClock(end)} · ${planEl.textContent} đã lên kế hoạch (${percent}%)`;
     row.setAttribute('aria-label', `${part.label}: ${totalPlanned} trên ${budget} phút đã lên kế hoạch, ${percent}%. Xem công việc buổi ${part.label.toLowerCase()}`);
   });
 }
 
-function updateMorningBudgetPreview(){
-  const input = document.getElementById('morningStartInput');
-  const minute = timeToMinutes(input.value);
-  document.getElementById('morningBudgetPreview').textContent = minute !== null && minute < 720
-    ? `Buổi Sáng: ${720 - minute} phút (${input.value}–12:00). Cả ngày: ${MINUTES_PER_DAY - minute} phút.`
-    : 'Chọn giờ bắt đầu trước 12:00.';
-}
-let morningSettingsDate = null;
-document.getElementById('morningStartBtn').addEventListener('click', () => {
-  morningSettingsDate = viewDate;
-  const input = document.getElementById('morningStartInput');
-  input.value = minutesToClock(morningStartMinute(morningSettingsDate));
-  document.getElementById('timeSettingsScope').textContent = `Chỉ áp dụng cho ${calendarDateLabel(morningSettingsDate)}. Buổi Sáng được tính từ giờ này đến 12:00.`;
-  input.setCustomValidity('');
-  updateMorningBudgetPreview();
-  document.getElementById('timeSettingsModal').classList.add('open');
-  input.focus();
-});
-document.getElementById('morningStartInput').addEventListener('input', e => {
-  e.target.setCustomValidity('');
-  updateMorningBudgetPreview();
-});
-document.getElementById('morningStartInput').addEventListener('change', updateMorningBudgetPreview);
-document.getElementById('timeSettingsForm').addEventListener('submit', e => {
-  e.preventDefault();
-  const input = document.getElementById('morningStartInput');
-  const minute = timeToMinutes(input.value);
-  if(minute === null || minute >= 720){
-    input.setCustomValidity('Chọn giờ bắt đầu trước 12:00.');
-    input.reportValidity();
+function updateTimeBudgetPreview(){
+  const startValue = document.getElementById('morningStartInput').value;
+  const endValue = document.getElementById('eveningEndInput').value;
+  const start = timeToMinutes(startValue);
+  const end = endValue === '00:00' ? MINUTES_PER_DAY : timeToMinutes(endValue);
+  const preview = document.getElementById('timeBudgetPreview');
+  if(start === null || start >= 720 || !isValidEveningEndTime(endValue)){
+    preview.textContent = 'Chọn giờ bắt đầu trước 12:00 và giờ kết thúc từ 18:00 đến 00:00.';
     return;
   }
-  const date = morningSettingsDate || viewDate;
-  state.morningStartByDate[date] = input.value;
+  preview.textContent = `Sáng ${fmtMinsOnly(720 - start)} · Chiều ${fmtMinsOnly(360)} · Tối ${fmtMinsOnly(end - 1080)} · Tổng quỹ ${fmtMinsOnly(end - start)} (${startValue}–${minutesToClock(end)}).`;
+}
+let timeSettingsDate = null;
+document.getElementById('timeBudgetBtn').addEventListener('click', () => {
+  timeSettingsDate = viewDate;
+  const startInput = document.getElementById('morningStartInput');
+  const endInput = document.getElementById('eveningEndInput');
+  startInput.value = minutesToClock(morningStartMinute(timeSettingsDate));
+  endInput.value = eveningEndMinute(timeSettingsDate) === MINUTES_PER_DAY
+    ? '00:00' : minutesToClock(eveningEndMinute(timeSettingsDate));
+  document.getElementById('timeSettingsScope').textContent = `Áp dụng cho ${calendarDateLabel(timeSettingsDate)}. Sáng kết thúc lúc 12:00, chiều kết thúc lúc 18:00.`;
+  startInput.setCustomValidity('');
+  endInput.setCustomValidity('');
+  updateTimeBudgetPreview();
+  document.getElementById('timeSettingsModal').classList.add('open');
+  startInput.focus();
+});
+['morningStartInput','eveningEndInput'].forEach(id => {
+  const input = document.getElementById(id);
+  input.addEventListener('input', () => { input.setCustomValidity(''); updateTimeBudgetPreview(); });
+  input.addEventListener('change', updateTimeBudgetPreview);
+});
+document.getElementById('timeSettingsForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const startInput = document.getElementById('morningStartInput');
+  const endInput = document.getElementById('eveningEndInput');
+  const start = timeToMinutes(startInput.value);
+  if(start === null || start >= 720){
+    startInput.setCustomValidity('Chọn giờ bắt đầu trước 12:00.');
+    startInput.reportValidity();
+    return;
+  }
+  if(!isValidEveningEndTime(endInput.value)){
+    endInput.setCustomValidity('Chọn giờ kết thúc từ 18:00 đến 23:59, hoặc 00:00 cho nửa đêm hôm sau.');
+    endInput.reportValidity();
+    return;
+  }
+  const date = timeSettingsDate || viewDate;
+  state.morningStartByDate[date] = startInput.value;
+  state.eveningEndByDate[date] = endInput.value;
   save();
   closeModals();
   renderAll();
-  toast(`Đã đặt giờ bắt đầu buổi sáng ${calendarDateLabel(date)} lúc ${input.value}.`);
+  toast(`Đã đặt quỹ thời gian ${calendarDateLabel(date)}: ${startInput.value}–${minutesToClock(eveningEndMinute(date))}.`);
 });
 
 // Tự cập nhật mỗi phút khi đang xem hôm nay (chỉ chạm vào số liệu, không render lại form)
@@ -4193,13 +4195,12 @@ function renderToday(){
   const t = viewDate;
   const today = todayStr();
   document.getElementById('todayDate').textContent = fmtDate(t);
+  document.getElementById('planDatePickerTrigger').setAttribute('aria-label', `Chọn ngày đang xem: ${fmtDate(t)}`);
 
-  // Compact day navigator for the Plan tab.
+  // Day navigation lives in the hero date bar.
   const todayBtn = document.getElementById('dayTodayBtn');
   todayBtn.classList.toggle('is-today', t === today);
   document.getElementById('dayPick').value = t;
-  document.getElementById('planDateLabel').textContent = planDateLabel(t);
-  document.getElementById('planDateLabelCompact').textContent = planDateLabelCompact(t);
   if(document.getElementById('qDate')) setQuickDate(t);
   const dayLabel = t === today ? 'hôm nay' : (t === addDays(today,1) ? 'ngày mai' : `ngày ${t.split('-').reverse().join('/')}`);
   if(document.getElementById('quickAddTitle')) document.getElementById('quickAddTitle').textContent = `＋ Thêm nhanh công việc ${dayLabel}`;
@@ -4236,7 +4237,7 @@ function renderToday(){
     const colItems = dayItems.filter(item => activityDaypart(item) === loc).sort(compareDayItemsByTime);
     const colTime = colItems.reduce((sum,item) => sum + dayItemDuration(item,t), 0);
     const timeEl = document.getElementById(timeId);
-    const budgetMinutes = part.end - daypartBudgetStart(part, t);
+    const budgetMinutes = daypartBudgetMinutes(part, t);
     timeEl.textContent = `${colTime}'/${budgetMinutes}'`;
     timeEl.title = `${colTime} phút đã lên kế hoạch trên ${budgetMinutes} phút của buổi ${part.label.toLowerCase()}`;
     timeEl.classList.toggle('over-budget', colTime > budgetMinutes);
