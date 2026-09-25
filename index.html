@@ -6029,9 +6029,17 @@ document.getElementById('bLinkedWeed').addEventListener('click', e => {
   }
 });
 document.getElementById('bTag1pct').addEventListener('change', syncBoardDeadlineUI);
+function renderAfterActivitySave(act, previousDate){
+  if(act.date === previousDate){ renderAll(); return; }
+  focusedDaypart = activityDaypart(act);
+  manualDaypart = true;
+  planningDay = false;
+  openDayView(act.date);
+}
 document.getElementById('boardForm').addEventListener('submit', e => {
   e.preventDefault();
   const act = state.activities.find(a => a.id === boardId); if(!act) return;
+  const previousDate = act.date;
   const wasOne = !!act.tag1pct;
   act.title = document.getElementById('bTitle').value.trim();
   act.description = document.getElementById('bDesc').value.trim();
@@ -6042,8 +6050,8 @@ document.getElementById('boardForm').addEventListener('submit', e => {
   act.startTime = document.getElementById('bStartTime').value || null;
   act.daypart = daypartForStartTime(act.startTime, activityDaypart(act));
   act.durationMinutes = readDuration('bDuration','bDurationCustom');
-  save(); closeModals(); renderAll();
-  toast('Đã lưu board công việc.');
+  save(); closeModals(); renderAfterActivitySave(act, previousDate);
+  toast(act.date === previousDate ? 'Đã lưu board công việc.' : `Đã chuyển công việc sang ${calendarDateLabel(act.date)}.`);
 });
 document.getElementById('bAddSub').addEventListener('click', () => {
   const act = state.activities.find(a => a.id === boardId); if(!act) return;
@@ -6293,6 +6301,7 @@ document.getElementById('editForm').addEventListener('submit', e => {
   }
   // ----- sửa việc lớn -----
   const act = state.activities.find(a => a.id === editingId); if(!act) return;
+  const previousDate = act.date;
   act.title = document.getElementById('eTitle').value.trim();
   act.description = document.getElementById('eDesc').value.trim();
   const wasOnePct = !!act.tag1pct;
@@ -6303,7 +6312,8 @@ document.getElementById('editForm').addEventListener('submit', e => {
   act.startTime = document.getElementById('eStartTime').value || null;
   act.daypart = daypartForStartTime(act.startTime, selectedDaypart);
   act.durationMinutes = readDuration('eDuration','eDurationCustom');
-  save(); closeModals(); renderAll(); toast('Đã cập nhật hoạt động.');
+  save(); closeModals(); renderAfterActivitySave(act, previousDate);
+  toast(act.date === previousDate ? 'Đã cập nhật hoạt động.' : `Đã chuyển công việc sang ${calendarDateLabel(act.date)}.`);
 });
 
 // ---------- Edit subtask ----------
@@ -6870,9 +6880,6 @@ function applyCloudState(cloud, {announce=true, force=false}={}){
     return false;
   }
 
-  // Do not roll back to a genuinely older cloud version.
-  if(!force && cloudStamp && cloudStamp < knownStamp) return false;
-
   // Máy này còn thay đổi chưa đẩy lên. Nếu bản trên mây không tiến xa hơn mốc đã
   // biết thì không thiết bị nào khác sửa cả -> bản local mới hơn, đẩy nó lên
   // thay vì để bản mây cũ đè mất dữ liệu vừa làm offline.
@@ -6884,9 +6891,13 @@ function applyCloudState(cloud, {announce=true, force=false}={}){
 
   // Cả hai phía đều đã đổi -> không tự chọn hộ, để người dùng quyết định.
   if(!force && localDirty && cloudStamp > knownStamp){
+    syncConflict = true;
     setStatus('\u26a0\ufe0f Xung đột: cả máy này và thiết bị khác đều có thay đổi. Bấm "Đồng bộ ngay" để giữ bản trên máy này, hoặc "Tải về máy" để lấy bản trên mây.');
     return false;
   }
+
+  // Do not roll back to a genuinely older cloud version.
+  if(!force && cloudStamp && cloudStamp < knownStamp) return false;
 
   try{
     const data = JSON.parse(cloud.state);
@@ -7033,16 +7044,16 @@ if(db && liveRef){
     }
     initialCloudCheckComplete = true;
     if(!snap.exists()){
-      if(localDirty && !syncConflict) pushImmediately();
+      if((localDirty || window.__syncHadLocalDataAtBoot) && !syncConflict) pushImmediately();
       return;
     }
     const cloud = snap.val();
     const cloudStamp = Number(cloud.stamp) || 0;
 
-    // A browser that was used while Firebase was absent may hold unique work.
-    // Keep both copies until the user explicitly chooses which one to retain.
+    // Chỉ thiết bị chưa từng đồng bộ mới cần hỏi khi cả máy và mây đều có dữ liệu.
+    // Thiết bị đã đồng bộ và không có thay đổi chờ gửi phải tự nhận bản mới từ mây.
     if(firstSnapshot && cloud.state !== localStateSnapshot()
-       && (window.__syncHadLocalDataAtBoot || localDirty)){
+       && knownStamp === 0 && window.__syncHadLocalDataAtBoot){
       syncConflict = true;
       setStatus('⚠️ Dữ liệu trên máy và trên mây khác nhau. Chọn "Đồng bộ ngay" để giữ bản trên máy, hoặc "Tải về máy" để lấy bản trên mây.');
       return;
@@ -7076,6 +7087,30 @@ if(db && liveRef){
     realtimeReady = false;
     setStatus('❌ Realtime không chạy: ' + explainSyncError(error));
   });
+
+  // Trình duyệt điện thoại có thể tạm dừng kết nối khi app chạy nền.
+  // Mỗi lần quay lại trang, đọc bản mới nhất và xử lý thay đổi chờ gửi.
+  let refreshingOnResume = false;
+  async function refreshFromCloud(){
+    if(!initialCloudCheckComplete || syncConflict || realtimePushPending > 0 || refreshingOnResume) return;
+    refreshingOnResume = true;
+    try{
+      const snap = await get(liveRef);
+      if(snap.exists()) applyCloudState(snap.val());
+      else if(localDirty) pushImmediately();
+    }catch(e){
+      setStatus('❌ Chưa kiểm tra được dữ liệu mới: ' + explainSyncError(e));
+    }finally{
+      refreshingOnResume = false;
+    }
+  }
+  document.addEventListener('visibilitychange', () => {
+    if(document.visibilityState === 'visible') refreshFromCloud();
+  });
+  window.addEventListener('pageshow', event => {
+    if(event.persisted) refreshFromCloud();
+  });
+  window.addEventListener('online', refreshFromCloud);
 }
 </script>
 <datalist id="tagSuggestions"></datalist>
