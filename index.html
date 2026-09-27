@@ -3311,6 +3311,18 @@ function currentDaypart(){ return daypartForMinute(currentMinuteOfDay()); }
 let planningDay = false;
 let focusedDaypart = null;
 let manualDaypart = false;
+// Ngày mà chế độ hiển thị buổi đang áp dụng. Đổi sang ngày khác thì tính lại mặc định:
+// hôm nay bám buổi đang diễn ra, còn quá khứ/tương lai mở sẵn CẢ NGÀY (sáng+chiều+tối)
+// để xem lại hoặc lên kế hoạch tổng quan, không phải bấm "Lên kế hoạch" mới thấy đủ.
+let daypartModeDate = null;
+function syncDaypartModeForDate(){
+  if(daypartModeDate === viewDate) return;   // trong cùng một ngày thì giữ nguyên lựa chọn thủ công
+  daypartModeDate = viewDate;
+  const isToday = viewDate === todayStr();
+  planningDay = !isToday;
+  manualDaypart = false;
+  focusedDaypart = isToday ? currentDaypart() : DAYPARTS[0].id;
+}
 let ringFlipped = false;
 const heroFeedbackTimers = new WeakMap();
 let heroScrollTimer;
@@ -3331,7 +3343,8 @@ function scrollToActivities(delayMs=0){
 function renderBoardVisibility(){
   const board = document.getElementById('todayActivities');
   if(!board) return;
-  if(!manualDaypart) focusedDaypart = currentDaypart();
+  syncDaypartModeForDate();
+  if(!manualDaypart && viewDate === todayStr()) focusedDaypart = currentDaypart();
   board.classList.toggle('is-planning', planningDay);
   board.querySelectorAll('[data-column]').forEach(col => { col.hidden = !planningDay && col.dataset.column !== focusedDaypart; });
   const focusedPart = DAYPARTS.find(part => part.id === focusedDaypart) || DAYPARTS[0];
@@ -6034,6 +6047,7 @@ function renderAfterActivitySave(act, previousDate){
   focusedDaypart = activityDaypart(act);
   manualDaypart = true;
   planningDay = false;
+  daypartModeDate = act.date;   // chủ ý mở đúng buổi của việc vừa dời — bỏ qua mặc định cả-ngày
   openDayView(act.date);
 }
 document.getElementById('boardForm').addEventListener('submit', e => {
