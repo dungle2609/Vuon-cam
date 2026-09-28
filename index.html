@@ -2736,10 +2736,26 @@ function load(){
   if(!state.seeded){ seedDemo(); state.seeded = true; save(); }
   migrateActivities();
   // Persist cleanup/migrations immediately so deleted recurring instances do not reappear after refresh.
+  lastSavedSnapshot = JSON.stringify(state);
   localStorage.setItem(LS_KEY, JSON.stringify(state));
 }
 let afterSaveHook = null;
-function save(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); if(afterSaveHook) afterSaveHook(); }
+const undoHistory = [];
+const UNDO_LIMIT = 20;
+let lastSavedSnapshot = null;
+let undoGroupOpen = false;
+function save({recordUndo=true}={}){
+  const snapshot = JSON.stringify(state);
+  if(recordUndo && lastSavedSnapshot !== null && snapshot !== lastSavedSnapshot && !undoGroupOpen){
+    undoHistory.push(lastSavedSnapshot);
+    if(undoHistory.length > UNDO_LIMIT) undoHistory.shift();
+    undoGroupOpen = true;
+    queueMicrotask(() => { undoGroupOpen = false; });
+  }
+  lastSavedSnapshot = snapshot;
+  localStorage.setItem(LS_KEY, snapshot);
+  if(afterSaveHook) afterSaveHook();
+}
 window.__setAfterSave = (fn) => { afterSaveHook = fn; };
 
 // ---------- Demo data (first run) ----------
@@ -2799,6 +2815,22 @@ function toast(msg, corner=false){
   clearTimeout(toastTimer);
   toastTimer = setTimeout(()=> el.classList.remove('show'), 2600);
 }
+
+function undoLastChange(){
+  if(!undoHistory.length){ toast('Chưa có thay đổi để hoàn tác.', true); return; }
+  state = JSON.parse(undoHistory.pop());
+  save({recordUndo:false});
+  closeModals();
+  applyTheme();
+  renderAll();
+  toast('Đã hoàn tác thay đổi gần nhất.', true);
+}
+document.addEventListener('keydown', e => {
+  if(e.defaultPrevented || e.isComposing || e.shiftKey || e.altKey || !(e.metaKey || e.ctrlKey) || e.key.toLowerCase() !== 'z') return;
+  if(e.target.closest?.('input, textarea, select, [contenteditable], [role="textbox"]')) return;
+  e.preventDefault();
+  undoLastChange();
+});
 
 // ---------- Navigation ----------
 function go(view){
@@ -4649,6 +4681,7 @@ document.getElementById('resetBtn').addEventListener('click', () => {
     if(confirm('Chắc chắn chứ? Hành động này không thể hoàn tác. Nên export trước khi xoá.')){
       const theme = state.theme;
       state = defaultState(); state.seeded = true; state.theme = theme;
+      undoHistory.length = 0; lastSavedSnapshot = JSON.stringify(state);
       save(); renderAll();
       toast('Đã xoá toàn bộ dữ liệu. Một khởi đầu mới.');
     }
@@ -4808,7 +4841,9 @@ function applyCloudState(cloud, {announce=true, force=false}={}){
     applyingCloudState = true;
     state = Object.assign(defaultState(), data, {seeded:true, theme:localTheme});
     if(typeof migrateActivities === 'function') migrateActivities();
-    localStorage.setItem(LS_KEY, JSON.stringify(state)); // no save hook -> no echo write
+    lastSavedSnapshot = JSON.stringify(state);
+    undoHistory.length = 0;
+    localStorage.setItem(LS_KEY, lastSavedSnapshot); // no save hook -> no echo write
     setKnownStamp(cloudStamp || Date.now());
     setLocalDirty(false);
     applyTheme();
