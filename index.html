@@ -1799,6 +1799,30 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
 .tf-spacer{flex:1}
 .tf-actions .btn{min-height:42px;justify-content:center}
 .tf-actions .tf-delete{color:var(--danger);border-color:transparent;padding-left:6px;padding-right:6px}
+.tf-hold-toggle{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2);font-size:14px;font-weight:600;color:var(--ink);cursor:pointer}
+.tf-hold-toggle input{width:18px;height:18px;accent-color:var(--blue);flex:0 0 auto}
+.tf-hold-toggle[hidden]{display:none}
+.onhold-panel{padding:7px 12px;margin-bottom:10px;border-radius:12px;box-shadow:none}
+.onhold-head{display:flex;align-items:center;gap:8px;justify-content:space-between}
+.onhold-head .btn{min-height:32px;padding:5px 10px;font-size:12px}
+.onhold-toggle{display:flex;align-items:center;gap:7px;min-width:0;min-height:32px;padding:0;border:0;background:none;color:var(--ink);font:700 13.5px var(--font-display);text-align:left}
+.onhold-toggle:hover{color:var(--blue)}
+.onhold-toggle .onhold-chevron{font-size:10px;color:var(--muted);transition:transform .15s}
+.onhold-toggle[aria-expanded="true"] .onhold-chevron{transform:rotate(90deg)}
+.onhold-count{display:inline-grid;place-items:center;min-width:19px;height:19px;padding:0 5px;border-radius:99px;background:var(--blue-soft);color:var(--blue);font:700 11px var(--font-display)}
+.onhold-body{margin-top:5px;padding-top:6px;border-top:1px solid var(--line)}
+.onhold-body[hidden]{display:none}
+.onhold-quick{display:flex;gap:6px;margin-bottom:6px}
+.onhold-quick[hidden]{display:none}
+.onhold-quick input{flex:1;min-width:0;height:34px;padding:6px 9px;font-size:13px}
+.onhold-list{display:flex;flex-direction:column;gap:4px;max-height:280px;overflow:auto}
+.onhold-item{display:flex;align-items:center;gap:7px;padding:5px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface-2)}
+.onhold-item-main{flex:1;min-width:0;border:0;background:none;padding:0;text-align:left;color:var(--ink);font:inherit}
+.onhold-item-main strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12.5px}
+.onhold-item-main small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);font-size:11px;margin-top:1px}
+.onhold-item .btn{min-height:29px;padding:4px 8px;font-size:11.5px}
+.onhold-empty{padding:5px 2px;color:var(--muted);font-size:12px}
+@media(max-width:520px){.onhold-head .btn{padding:5px 8px}.onhold-quick .btn{flex:0 0 auto}.onhold-item{align-items:center}}
 @media (max-width:760px){
   .modal.task-sheet{padding:16px 16px calc(18px + env(safe-area-inset-bottom))}
 }
@@ -1915,6 +1939,20 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
       </div>
 
       <div class="daily-quote" id="heroQuote"></div>
+
+      <div class="card onhold-panel" id="onHoldPanel">
+        <div class="onhold-head">
+          <button type="button" class="onhold-toggle" id="onHoldToggle" aria-expanded="false" aria-controls="onHoldBody"><span class="onhold-chevron" aria-hidden="true">▶</span>On-hold <span class="onhold-count" id="onHoldCount">0</span></button>
+          <button type="button" class="btn btn-soft btn-sm" id="onHoldAddBtn">＋ Ghi việc</button>
+        </div>
+        <div class="onhold-body" id="onHoldBody" hidden>
+          <form class="onhold-quick" id="onHoldQuickForm" hidden>
+            <input id="onHoldTitle" required maxlength="240" placeholder="Việc cần nhớ, chưa xếp ngày…" aria-label="Tên việc On-hold" autocomplete="off">
+            <button type="submit" class="btn btn-primary btn-sm">Lưu</button>
+          </form>
+          <div class="onhold-list" id="onHoldList"></div>
+        </div>
+      </div>
 
       <div class="card activity-panel">
         <div id="todayActivities" class="daypart-board">
@@ -2056,9 +2094,11 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover{opacity:1;}
       <textarea id="bDesc" class="tf-input tf-desc" rows="2" placeholder="Mô tả (không bắt buộc)" aria-label="Mô tả"></textarea>
       <input type="checkbox" id="bTag1pct" hidden>
       <div class="tf-note" id="bDeadlineLock">🌱 Việc 1% có ngày hẹn cố định — không đổi ngày hoặc xoá được.</div>
+      <label class="tf-hold-toggle" id="bOnHoldRow"><input type="checkbox" id="bOnHold"> On-hold · chưa xếp ngày</label>
       <div class="tf-meta">
-        <label class="tf-row"><span class="tf-label">Ngày</span><input type="date" id="bDate" class="tf-value"></label>
-        <label class="tf-row"><span class="tf-label">Giờ bắt đầu</span><input type="time" id="bStartTime" class="tf-value"></label>
+        <label class="tf-row" id="bDateRow"><span class="tf-label">Ngày</span><input type="date" id="bDate" class="tf-value"></label>
+        <label class="tf-row" id="bDaypartRow"><span class="tf-label">Buổi</span><select id="bDaypart" class="tf-value"><option value="morning">Sáng</option><option value="afternoon">Chiều</option><option value="evening">Tối</option></select></label>
+        <label class="tf-row" id="bStartTimeRow"><span class="tf-label">Giờ bắt đầu</span><input type="time" id="bStartTime" class="tf-value"></label>
         <label class="tf-row"><span class="tf-label">Thời lượng</span><select id="bDuration" class="tf-value"><option value="">Không đặt</option><option value="15">15 phút</option><option value="30">30 phút</option><option value="45">45 phút</option><option value="60">60 phút</option><option value="90">90 phút</option><option value="120">120 phút</option><option value="custom">Tùy chỉnh…</option></select></label>
         <label class="tf-row" hidden><span class="tf-label">Số phút</span><input type="number" id="bDurationCustom" class="tf-value" min="1" max="1440" inputmode="numeric" placeholder="Nhập số phút" enterkeyhint="done"></label>
       </div>
@@ -2670,7 +2710,10 @@ function migrateActivities(){
         /^\d{4}-\d{2}-\d{2}$/.test(date) && isValidEveningEndTime(time)))
     : {};
   // Cột theo buổi cố định; dữ liệu cũ vẫn giữ location để không mất thông tin gốc.
-  (state.activities || []).forEach(a => { if(!DAYPART_IDS.includes(a.daypart)) a.daypart = activityDaypart(a); });
+  (state.activities || []).forEach(a => {
+    if(!a.date){ a.date = null; a.daypart = null; a.startTime = null; }
+    else if(!DAYPART_IDS.includes(a.daypart)) a.daypart = activityDaypart(a);
+  });
   const defaults = defaultGoalTargets();
   if(!state.goalTargets) state.goalTargets = defaults;
   // Chuyển mặc định cũ (5/20/240/365) sang triết lý mới: mỗi ngày tốt hơn 1%.
@@ -2689,7 +2732,7 @@ function migrateActivities(){
   (state.activities || []).forEach(a => {
     if(a.completed === undefined) a.completed = (a.status === 'done');
     if(!Array.isArray(a.subs)) a.subs = [];
-    if(!DAYPART_IDS.includes(a.daypart)) a.daypart = activityDaypart(a);
+    if(a.date && !DAYPART_IDS.includes(a.daypart)) a.daypart = activityDaypart(a);
     if(a.tag1pct === undefined) a.tag1pct = false;
     delete a.recurringId;
     delete a.generatedFromRecurring;
@@ -3203,7 +3246,7 @@ function calendarDateLabel(str){
 
 // ---------- Renders ----------
 function renderAll(){
-  renderToday(); renderDataSummary();
+  renderToday(); renderOnHold(); renderDataSummary();
 }
 
 
@@ -3369,7 +3412,7 @@ function carePointGoal(days){
 // "cared" ở đây = getOnePercentDayStatus(d).achieved (có việc 1% và làm xong đúng hạn) —
 // tính lại tại chỗ từ một lượt quét activities để khỏi gọi getOnePercentDayStatus 365 lần.
 function momentumWalk(start, end, caps=null){
-  const acts = (state?.activities || []).filter(a => a.date >= start && a.date <= end);
+  const acts = (state?.activities || []).filter(a => a.date && a.date >= start && a.date <= end);
   // Tách điểm gốc theo hai trục: việc 1% → sinh sản (quả), việc thường → sinh trưởng (chiều cao).
   const growthByDay = {}, reproByDay = {}, planByDay = {}, onTimeByDay = {};
   acts.forEach(a => {
@@ -3630,6 +3673,62 @@ function renderToday(){
   });
   renderBoardVisibility();
 }
+
+// On-hold là cùng một activity, chỉ chưa có ngày kế hoạch.
+let onHoldOpen = false;
+let onHoldComposerOpen = false;
+function onHoldActivities(){
+  return (state?.activities || []).filter(a => !a.date && !isCompleted(a))
+    .sort((a,b) => String(b.onHoldAt || b.createdAt || '').localeCompare(String(a.onHoldAt || a.createdAt || '')));
+}
+function renderOnHold(){
+  const items = onHoldActivities();
+  document.getElementById('onHoldCount').textContent = items.length;
+  document.getElementById('onHoldToggle').setAttribute('aria-expanded', String(onHoldOpen));
+  document.getElementById('onHoldBody').hidden = !onHoldOpen;
+  document.getElementById('onHoldQuickForm').hidden = !onHoldComposerOpen;
+  document.getElementById('onHoldList').innerHTML = items.length ? items.map(a => {
+    const meta = [a.description, effectiveDuration(a) ? fmtMins(effectiveDuration(a)) : ''].filter(Boolean).join(' · ');
+    return `<div class="onhold-item" data-onhold-id="${esc(a.id)}">
+      <button type="button" class="onhold-item-main" data-onhold-edit aria-label="Sửa ${esc(a.title)}"><strong>${esc(a.title)}</strong>${meta ? `<small>${esc(meta)}</small>` : ''}</button>
+      <button type="button" class="btn btn-soft btn-sm" data-onhold-schedule>Xếp lịch</button>
+    </div>`;
+  }).join('') : '<p class="onhold-empty">Chưa có việc chờ. Ghi nhanh một việc để xếp lịch sau.</p>';
+}
+document.getElementById('onHoldToggle').addEventListener('click', () => {
+  onHoldOpen = !onHoldOpen;
+  if(!onHoldOpen) onHoldComposerOpen = false;
+  renderOnHold();
+});
+document.getElementById('onHoldAddBtn').addEventListener('click', () => {
+  onHoldOpen = true;
+  onHoldComposerOpen = true;
+  renderOnHold();
+  document.getElementById('onHoldTitle').focus();
+});
+document.getElementById('onHoldQuickForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const input = document.getElementById('onHoldTitle');
+  const title = input.value.trim();
+  if(!title) return;
+  const now = new Date().toISOString();
+  state.activities.push({
+    id:uid(), date:null, daypart:null, title, description:'', tag1pct:false, tags:[],
+    startTime:null, durationMinutes:null, completed:false, subs:[], status:'todo', reviewId:null,
+    createdAt:now, onHoldAt:now
+  });
+  input.value = '';
+  onHoldComposerOpen = false;
+  save(); renderAll();
+  toast('Đã lưu vào On-hold.');
+});
+document.getElementById('onHoldList').addEventListener('click', e => {
+  const row = e.target.closest('[data-onhold-id]');
+  if(!row) return;
+  const act = state.activities.find(a => a.id === row.dataset.onholdId);
+  if(!act) return;
+  openActivityBoard(act, {schedule:!!e.target.closest('[data-onhold-schedule]')});
+});
 
 function getColumnSetting(loc){
   const part = DAYPARTS.find(p => p.id === loc) || DAYPARTS[0];
@@ -4543,17 +4642,23 @@ function setDurationFields(prefix, val){
   else if(presets.includes(String(dur))){ sel.value = String(dur); cus.value = ''; showCustomDuration(cus, false); }
   else { sel.value = 'custom'; cus.value = dur; showCustomDuration(cus, true); }
 }
-function openActivityBoard(act){
+function openActivityBoard(act, {schedule=false}={}){
   boardId = act.id;
-  const part = getColumnSetting(activityDaypart(act));
-  document.getElementById('boardSubTitle').textContent = `${part.icon} ${part.label} · ${planDayWord(act.date)}`;
+  const isOnHold = !act.date;
+  const part = getColumnSetting(isOnHold ? currentDaypart() : activityDaypart(act));
+  document.getElementById('boardSubTitle').textContent = isOnHold
+    ? (schedule ? `Xếp vào kế hoạch · ${planDayWord(viewDate)}` : 'On-hold · chưa xếp ngày')
+    : `${part.icon} ${part.label} · ${planDayWord(act.date)}`;
   document.getElementById('bTitle').value = act.title || '';
   document.getElementById('bDesc').value = act.description || '';
   document.getElementById('bTag1pct').checked = !!act.tag1pct;
-  document.getElementById('bDate').value = act.date || todayStr();
+  document.getElementById('bOnHold').checked = isOnHold && !schedule;
+  document.getElementById('bDate').value = act.date || (schedule ? viewDate : '');
+  document.getElementById('bDaypart').value = isOnHold ? currentDaypart() : activityDaypart(act);
   document.getElementById('bStartTime').value = act.startTime || '';
   setDurationFields('b', act.durationMinutes);
   syncBoardDeadlineUI();
+  syncBoardHoldUI();
   document.getElementById('activityBoardModal').classList.add('open');
   syncTfEmpty(document.getElementById('boardForm'));
   autoGrowModal('activityBoardModal');
@@ -4562,6 +4667,8 @@ function syncBoardDeadlineUI(){
   const isOne = document.getElementById('bTag1pct').checked;
   document.getElementById('bDate').disabled = isOne;
   document.getElementById('bDeadlineLock').style.display = isOne ? 'block' : 'none';
+  const act = state.activities.find(a => a.id === boardId);
+  document.getElementById('bOnHoldRow').hidden = isOne || isCompleted(act);
   const delBtn = document.getElementById('bDeleteBtn');
   if(delBtn){
     delBtn.style.display = isOne ? 'none' : '';
@@ -4569,6 +4676,21 @@ function syncBoardDeadlineUI(){
   }
 }
 document.getElementById('bTag1pct').addEventListener('change', syncBoardDeadlineUI);
+function syncBoardHoldUI(){
+  const hold = document.getElementById('bOnHold').checked;
+  const date = document.getElementById('bDate');
+  if(!hold && !date.value) date.value = viewDate;
+  document.getElementById('bDateRow').hidden = hold;
+  document.getElementById('bDaypartRow').hidden = hold || !!document.getElementById('bStartTime').value;
+  document.getElementById('bStartTimeRow').hidden = hold;
+  date.required = !hold && !date.disabled;
+  syncTfEmpty(document.getElementById('boardForm'));
+}
+document.getElementById('bOnHold').addEventListener('change', syncBoardHoldUI);
+document.getElementById('bStartTime').addEventListener('change', e => {
+  if(e.target.value) document.getElementById('bDaypart').value = daypartForStartTime(e.target.value, document.getElementById('bDaypart').value);
+  syncBoardHoldUI();
+});
 function renderAfterActivitySave(act, previousDate){
   if(act.date === previousDate){ renderAll(); return; }
   focusedDaypart = activityDaypart(act);
@@ -4582,14 +4704,35 @@ document.getElementById('boardForm').addEventListener('submit', e => {
   const act = state.activities.find(a => a.id === boardId); if(!act) return;
   const previousDate = act.date;
   const wasOne = !!act.tag1pct;
+  const hold = !wasOne && document.getElementById('bOnHold').checked;
   act.title = document.getElementById('bTitle').value.trim();
+  if(!act.title){ document.getElementById('bTitle').focus(); return; }
   act.description = document.getElementById('bDesc').value.trim();
-  if(!wasOne) act.date = document.getElementById('bDate').value || act.date;
-  act.startTime = document.getElementById('bStartTime').value || null;
-  act.daypart = daypartForStartTime(act.startTime, activityDaypart(act));
+  if(hold){
+    act.date = null;
+    act.startTime = null;
+    act.daypart = null;
+    if(previousDate) act.onHoldAt = new Date().toISOString();
+  }else{
+    if(!wasOne) act.date = document.getElementById('bDate').value;
+    if(!act.date){ document.getElementById('bDate').focus(); return; }
+    act.startTime = document.getElementById('bStartTime').value || null;
+    act.daypart = daypartForStartTime(act.startTime, document.getElementById('bDaypart').value);
+    delete act.onHoldAt;
+  }
   act.durationMinutes = readDuration('bDuration','bDurationCustom');
-  save(); closeModals(); renderAll();
-  toast(act.date === previousDate ? 'Đã lưu board công việc.' : `Đã chuyển công việc sang ${calendarDateLabel(act.date)}.`, act.date !== previousDate);
+  save(); closeModals();
+  if(!previousDate && act.date){
+    focusedDaypart = activityDaypart(act);
+    manualDaypart = true;
+    planningDay = false;
+    daypartModeDate = act.date;
+    openDayView(act.date);
+    toast(`Đã xếp việc vào ${calendarDateLabel(act.date)}.`);
+  }else{
+    renderAll();
+    toast(hold ? 'Đã đưa việc vào On-hold.' : (act.date === previousDate ? 'Đã lưu công việc.' : `Đã chuyển công việc sang ${calendarDateLabel(act.date)}.`));
+  }
 });
 document.getElementById('bDeleteBtn').addEventListener('click', () => {
   const act = state.activities.find(a => a.id === boardId); if(!act) return;
@@ -4694,7 +4837,7 @@ document.getElementById('resetBtn').addEventListener('click', () => {
 
 
 function renderDataSummary(){
-  document.getElementById('dataSummary').innerHTML = `Hiện có: <b>${state.activities.length}</b> công việc.`;
+  document.getElementById('dataSummary').innerHTML = `Hiện có: <b>${state.activities.length}</b> công việc, trong đó <b>${onHoldActivities().length}</b> On-hold.`;
 }
 
 // ---------- Boot ----------
